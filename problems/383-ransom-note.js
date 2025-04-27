@@ -22,20 +22,20 @@ var canConstruct = function(ransomNote, magazine) {
     const charMap = new Map();
 
     for (const char of magazine) {
-        if (!charMap[char]) {
-            charMap[char] = 0;
+        if (!charMap.has(char)) {
+            charMap.set(char, 0);
         }
 
-        charMap[char] += 1;
+        charMap.set(char, charMap.get(char)+1);
     }
 
     // reduce count from map, early return if negative count or no key at all
     for (const char of ransomNote) {
-        if (!charMap[char] || charMap[char] < 0) {
+        if (!charMap.has(char) || charMap.get(char) <= 0) {
             return false;
         }
 
-        charMap[char] -= 1;
+        charMap.set(char, charMap.get(char)-1);
     }
 
     // has required letters for construction
@@ -45,4 +45,5 @@ var canConstruct = function(ransomNote, magazine) {
     // O(26) -> space complexity
 
     // TODO: 25ms runtime, beats 17.25% -> how can we optimise?
+        // TODO: now 17ms / beats 65.58% when using Map() methods (has(), get(), set())
 };
