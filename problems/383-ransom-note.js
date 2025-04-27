@@ -31,15 +31,11 @@ var canConstruct = function(ransomNote, magazine) {
 
     // reduce count from map, early return if negative count or no key at all
     for (const char of ransomNote) {
-        if (!charMap[char]) {
+        if (!charMap[char] || charMap[char] < 0) {
             return false;
         }
 
         charMap[char] -= 1;
-
-        if(charMap[char] < 0) {
-            return false;
-        }
     }
 
     // has required letters for construction
