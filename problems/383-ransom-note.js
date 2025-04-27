@@ -47,3 +47,43 @@ var canConstruct = function(ransomNote, magazine) {
     // TODO: 25ms runtime, beats 17.25% -> how can we optimise?
         // TODO: now 17ms / beats 65.58% when using Map() methods (has(), get(), set())
 };
+
+var canConstructStringReplace = function(ransomNote, magazine) {
+    if (magazine.length < ransomNote.length) {
+        return false;
+    }
+
+    // trying out an alt method by reducing the magazine characters by each letter of ransomNote
+
+    for (const char of ransomNote) {
+        // character not present in magazine
+        if (magazine.indexOf(char) === 0) {
+            return false;
+        }
+
+        // non-native indexOf
+        // let matchIndex = -1;
+        // for (let i = 0; i < magazine; i++) {
+        //     if (char === magazine[i]) {
+        //         matchIndex = i;
+        //     }
+        // }
+        // if(matchIndex === -1) {
+        //     return false;
+        // }
+
+        // remove char from magazine
+        magazine = magazine.replace(char, '');
+    }
+
+    return true;
+
+    // JavaScript strings are immutable, so this is not an in-place solution and therefore uses more memory
+    // indexOf() is also an O(n) operation, meaning this is an O(n^2) time complexity
+
+    // however, this (somewhat) surprisingly results in a better performance compared to the previous method:
+    // 4ms / beats 98.41%
+    // I believe this is because these built-in/native methods have improved performance (and use C/C++),
+    // so this feels a little cheat-y to use e.g. replacing indexOf() with a for loop, the performance significantly drops:
+    // 426ms / beats 5.04%
+}
