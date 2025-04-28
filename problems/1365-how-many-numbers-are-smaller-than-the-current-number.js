@@ -5,6 +5,38 @@
  * @param {number[]} nums
  * @return {number[]}
  */
+var smallerNumbersThanCurrent = function(nums) {
+    // lets try a sorting approach
+        // after sorting, we can use the index to determine how many elements are smaller
+            // e.g. sorted index 3 has indexes 0,1,2 which are all smaller than it
+        // but we need to be conscious of duplicates
+            // e.g. nums[0], nums[1], nums[2] could all be '1', so nums[2] should have a count of 0
+            // i.e. the first index - but not using indexOf due to it using native code implementation
+
+    // sort array
+    const sortedNums = [...nums].sort((a,b) => a - b);
+    // create map to store counts (via the index)
+    const indexMap = new Map();
+
+    for (let i = 0; i < sortedNums.length; i++) {
+        // set count to be lowest index for that number
+        if (!indexMap.has(sortedNums[i])) {
+            indexMap.set(sortedNums[i], i);
+        }
+    }
+
+    const output = [];
+
+    for (const num of nums) {
+        output.push(indexMap.get(num));
+    }
+
+    return output;
+
+    // 6ms / beats 65.78%
+    // seems pretty optimised, I imagine a lot of people are using native JS methods to improve speed
+}
+
 var smallerNumbersThanCurrentHashMap = function(nums) {
     // lets try the frequency map approach
     const numFreq = new Map();
