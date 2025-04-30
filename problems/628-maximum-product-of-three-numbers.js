@@ -6,6 +6,42 @@
  * @return {number}
  */
 var maximumProduct = function(nums) {
+    // that problematic case with brute force will make it easier to just solve in a more efficient way
+    // sorting the array will let us easily get access to the numbers of greatest magnitudes
+        // i.e. biggest negative number at nums[0] and biggest positive number at nums[n] (for example)
+
+    const sortedNums = nums.sort((a, b) => (a - b));
+    const length = sortedNums.length;
+
+    const maxAllSame = sortedNums[length-1] * sortedNums[length-2] * sortedNums[length-3];
+
+    if (sortedNums[0] >= 0 && sortedNums[length-1] >= 0) {
+        // all numbers are positive, get product of last 3 elements
+            // i.e. the largest positive numbers, for the largest positive result
+        return maxAllSame;
+    }
+
+    if (sortedNums[0] < 0 && sortedNums[length-1] < 0) {
+        // all numbers are negative, get product of last 3 elements
+            // i.e. the smallest negative numbers, for the smallest (absolute) negative result
+        return maxAllSame;
+    }
+
+    // TODO: What happens if there are a mix of positive and negative?
+        // compare the product of nums[0] * nums[1] * nums[n-1] (assuming at least 2 negative numbers and one positive number)
+        // with nums[n-1] * nums[n-2] * nums[n-3]
+
+    // greedy assumption for 2 negative and 1 positive
+    const maxGreedyNegPos = sortedNums[0] * sortedNums[1] * sortedNums[length-1];
+
+    return Math.max(maxGreedyNegPos, maxAllSame);
+
+    // time complexity will be as fast as the sorting algorithm, i.e. O(n log n)
+    // space complexity is constant / O(1)
+    // 38 ms / beats 52.17%
+}
+
+var maximumProductBruteForceAttempt = function(nums) {
     // this is essentially asking to find the three largest numbers in an array
     // and then multiply the results together
 
