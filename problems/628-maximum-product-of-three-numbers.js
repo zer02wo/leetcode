@@ -6,6 +6,54 @@
  * @return {number}
  */
 var maximumProduct = function(nums) {
+    // from the previous sorting solution we can see the values of interest are
+        // 1st, 2nd, & 3rd largest (for when all negative or all positive)
+        // 1st, & 2nd smallest (when there is a mix of positive/negative)
+
+    // so if we can calculate all of this within a single O(n) pass, we'll be more efficient
+
+    let firstMax = -Infinity;
+    let secondMax = -Infinity;
+    let thirdMax = -Infinity;
+    let firstMin = Infinity;
+    let secondMin = Infinity;
+
+    for (const num of nums) {
+        // TODO: feels like there should be a way to simplify this verbose assignment
+        // but order of assignment is important
+        if (num >= firstMax) {
+            thirdMax = secondMax;
+            secondMax = firstMax
+            firstMax = num;
+        } else if (num >= secondMax) {
+            thirdMax = secondMax;
+            secondMax = num;
+        } else if (num >= thirdMax) {
+            thirdMax = num;
+        }
+
+        if (num <= firstMin) {
+            secondMin = firstMin;
+            firstMin = num;
+        } else if (num <= secondMin) {
+            secondMin = num;
+        }
+    }
+
+    const maxSame = firstMax * secondMax * thirdMax;
+    const maxGreedy = firstMin * secondMin * firstMax;
+
+    return Math.max(maxSame, maxGreedy);
+
+    // time complexity reduced to O(n)
+    // space complexity is now constant O(1)
+    // 4 ms / beats 94.29%
+
+    // I did need a hint to get to this solution
+    // but I did figure out the pattern of 3 largest & 2 smallest from the previous approach
+}
+
+var maximumProductSorting = function(nums) {
     // that problematic case with brute force will make it easier to just solve in a more efficient way
     // sorting the array will let us easily get access to the numbers of greatest magnitudes
         // i.e. biggest negative number at nums[0] and biggest positive number at nums[n] (for example)
@@ -15,6 +63,7 @@ var maximumProduct = function(nums) {
 
     const maxAllSame = sortedNums[length-1] * sortedNums[length-2] * sortedNums[length-3];
 
+    // TODO: These conditions are probably unnecessary, unsure if including them is faster or slower
     if (sortedNums[0] >= 0 && sortedNums[length-1] >= 0) {
         // all numbers are positive, get product of last 3 elements
             // i.e. the largest positive numbers, for the largest positive result
@@ -37,7 +86,7 @@ var maximumProduct = function(nums) {
     return Math.max(maxGreedyNegPos, maxAllSame);
 
     // time complexity will be as fast as the sorting algorithm, i.e. O(n log n)
-    // space complexity is constant / O(1)
+    // space complexity is O(n) for the sorted array
     // 38 ms / beats 52.17%
 }
 
