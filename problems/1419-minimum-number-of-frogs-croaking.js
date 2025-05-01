@@ -23,7 +23,8 @@ var minNumberOfFrogs = function(croakOfFrogs) {
         ['k', 0],
     ]);
 
-    let croakCount = 1;
+    let croakCount = 0;
+    let maxCroaks = 0;
 
     for (const sound of croakOfFrogs) {
         croakMap.set(sound, croakMap.get(sound) + 1);
@@ -56,6 +57,13 @@ var minNumberOfFrogs = function(croakOfFrogs) {
         // TODO: we know there are multiple frogs if we see a 'c' before seeing a 'k'
             // i.e. another croak has started, before the last has finished
             // TODO: Increment croakCount by difference between c & k?
+        // the maximum number of frogs = the maximum number of 'c' before 'k'
+        if (sound === 'c') {
+            croakCount++;
+            maxCroaks = Math.max(croakCount, maxCroaks);
+        } else if (sound === 'k') {
+            croakCount--;
+        }
     }
 
     const expectedCount = croakOfFrogs.length / 5;
@@ -65,5 +73,9 @@ var minNumberOfFrogs = function(croakOfFrogs) {
         }
     }
 
-    return croakCount;
+    return maxCroaks;
+
+    // 40 ms / beats 31.82%
+    // not happy with this one, took a long time and needed a hint to figure out the max/current pointers
+    // my approach to order is definitely not great either
 };
