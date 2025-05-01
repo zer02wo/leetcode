@@ -70,6 +70,46 @@ var minNumberOfFrogs = function (croakOfFrogs) {
     // surprised this isn't much faster than mine, but it is a lot cleaner & more extensible
 }
 
+function minNumberOfFrogsOptimal(croakOfFrogs) {
+    // this solution was taken from leetcode as a "5ms" solution (though it ran at 11ms for me)
+    // largely the same skeletal algorithm as the walkthrough I just did, but has individual cases/variables for each letter/stage
+
+    // Initialize counters for each character in "croak"
+    let c = 0, r = 0, o = 0, a = 0, k = 0;
+    let frogs = 0, maxFrogs = 0;
+
+    for (let char of croakOfFrogs) {
+        if (char === 'c') {
+            c++;
+            frogs++;
+        } else if (char === 'r') {
+            r++;
+        } else if (char === 'o') {
+            o++;
+        } else if (char === 'a') {
+            a++;
+        } else if (char === 'k') {
+            k++;
+            frogs--;
+        }
+
+        // Check if the sequence is valid
+        if (r > c || o > r || a > o || k > a) {
+            return -1;
+        }
+
+        // Update the maximum number of frogs needed
+        maxFrogs = Math.max(maxFrogs, frogs);
+    }
+
+    // Check if all croaks are complete
+    if (c === r && r === o && o === a && a === k) {
+        return maxFrogs;
+    } else {
+        return -1;
+    }
+}
+
 var minNumberOfFrogsUnoptimal = function(croakOfFrogs) {
     // this question is pretty tough, so I only have one immediate intuition:
         // the string is invalid if there are not equal counts of: c, r, o, a, k
