@@ -143,19 +143,7 @@ var minNumberOfFrogsUnoptimal = function(croakOfFrogs) {
         const aCount = croakMap.get('a');
         const kCount = croakMap.get('k');
 
-        if (cCount < rCount || cCount < oCount || cCount < aCount || cCount < kCount) {
-            return -1;
-        }
-
-        if (rCount < oCount || rCount < aCount || rCount < kCount) {
-            return -1;
-        }
-
-        if (oCount < aCount || oCount < kCount) {
-            return -1;
-        }
-
-        if (aCount < kCount) {
+        if (cCount < rCount || rCount < oCount || oCount < aCount || aCount < kCount) {
             return -1;
         }
 
