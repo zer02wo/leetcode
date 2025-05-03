@@ -51,4 +51,7 @@ var addDigits = function (num) {
     return sum ? sum : 9;
 
     // 0 ms / beats 100%
+    // There is also an even simpler solution using the 'Digital Root' Congruence formula
+    // 1 + ((num-1) % 9);
+        // 0 still needs to be handled/returned separately, but otherwise works for any other number
 }
