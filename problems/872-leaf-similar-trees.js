@@ -22,7 +22,7 @@ var leafSimilar = function(root1, root2) {
         // but ideally there would be a way to compare both at the same time?
 
     const leafList1 = [];
-    let stack1 = [root1];
+    const stack1 = [root1];
 
     while (stack1.length) {
         let node = stack1.pop();
@@ -43,7 +43,7 @@ var leafSimilar = function(root1, root2) {
     }
 
     let leafIndex = 0;
-    let stack2 = [root2];
+    const stack2 = [root2];
 
     // perform same stack operation as previous loop
         // some duplicate code but lets us early return rather than having to calculate all leaf nodes
@@ -69,11 +69,18 @@ var leafSimilar = function(root1, root2) {
         }
     }
 
+    // if index does not match length, there is a differing amount of nodes
+    if (leafList1.length !== leafIndex) {
+        return false;
+    }
+
     // no differences found
     return true;
 
-    // TODO: this failed for the 2nd last test case with the following leaf nodes:
-        // leafList1 = [6,7,4,9,8,10]
-        // leafList2 = [6,7,4,9,8]
-    // currently I have no check for this
+    // 0ms / beats 100%
+    // pretty happy with this solution, probably a bit long/verbose compared to other people
+        // but it's readable
+    // may also be enough to calculate the leaves for all nodes and only do comparisons at the end
+        // (which would allow reusing the code to generate the leafLists)
+        // but this seems like a nice optimisation to have
 };
