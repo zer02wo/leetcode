@@ -6,6 +6,34 @@
  * @return {number}
  */
 var integerBreak = function(n) {
+    // edge cases when n < 5
+    if (n < 5) {
+        return Math.floor(n / 2) * Math.ceil(n / 2);
+    }
+
+    // i.e. 3^numOfThrees
+    let numOfThrees = Math.floor(n / 3);
+    // value if not wholly divisible by 3
+    let remainder = n % 3;
+
+    switch(remainder) {
+        case 0:
+            // no remainder, 3^numOfThrees
+            return 3 ** numOfThrees;
+        case 1:
+            // subtract 3 from exponent to create a 4 (1+3), maximises product
+            return (3 ** (numOfThrees - 1)) * 4;
+        default:
+            // remainder === 2
+            return (3 ** numOfThrees) * remainder;
+    }
+
+    // 0 ms / beats 100%
+    // came back to use a different approach, same performance but a bit more mathematical
+    // unsure of time complexity, I'm assuming O(1) as it's all arithmetic operations
+}
+
+var integerBreakLoop = function(n) {
     let product = 1;
 
     // edge cases when n < 5
@@ -27,8 +55,6 @@ var integerBreak = function(n) {
             // 3 emerged as the best number to create the product
             // even cases above handle when we can't/shouldn't have another 3
 
-            // TODO: There's got to be a way to calculate this with division/modulo
-            // would prevent need for a loop
             n = n - 3;
             product *= 3;
         }
