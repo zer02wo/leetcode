@@ -25,7 +25,7 @@ var leafSimilar = function(root1, root2) {
     const stack1 = [root1];
 
     while (stack1.length) {
-        let node = stack1.pop();
+        const node = stack1.pop();
 
         // leaf node when has no child (left or right) nodes
         if (!node.left && !node.right) {
@@ -48,7 +48,7 @@ var leafSimilar = function(root1, root2) {
     // perform same stack operation as previous loop
         // some duplicate code but lets us early return rather than having to calculate all leaf nodes
     while (stack2.length) {
-        let node = stack2.pop();
+        const node = stack2.pop();
 
         if (!node.left && !node.right) {
             // check if the current leaf node matches the expected leaf pattern from root1
@@ -84,3 +84,59 @@ var leafSimilar = function(root1, root2) {
         // (which would allow reusing the code to generate the leafLists)
         // but this seems like a nice optimisation to have
 };
+
+
+var leafSimilarHelperFunction = function(root1, root2) {
+    // as mentioned above, using a helper function to generate node list
+        // want to see if my early checking optimisation makes a difference
+
+    // could also be done using recursion instead of a loop
+        // benefit of being able to swap out the function
+    function getLeafList(node) {
+        const stack = [node];
+        const leafList = [];
+
+        while (stack.length) {
+            const node = stack.pop();
+
+            // leaf node
+            if (!node.left && !node.right) {
+                leafList.push(node.val);
+            }
+
+            // assign right before left for correct order with FIFO
+            if (node.right) {
+                stack.push(node.right);
+            }
+
+            if (node.left) {
+                stack.push(node.left);
+            }
+        }
+
+        return leafList;
+    }
+
+    const leafList1 = getLeafList(root1);
+    const leafList2 = getLeafList(root2);
+
+    // only similar if same length
+    if (leafList1.length !== leafList2.length) {
+        return false;
+    }
+
+    // check each index has same value
+    for (let i = 0; i < leafList1.length; i++) {
+        if (leafList1[i] !== leafList2[i]) {
+            return false;
+        }
+    }
+
+    // no differences in leaf sequence
+    return true;
+
+    // 1ms / beats 34.79% on first submission
+    // 0ms / beats 100% on second submission (to confirm it wasn't just variance)
+    // so at least for these test cases, my optimisation probably wasn't necessary
+        // (perhaps this would matter for more than 200 nodes)
+}
