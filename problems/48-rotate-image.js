@@ -6,7 +6,13 @@
  * @return {void} Do not return anything, modify matrix in-place instead.
  */
 var rotate = function(matrix) {
-
+    // swap matrix[i][j] with matrix[j][i]
+    for (let i = 0; i < matrix.length; i++) {
+        // less than i to prevent swapping back
+        for (let j = 0; j < i; j++) {
+            [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]]
+        }
+    }
 };
 
 // solution dictates that this must be done **in-place** (modifying original 'matrix' 2D array)
@@ -48,3 +54,6 @@ var rotate = function(matrix) {
     // we can see then that the index [j] becomes index [i] after the swap
     // and the new index [j] = (n-1) - [i]
         // (e.g. [0] = (3-1) - [0] = 2, e.g. [1] = (3-1) - [1] = 1, e.g. [2] = (3-1) - [2] = 0)
+
+    // this means swap [i][j] with [j][i]
+    // TODO: then need some extra to handle the edges
