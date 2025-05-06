@@ -6,13 +6,27 @@
  * @return {void} Do not return anything, modify matrix in-place instead.
  */
 var rotate = function(matrix) {
-    // swap matrix[i][j] with matrix[j][i]
-    for (let i = 0; i < matrix.length; i++) {
-        // less than i to prevent swapping back
-        for (let j = 0; j < i; j++) {
-            [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]]
+    // swap matrix[row][col] with matrix[col][row]
+    for (let row = 0; row < matrix.length; row++) {
+        // init col to row to prevent swapping back
+        for (let col = row; col < matrix.length; col++) {
+            [matrix[row][col], matrix[col][row]] = [matrix[col][row], matrix[row][col]];
         }
     }
+
+    let n = matrix.length;
+    let halfLength = Math.floor(matrix.length / 2);
+
+    for (let row = 0; row < matrix.length; row++) {
+        // less than 1/2 length to prevent swapping back
+        for (let col = 0; col < halfLength; col++) {
+            [matrix[row][col], matrix[row][n - 1 - col]] = [matrix[row][n - 1 - col], matrix[row][col]];
+        }
+    }
+
+    // 1ms / beats 27.99%
+    // this was a tough one, took a long time to figure out the pattern
+    // and just as long to translate it into code, as I was trying to figure out a way to do it in a single loop
 };
 
 // solution dictates that this must be done **in-place** (modifying original 'matrix' 2D array)
@@ -55,5 +69,12 @@ var rotate = function(matrix) {
     // and the new index [j] = (n-1) - [i]
         // (e.g. [0] = (3-1) - [0] = 2, e.g. [1] = (3-1) - [1] = 1, e.g. [2] = (3-1) - [2] = 0)
 
-    // this means swap [i][j] with [j][i]
-    // TODO: then need some extra to handle the edges
+    // 1. swap [i][j] with [j][i]
+    // 2. then need some extra to handle the edges/corners?
+
+    // after testing the first step, for this example we get:
+    // [[1,4,7],[2,5,8],[3,6,9]]
+    // meaning all we need to do now is reverse the inner arrays (rows) *in-place*
+        // [0][0] -> [0][n-1]
+        // [0][1] -> [0][n-2]
+        // [0][2] -> [0][n-3] // equivalent to n - 1 - col
