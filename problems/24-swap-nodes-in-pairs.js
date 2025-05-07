@@ -13,7 +13,50 @@
  * @return {ListNode}
  */
 var swapPairs = function(head) {
+    // handle edge cases (n < 2)
+    if (!head || !head.next) {
+        return head;
+    }
 
+    let previous = null;
+    let current = head;
+
+    // 2nd node will always be the new head after swapping pairs
+    // (because we handled edge cases above)
+    let returnNode = head.next;
+
+    while (current && current.next) {
+        // get the current paired node
+        let currentPaired = current.next;
+        // get next pair to prevent link break
+        let nextPair = currentPaired.next;
+
+        // swap the current pair
+        currentPaired.next = current;
+        current.next = nextPair;
+
+        // update the previous node to point to the new head of the pair
+        // (nothing to update for first iteration)
+        if (previous) {
+            previous.next = currentPaired;
+        }
+
+        // set the new end of the current pair to be the previous node
+        previous = current;
+        // set the next pair to be the new current pair
+        current = nextPair;
+    }
+
+    return returnNode;
+
+    // 0 ms / beats 100%
+    // this was pretty tough to visualise, especially considering I don't often work with linked lists
+    // initial holdup was trying to figure out how to ensure the chain flowed correctly
+        // the (seemingly) obvious answer of using a pointer to the previous tail evaded me for a while
+
+    // TODO: Seems like a recursive solution would also be pretty intuitive?
+        // I.e. recursive chain would swap all the pairs
+        // then on the way back correctly link the previous tail to the next (swapped) head
 };
 
 // Start: 1 -> 2 -> 3 -> 4
