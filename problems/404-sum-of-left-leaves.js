@@ -1,4 +1,5 @@
 // https://leetcode.com/problems/sum-of-left-leaves/
+// tags: easy, leetle
 
 /**
  * Definition for a binary tree node.
@@ -127,4 +128,54 @@ var sumOfLeftLeaves = function(root) {
     }
 
     return searchNode(root);
+}
+
+// leetle for today is "Sum of Leaf Values", which doesn't seem to have a corresponding problem in leetcode
+// so this seems to be the best place to put this, as it's essentially the same but summing *all* leaf nodes
+// (instead of just the left ones)
+var sumOfAllLeaves = function(root) {
+    // DFS approach as we only care about the deepest nodes
+    let stack = [root];
+    let sum = 0;
+
+    while (stack.length) {
+        let node = stack.pop();
+
+        if (!node.left && !node.right) {
+            // leaf node
+            sum += node.val;
+            continue;
+        }
+
+        if (node.right) {
+            stack.push(node.right);
+        }
+
+        if (node.left) {
+            stack.push(node.left);
+        }
+    }
+
+    return sum;
+}
+
+var sumOfAllLeavesRecursive = function(root) {
+    // recursive function
+    function searchForLeafNodes(node) {
+        // parent node may not have had *both* a left and right node
+        // handle possible null value
+        if (!node) {
+            return 0;
+        }
+
+        if (!node.left && !node.right) {
+            // leaf node
+            return node.val;
+        }
+
+        // not leaf, continue searching
+        return searchForLeafNodes(node.left) + searchForLeafNodes(node.right);
+    }
+
+    return searchForLeafNodes(root);
 }
