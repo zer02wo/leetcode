@@ -6,6 +6,27 @@
  * @return {string}
  */
 var defangIPaddr = function(address) {
+    // trying a solution without built-ins as it feels like cheating
+    // strings in JS are immutable, so we'll need to create our own new string
+        // TODO: Would an array be faster than string concatenation?
+
+    let defanged = '';
+
+    for (const digit of address) {
+        if (digit === '.') {
+            defanged += '[.]';
+        } else {
+            defanged += digit;
+        }
+    }
+
+    return defanged;
+
+    // 44 ms / beats 35.92%
+    // given how many solutions use built-ins, runtime probably doesn't mean much here
+};
+
+var defangIPaddrSplitJoin = function(address) {
     return address.split('.').join('[.]');
 
     // 52 ms / beats 5.13%
