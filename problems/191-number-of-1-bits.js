@@ -28,6 +28,29 @@ var hammingWeight = function(n) {
         // because we're working with numbers from 1 to 2^31 - 1, that means 32 bits
 };
 
+// Following solutions were identified using hints & ideas from other people's solutions:
+var hammingWeightBitwise = function(n) {
+    let setBits = 0;
+
+    // shifting the rightmost bit by 1, is effectively equivalent to / 2
+        // e.g. 11 >> 1 = 5, 5 >> 1 = 2
+            // i.e. 1101 >> 1 = 0101, 0101 >> 1 = 0010
+    // using bitwise AND (&) will allow us to check for set bits
+        // by always performing the bitwise AND with 1, we are comparing the rightmost bit
+
+    // 32 iterations for the 32 possible bits
+    for (let i = 0; i < 32; i++) {
+        // returns 1 if the rightmost digit for the loop is a set bit (1), else 0
+        setBits += (n >> i) & 1;
+    }
+
+    return setBits;
+
+    // 0 ms / beats 100%
+    // TODO: in theory this would result in more iterations for smaller numbers
+        // e.g. '11' only requires 4 iterations for my method, rather than 32
+};
+
 // Objective: take a base 10 number and count the number of set bits in its binary representation
     // I.e. how many 1's in a binary number
     // E.g. 11 = 1011, 3 set bits
