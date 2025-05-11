@@ -51,6 +51,24 @@ var hammingWeightBitwise = function(n) {
         // e.g. '11' only requires 4 iterations for my method, rather than 32
 };
 
+var hammingWeightBitwiseAlt = function(n) {
+    let setBits = 0;
+
+    while (n > 0) {
+        // compare the rightmost bit
+        setBits += n & 1;
+
+        // right bitshift: set the new rightmost bit to be the second-rightmost bit
+        n = n >> 1;
+    }
+
+    return setBits;
+
+    // 0 ms / beats 100%
+    // TODO: this solution is very similar to my original solution, but using bitwise operations instead of mathematical
+        // I imagine this would be more effective in lower level languages than JS
+};
+
 // Objective: take a base 10 number and count the number of set bits in its binary representation
     // I.e. how many 1's in a binary number
     // E.g. 11 = 1011, 3 set bits
