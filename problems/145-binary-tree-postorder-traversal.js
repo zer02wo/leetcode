@@ -19,6 +19,44 @@ var postorderTraversal = function(root) {
         return [];
     }
 
+    // seems like the simplest approach would be to visit in the opposite order, then reverse the result
+        // root node -> right subtree -> left subtree
+
+    const postorder = [];
+    const nodeStack = [root];
+
+    while(nodeStack.length) {
+        const node = nodeStack.pop();
+        // push current node to postorder result
+        postorder.push(node.val);
+
+        // because we're using a stack, push left before right
+            // this means right will be traversed before left (FILO)
+        if (node.left) {
+            nodeStack.push(node.left);
+        }
+
+        if (node.right) {
+            nodeStack.push(node.right);
+        }
+    }
+
+    return postorder.reverse();
+
+    // 0 ms / beats 100%
+    // this was also pretty simple, just a slight variant on DFS approaches I have done before
+    // I think reversing at the end makes more sense than Array.shift() to the front
+
+    // NOTE: looking now, other solutions are doing this *without* reversing - but I don't see a constraint/suggestion against using it?
+        // perhaps the question has changed over the years
+};
+
+var postorderTraversalRecursive = function(root) {
+    // handle empty case
+    if (!root) {
+        return [];
+    }
+
     const postorder = [];
 
     // recursive dfs to begin
