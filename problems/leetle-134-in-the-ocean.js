@@ -104,6 +104,51 @@ function solve(coord) {
     // TODO: regex implementation
 }
 
+function solveRegex(coord) {
+    // Regex parts:
+        // 'N' or 'S'
+            // followed by 0-90
+        // 'E' or 'W'
+            // followed by 0-180
+    // thankfully after looking at test cases I know that valid strings are always latitude followed by longitude
+        // (I'm assuming they should only be allowed once each, but the testcases do not check this)
+            // ((neither does my verbose solution to be fair))
+    // checking a range of numbers might be tricky, not as easy as a range of characters
+
+    const regex = /^[NS](?!00)(0|[0-8][0-9]|90)[EW](?!00)(0|[0-9][0-9]|1[0-7][0-9]|180)$/;
+
+    // ^                                : match from the beginning of the string
+    // [NS]                             : match either character 'N' or 'S' from set []
+    // (?!00)                           : negative lookahead, prevent the string '00' from matching
+    // (0|[0-8][0-9]|90)                : match in the range 0-90
+                                        // () defines a capture group
+                                        // 0 matches 0
+                                        // | OR
+                                        // [0-8][0-9] matches characters in the sets within the specified ranges (i.e. 00-89)
+                                            // this can only go up to 8 on the first character set to prevent an invalid match of 99
+                                        // | OR
+                                        // 90 matches 90
+    // [EW]                             : match either character 'E' or 'W' from set []
+    // (?!00)                           : negative lookahead, prevent the string '00' from matching
+    // (0|[0-9][0-9]|1[0-7][0-9]|180)   : match in the range 0-180
+                                        // () defines a capture group
+                                        // 0 matches 0 OR
+                                        // | OR
+                                        // [0-9][0-9] matches characters in the sets within the specified ranges (i.e. 00-99)
+                                        // | OR
+                                        // 1[0-7][0-9] again matching characters within the sets, prefixed with an additional digit to adjust the range (i.e. 100-179)
+                                            // this can only go up to 7 on the first character set to prevent an invalid match of 189
+                                        // 180 matches 180
+    // $                                : match to the end of the string
+                                        // (e.g. otherwise '18' would be matched when providing '189' longitude degrees)
+
+    return regex.test(coord);
+
+    // the solution provided (AI generated?) by leetle would allow for invalid strings like 'N99E900'
+        // both of which are invalid degrees
+    // leetle solution pattern for reference: /^[NS][0-9]{1,2}[EW][0-9]{1,3}$/
+}
+
 // so the valid format is a character followed by 1-3 digits (only 1-2 if latitude)
     // North / South = Latitude
     // East / West = Longitude
