@@ -8,21 +8,32 @@
 var reverseBits = function(n) {
     let output = 0;
 
+    // keep count of how many trailing 0's when n = 0
+    let remainingBits = 32;
+
     // repeatedly shift rightmost bit until n = 0
     while (n > 0) {
-        let rightBit = n >>>= 1;
-        output <<= rightBit;
+        // get rightmost bit (via AND)
+        let rightBit = n & 1;
+        // shift left to make space for new rightmost bit
+        output <<= 1;
+        // assign new rightmost bit (via OR)
+        output |= rightBit;
+
+        // shift n right by 1 bit
+        n >>>= 1;
+        // reduce remaining bits count
+        remainingBits--;
     }
 
-    return output;
+    // shift the output by the number of remaining bits (i.e. the number of 0's left in n at the end)
+        // allows us to not need to do a full 32 iterations (i.e. one for each bit)
+            // i.e. at maximum this is O(32) = O(1) time complexity, and of course O(1) space complexity
+    // NOTE: the `>>> 0` is to ensure we're returning an *unsigned* integer due to the leftshift making this ambigious (2's complement)
+    return (output << remainingBits) >>> 0;
 
-    // TODO: the left/right-shift assignment operator does not work as I expected it to
-        // it simply assigns the result of the left/right shift
-        // rather than returning the end bit
-            // (which makes sense after taking a second to think of it)
-    // TODO: we need to leftshift output by 1
-        // then add 1 to its rightmost bit depending on the rightmost bit of n
-            // i.e. AND with 0..01
+    // 42 ms / beats 80.25%
+    // happy enough with this, I'm not great at bit manipulation considering how infrequently I use it on a daily basis
 };
 
 // reverse 32-bit unsigned integer
