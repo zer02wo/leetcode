@@ -40,7 +40,6 @@ var deleteNodeIterative = function(node) {
         // set 2nd last node as new tail node
         if (!node.next.next) {
             node.next = null;
-            continue;
         }
 
         // go to next node
