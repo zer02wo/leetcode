@@ -13,6 +13,24 @@
  * @return {void} Do not return anything, modify node in-place instead.
  */
 var deleteNode = function(node) {
+    // set current node value to next value
+    node.val = node.next.val;
+    // remove next node, as it is now effectively the current node
+    node.next = node.next.next;
+
+    // TODO: I massively overcomplicated my first solution
+        // we may not have been able to skip linking the node we wanted to delete
+        // but we can do it for the node we overwrite instead
+
+    // 53 ms / beats 43.49% (first run)
+    // 42 ms / beats 91.80% (second run)
+    // O(1) solution - only modifies/accesses the current, next and next-next nodes
+
+    // funny comment within the leetcode discussion:
+    // https://leetcode.com/problems/delete-node-in-a-linked-list/description/comments/1643550/
+}
+
+var deleteNodeIterative = function(node) {
     // we have to modify the original node as in-place
     while (node && node.next) {
         // set next node value to be this node's value
