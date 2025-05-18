@@ -7,29 +7,34 @@
  * @return {number}
  */
 var strStr = function(haystack, needle) {
-    // needle cannot be greater in length than haystack
-    if (needle > haystack) {
-        return -1;
+    if (!needle.length) {
+        return 0;
     }
 
-    if (!needle) {
-        return 0;
+    // needle cannot be greater in length than haystack
+    if (needle.length > haystack.length) {
+        return -1;
     }
 
     // 'point' of the needle
     let point = needle[0];
 
     // full needle contents cannot exist beyond a certain index
-    const length = haystack.length - needle.length;
+    const length = (haystack.length - needle.length) + 1;
     for (let i = 0; i < length; i++) {
         // iterate until finding point of needle
         if (haystack[i] !== point) {
             continue;
         }
 
+        // handle needle of single character
+        if (needle.length === 1) {
+            return i;
+        }
+
         // continue looking for rest of needle
         let needleIndex = 1;
-        for (let j = i+1; j < needle.length; j++) {
+        for (let j = i+1; j < haystack.length; j++) {
             if (haystack[j] !== needle[needleIndex]) {
                 i = j;
                 break;
@@ -48,8 +53,9 @@ var strStr = function(haystack, needle) {
     // needle not found in haystack
     return -1;
 
-    // TODO: does not work for following scenario:
-        // haystack = 'hello', needle = 'll'
+    // TODO: this fails for the following testcase:
+        // haystack = "mississippi", needle = "issip"
+        // the i at index [1] gets matched, but we miss the second i at index [4] because of the inner loop
 };
 
 // find the substring (needle) in the main string (haystack)
