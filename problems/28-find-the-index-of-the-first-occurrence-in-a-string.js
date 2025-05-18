@@ -7,7 +7,7 @@
  * @return {number}
  */
 var strStr = function(haystack, needle) {
-    if (!needle.length) {
+    if (!needle.length || needle === haystack) {
         return 0;
     }
 
@@ -34,9 +34,18 @@ var strStr = function(haystack, needle) {
 
         // continue looking for rest of needle
         let needleIndex = 1;
+        let newPoint = false;
         for (let j = i+1; j < haystack.length; j++) {
             if (haystack[j] !== needle[needleIndex]) {
-                i = j;
+                // go back to previous point of needle
+                if (newPoint) {
+                    // return newPoint -1, because of the automatic i++ in the outer loop
+                    i = newPoint - 1;
+                    break;
+                }
+
+                // return j - 1, because of the automatic i++ in the outer loop
+                i = j - 1;
                 break;
             }
 
@@ -46,6 +55,11 @@ var strStr = function(haystack, needle) {
                 return i;
             }
 
+            // save reference to first instance of 'point' of needle so we don't miss any potentials
+            if (haystack[j] === point && !newPoint) {
+                newPoint = j;
+            }
+
             needleIndex++;
         }
     }
@@ -53,9 +67,15 @@ var strStr = function(haystack, needle) {
     // needle not found in haystack
     return -1;
 
-    // TODO: this fails for the following testcase:
-        // haystack = "mississippi", needle = "issip"
-        // the i at index [1] gets matched, but we miss the second i at index [4] because of the inner loop
+    // 0 ms / beats 100%
+    // definitely took a bit of trial / error with some of the edge cases
+    // and likely a little verbose, but you can't deny the performance
+
+    // this would be simpler if I simply continued on from i, instead of j
+    // but there is some optimisation there to prevent repeatedly checking characters
+        // because there are instances we have to go back to the point of a needle (e.g. 'mississipi' and 'issip'),
+        // this is *technically* an O(n*m) solution in worst case scenarios (e.g. haystack = 'aaaaaaaaaa', needle = 'aaaab')
+            // but should perform slightly better in real world situations than an O(n*m) solution without my optimisations
 };
 
 // find the substring (needle) in the main string (haystack)
