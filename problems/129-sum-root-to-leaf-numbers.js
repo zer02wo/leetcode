@@ -15,28 +15,31 @@
  */
 var sumNumbers = function(root) {
     // data structure to store reference to node and previous path values-
-    let nodePath = { node: root, path: '' };
+    let nodePath = { node: root, pathSum: 0 };
     let stack = [nodePath];
 
     let output = 0;
 
     while (stack.length) {
-        let { node, path } = stack.pop();
+        let { node, pathSum } = stack.pop();
 
-        // update path with current node (string concatenation, not addition)
-        let newPath = path + node.val;
+        // update path with current node
+            // multiply existing path by 10 and add current digit
+                // this is essentially concatenation, but only using arithmetic operations
+            // we can do this because we know the node values are always 0 - 9
+        let newPathSum = (pathSum * 10) + node.val;
 
         if (node.right) {
-            stack.push({node: node.right, path: newPath});
+            stack.push({node: node.right, pathSum: newPathSum});
         }
 
         if (node.left) {
-            stack.push({node: node.left, path: newPath});
+            stack.push({node: node.left, pathSum: newPathSum});
         }
 
         // leaf node
         if (!node.left && !node.right) {
-            output += parseInt(newPath);
+            output += newPathSum;
         }
     }
 
@@ -44,7 +47,7 @@ var sumNumbers = function(root) {
 
     // 0 ms / beats 100%
     // definitely found this a little tricky, got caught up trying to limit myself to basic data structures
-    // pretty simple O(n) time complexity solution, but definitely not the most memory efficient
+    // pretty simple O(n) time complexity solution, but not the most memory efficient
 
     // TODO: would a recursive solution make more sense?
 };
