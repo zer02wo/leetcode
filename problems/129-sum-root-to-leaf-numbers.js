@@ -48,9 +48,36 @@ var sumNumbers = function(root) {
     // 0 ms / beats 100%
     // definitely found this a little tricky, got caught up trying to limit myself to basic data structures
     // pretty simple O(n) time complexity solution, but not the most memory efficient
-
-    // TODO: would a recursive solution make more sense?
 };
+
+var sumNumbersRecursive = function(root) {
+    // TODO: I never know what to call the recursive DFS helper function :/
+    function sumNodeValues(node, currentSum) {
+        if (!node) {
+            return 0;
+        }
+
+        // update path with current node
+            // multiply existing path by 10 and add current digit
+                // this is essentially concatenation, but only using arithmetic operations
+            // we can do this because we know the node values are always 0 - 9
+        let newSum = (currentSum * 10) + node.val;
+
+        // leaf node
+        if (!node.left && !node.right) {
+            return newSum;
+        }
+
+        return sumNodeValues(node.left, newSum) + sumNodeValues(node.right, newSum);
+    }
+
+    return sumNodeValues(root, 0);
+
+    // 0 ms / beats 100%
+    // very quick/easy to implement having already figured out the iterative approach
+        // this is still probably less memory efficient due to recursive function stack/depth
+    // but good knowledge to have
+}
 
 // each root-to-leaf path forms a number
 // return the sum of all root-to-leaf path numbers
