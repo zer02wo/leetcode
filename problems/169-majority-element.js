@@ -5,7 +5,34 @@
  * @param {number[]} nums
  * @return {number}
  */
-var majorityElement = function(nums) {
+var majorityElementHashMap = function(nums) {
+    let freqMap = new Map();
+
+    for (const num of nums) {
+        // initialise to 1 or increment by 1
+        freqMap.set(num, (freqMap.get(num) + 1) || 1);
+    }
+
+    const majority = nums.length / 2;
+
+    for (const [num, count] of freqMap) {
+        if (count >= majority) {
+            return num;
+        }
+    }
+
+    // this should never occur given the constraints
+    return -1;
+
+    // 9 ms / beats 16.41%
+    // O(n * m) time complexity solution
+        // where n = nums length
+        // where m = freqMap length (i.e. the number of unique digits in nums)
+    // O(n) memory
+    // but I knew this wouldn't be an optimal solution
+}
+
+var majorityElementSorting = function(nums) {
     nums.sort();
 
     return nums[Math.floor(nums.length / 2)];
