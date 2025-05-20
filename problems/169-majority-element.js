@@ -7,16 +7,14 @@
  */
 var majorityElementHashMap = function(nums) {
     let freqMap = new Map();
+    const majority = nums.length / 2;
 
     for (const num of nums) {
         // initialise to 1 or increment by 1
         freqMap.set(num, (freqMap.get(num) + 1) || 1);
-    }
 
-    const majority = nums.length / 2;
-
-    for (const [num, count] of freqMap) {
-        if (count >= majority) {
+        // optimise by early return
+        if (freqMap.get(num) > majority) {
             return num;
         }
     }
@@ -24,7 +22,7 @@ var majorityElementHashMap = function(nums) {
     // this should never occur given the constraints
     return -1;
 
-    // 9 ms / beats 16.41%
+    // 5 ms / beats 47.02%
     // O(n * m) time complexity solution
         // where n = nums length
         // where m = freqMap length (i.e. the number of unique digits in nums)
