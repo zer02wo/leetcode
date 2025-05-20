@@ -17,6 +17,39 @@ var isSubsequence = function(s, t) {
     }
 
     let subsequenceIndex = 0;
+
+    for (const char of t) {
+        // characters matching
+        if (s[subsequenceIndex] === char) {
+            // increment subsequence to next character (index)
+            subsequenceIndex++;
+
+            // all characters in subsequence have been found
+            if (subsequenceIndex >= s.length) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+
+    // 1 ms / beats 72.44%
+    // O(n) time complexiy solution - only visits each char in t a maximum of 1 time
+        // this is why we don't try to "optimise" prematurely
+        // the other problem being so fresh in my memory probably doesn't help
+}
+
+var isSubsequenceWithRestart = function(s, t) {
+    // handle edge cases
+    if (!s.length) {
+        return true;
+    }
+
+    if (s.length > t.length) {
+        return false;
+    }
+
+    let subsequenceIndex = 0;
     let lastSubStart = null;
 
     for (let i = 0; i < t.length; i++) {
