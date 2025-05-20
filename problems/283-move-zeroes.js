@@ -1,4 +1,5 @@
 // https://leetcode.com/problems/move-zeroes/
+// tags: easy, arrays
 
 /**
  * @param {number[]} nums
