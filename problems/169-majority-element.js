@@ -5,6 +5,33 @@
  * @param {number[]} nums
  * @return {number}
  */
+var majorityElement = function(nums) {
+    let candidate = null;
+    let votes = 0;
+
+    for (const num of nums) {
+        // 'elect' a new candidate
+        if (votes <= 0) {
+            candidate = num;
+        }
+
+        // 'vote' for or against current element
+        if (candidate === num) {
+            votes++;
+        } else {
+            votes--;
+        }
+    }
+
+    // as we know there is a majority, this will always return the mode element
+    return candidate;
+
+    // 2 ms / beats 75.22%
+    // I don't know if I would've figured this out without having encountered a similar problem before
+    // the algorithm is intuitive, but would be difficult to reinvent it blind
+        // this is known as the 'Boyer-Moore majority vote algorithm': https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_majority_vote_algorithm
+}
+
 var majorityElementHashMap = function(nums) {
     let freqMap = new Map();
     const majority = nums.length / 2;
@@ -46,3 +73,12 @@ var majorityElementSorting = function(nums) {
 // however the constraint that the majority (mode) element appears more than [n / 2] times allows us to use sorting
 
 // if we sort the array, the majority element will always be present at the (n / 2)th index
+
+// extra notes looking for O(n) time complexity & O(1) space complexity solution:
+// I *vaguely* remember a solution to a similar problem where each element essentially casts a 'vote'
+    // because we know there is a majority larger than 50%, the 'votes' reveal the mode element
+    // as it will have more votes 'for' than any/all other elements have 'against'
+// this way we only need to keep track of two things O(1):
+    // current number of votes
+    // current element associated with those votes
+// if the current element has no votes, a new element is 'elected' for the voting system
