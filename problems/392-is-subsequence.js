@@ -23,7 +23,7 @@ var isSubsequence = function(s, t) {
         // characters matching
         if (s[subsequenceIndex] === t[i]) {
             // keep reference to next instance of subsequence beginning char
-            if (subsequenceIndex !== 0 && s[0] === t[i]) {
+            if (!lastSubStart && subsequenceIndex !== 0 && s[0] === t[i]) {
                 lastSubStart = i;
             }
 
@@ -41,12 +41,20 @@ var isSubsequence = function(s, t) {
             // set outer loop to last instance of first character
             // - 1 due to automatic i++ in outer loop
             i = lastSubStart - 1;
+
             // reset subsequence order
+            lastSubStart = null;
             subsequenceIndex = 0;
         }
     }
 
     return false;
+
+    // 2 ms / beats 36.04%
+    // o(n * m) time complexity, O(1) space complexity
+        // I think I relied too heavily on my recent completion of #28
+        // because only relative position matters, there's no need to restart
+    // TODO: remove unnecessary restart logic
 };
 
 // subsequence: a new string formed from original string by deleting some (or none) of the characters
