@@ -6,7 +6,56 @@
  * @return {boolean}
  */
 var detectCapitalUse = function(word) {
+    // easier to assume all true and make false when rule broken
+    let allUpperCase = true;
+    let allLowerCase = true;
+    let capitalised = true;
 
+    // handle 0 separately/beforehand for simplicity & prevents additional condition checks every iteration
+    const firstChar = word[0];
+
+    if (firstChar.toLowerCase() === firstChar) {
+        // first character being lowercase invalidates these rules
+        allUpperCase = false;
+        capitalised = false;
+    } else {
+        // first character being uppercase invalidates this rule
+        allLowerCase = false;
+    }
+
+    // handle rest of chars
+    for (let i = 1; i < word.length; i++) {
+        // because we've handled first char separately, comparison is easier
+        let char = word[i];
+
+        if (char.toLowerCase() === char) {
+            // any character being lowercase invalidates this rule
+            allUpperCase = false;
+        } else {
+            // any character being uppercase invalidates this rule
+            allLowerCase = false;
+            // any character *after the first* being uppercase invalidates this rule
+            capitalised = false;
+        }
+
+        // early return if all false
+        if (!allUpperCase && !allLowerCase && !capitalised) {
+            return false;
+        }
+    }
+
+    // valid if any one of the rules are true
+    return allUpperCase || allLowerCase || capitalised;
+
+    // 0 ms / beats 100%
+    // the only thing I might change about this is how I'm checking the case of characters
+        // could define a helper function using regex or checking charCodeAt
+        // not sure what would be fastest
+    // this is good enough :)
+
+    // O(n), technically the same as the previous method
+        // but this will visit each character at *most* one time
+        // the previous could visit each character at *most* three times
 };
 
 var detectCapitalUseSimple = function(word) {
@@ -49,7 +98,7 @@ var detectCapitalUseSimple = function(word) {
         // etc.
 
 // then return an OR combination at the end to see if one of those conditions is valid
-
+    // see detectCapitalUse()
 
 
 // there are obviously some simpler methods that could be used:
