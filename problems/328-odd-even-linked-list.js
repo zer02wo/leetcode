@@ -31,7 +31,7 @@ var oddEvenList = function(head) {
         // update current odd pointer to be next odd in list
         odd = odd.next;
 
-        // link current even to next even
+        // link current even to next even (element after current odd)
         even.next = odd.next;
         // update current even pointer to be next even
         even = even.next;
@@ -49,6 +49,8 @@ var oddEvenList = function(head) {
         // didn't cross my mind that keeping a reference to the even head pointer would be O(1), not O(n)
     // by which point I had already seen the optimal solution, which is pretty tricky to follow without a diagram
         // especially how it handles pointing to null on its own so simply
+
+    // it's a really simple solution when you look at it, but I don't know if I could've ever come up with it
 };
 
 // within a linked list, group all of the odd indicies together followed by grouping all of the even indicies together
@@ -78,6 +80,38 @@ var oddEvenList = function(head) {
         // THIS WAS THE HOLD UP ^
         // technically by keeping reference to the head of the even list, that is only O(1) space complexity (i.e. a single element)
             // even if it recursively links to O(n) elements
+
+// step by step:
+    // START:
+    // o = 1, e = 2, o.n = 2, e.n = 3
+        // 1 > 2 > 3 > 4 > 5
+
+    // LOOP 1:
+    // o.n = e.n (3)
+        // 1 > 3 > 4 > 5
+        // 2 > 3
+    // o = o.n (3)
+    // e.n = o.n (4)
+        // 1 > 3 > 5
+        // 2 > 4 > 5
+    // e = e.n (4)
+    // o = 3, e = 4
+
+    // LOOP 2:
+    // o.n = e.n (5)
+        // 1 > 3 > 5
+        // 2 > 4 > 5
+    // o = o.n (5)
+    // e.n = o.n (NULL)
+        // 1 > 3 > 5
+        // 2 > 4
+    // e = e.n (NULL)
+    // o = 5, e = NULL
+
+    // join odd tail (5) to even head:
+        // 1 > 3 > 5 > 2 > 4
+    // END
+// step by step end
 
 // EXAMPLE: head = [1,2,3,4,5,6,7,8,9]
 // OUTPUT: [1,3,5,7,9,2,4,6,8]
