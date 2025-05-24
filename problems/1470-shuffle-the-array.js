@@ -11,11 +11,9 @@ var shuffle = function(nums, n) {
     let shuffled = [];
 
     for (let i = 0; i < n; i++) {
-        // push element from first half
-        shuffled.push(nums[i]);
-        // push element from second half
+        // push element from first half & second half
             // i + n is the same as i, relative to the second half of the array
-        shuffled.push(nums[i+n]);
+        shuffled.push(nums[i], nums[i+n]);
     }
 
     return shuffled;
@@ -23,8 +21,15 @@ var shuffle = function(nums, n) {
     // 51 ms / beats 51.84% (first run)
     // 56 ms / beats 24.92% (second run)
 
+    // 44 ms / beats 85.28% (after pushing both simultaneously)
+    // 54 ms / beats 34.70% (second run after pushing both simultaneously)
+
+
     // TODO: not sure why this seems slow
         // seems like a pretty efficient O(n) solution (both time & space complexity)
+        // must just be variance, as I don't see a more efficient approach suggested anywhere
+
+    // it seems like you could probably do this in-place, but this solutiion is good enough to me
 };
 
 // interleave the first n elements with the last n elements
