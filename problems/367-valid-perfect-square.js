@@ -5,8 +5,42 @@
  * @param {number} num
  * @return {boolean}
  */
-var isPerfectSquare = function num() {
+var isPerfectSquare = function num(num) {
+    // handle 1 as an edge case
+    if (num === 1) {
+        return true;
+    }
 
+    // we can further reduce sample size with binary search
+
+    // find the midpoint
+        // I'm assuming built-ins *other* than Math.sqrt() are allowed?
+    let lower = 2;
+    let upper = num / 2;
+
+    while (lower <= upper) {
+        const mid = Math.floor((lower + upper) / 2);
+        const squared = mid * mid;
+
+        if (squared === num) {
+            return true;
+        }
+
+        if (squared > num) {
+            // searching too high, decrease upper bound
+            upper = mid - 1;
+        } else {
+            // searching too low, increase lower bound
+            lower = mid + 1;
+        }
+    }
+
+    return false;
+
+    // 0 ms / beats 100.0%
+    // needed a hint about binary search because it's been so long since I used it
+    // obviously doesn't need further optimisation, but could be further improved by only searching odd/even numbers
+        // but overcomplicated considering how efficient this already is, could maybe be useful for a large enough number
 }
 
 var isPerfectSquareBruteForce = function(num) {
@@ -15,7 +49,6 @@ var isPerfectSquareBruteForce = function(num) {
         return true;
     }
 
-    let isSquare = false;
     // smallest even square root
     let i = 2;
 
@@ -36,7 +69,7 @@ var isPerfectSquareBruteForce = function(num) {
         i += 2;
     }
 
-    return isSquare;
+    return false;
 
     // 939 ms / beats 5.72%
     // obviously slow, but a decent brute force
