@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/subarray-sum-equals-k/
-// tags: medium, leetle, arrays
+// tags: medium, leetle, arrays, prefix sum
 
 /**
  * @param {number[]} nums
@@ -7,6 +7,63 @@
  * @return {number}
  */
 var subarraySum = function(nums, k) {
+    // PrefixSum + HashMap
+    // within the brute force solution we are doing repeated work calculating subarrays
+        // e.g. [1,2,3,4] has the subarray [2,3]
+            // we would've already calculated this on the first pass as it is included in [1,2,3]
+            // so it is equivalent to [1,2,3] - [1]     i.e. subtracting the prefix
+    // more generally we can write this as sum(i,j) = sum(0,j) - sum(0,i)
+
+    // if sum - k = 0, that subarray sum totals to the value k
+        // otherwise, we would need to remove a prefix from the array to get the value k
+        // e.g. nums = [2,-1,2,1], k = 3
+            // [2,-1,2] = 3 - k = 0
+            // [2,-1,2,1] = 4 - k = 1
+                // but, we have subarray [2,-1] = 1
+                // so if we remove that prefix, we get [2,1] = 3 - k = 0
+
+    // by keeping track of the count of each prefix sum,
+    // we know how many subarrays can be created for that value based on the remainder from sum - k
+
+    // HashMap to keep track of count for each prefix sum
+    let prefixSum = new Map();
+    // initialise count for 0 prefix to 1,
+    // because if sum - k = 0 we don't need to remove a prefix
+    prefixSum.set(0, 1);
+
+    // number of subarrays === k
+    let subarrayCount = 0;
+    // cumulative sum
+    let sum = 0;
+
+    for (let i = 0; i < nums.length; i++) {
+        // increase cumulative sum by current value
+        sum += nums[i];
+
+        // calculate remainder from k
+        let remainder = sum - k;
+
+        // if prefix sum of [sum - k] exists
+        if (prefixSum.get(remainder)) {
+            // increment the subarray by relevant count
+            subarrayCount += prefixSum.get(remainder);
+        }
+
+        // set a new prefix sum, with count of 1
+        // or increment existing prefix sum by 1
+        prefixSum.set(sum, (prefixSum.get(sum) || 0) + 1);
+    }
+
+    return subarrayCount;
+
+    // 18 ms / beats 67.91%
+    // O(n) time complexity, O(n) space complexity
+
+    // pretty simple algorithm once you know the pattern,
+    // but would've been incredibly difficult to come up with on the spot
+}
+
+var subarraySumBruteForce = function(nums, k) {
     let subarrayCount = 0;
 
     for (let i = 0; i < nums.length; i++) {
@@ -29,6 +86,7 @@ var subarraySum = function(nums, k) {
         // but even writing extensive notes it only took ~10 minutes to get a working solution
 
     // TODO: investigate how to optimise
+        // TODO: had to look at the solutions, there is a pattern called "prefix sum" + HashMap
 };
 
 // return the number of subarrays (in `nums`) whose sum equals value `k`
