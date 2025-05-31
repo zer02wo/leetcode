@@ -23,10 +23,23 @@ var NumArray = function(nums) {
  * @return {number}
  */
 NumArray.prototype.sumRange = function(left, right) {
-    // sum (left,right) = sum(0,right) - sum(0,left)
-    return this.prefixSum[right] - this.prefixSum[left];
+    // when left = 0
+    if (left === 0) {
+        // sum (left,right) = sum(0,right)
+        // i.e. there is no previous value to subtract
+        return this.prefixSum[right];
+    }
 
-    // TODO: this fails for provided test case as we are not making it *inclusive* of provided indicies
+    // sum (left,right) = sum(0,right) - sum(0,left)
+        // because we want to be *inclusive* of the left index,
+        // we need to subtract the cumulative sum up to the *previous* index
+    return this.prefixSum[right] - this.prefixSum[left - 1];
+
+    // 8 ms / beats 45.34%
+        // without the prefix sum approach, *each instance* of calling sumRange() would be an O(n) operation
+        // however, due to the precomputation of prefix sum we perform sumRange() as a constant time O(1) operation
+            // i.e. at most 2 array lookups and a mathematical subtraction
+        // the original precomputation/constructor is still an O(n) operation
 };
 
 
@@ -49,5 +62,8 @@ NumArray.prototype.sumRange = function(left, right) {
     // and the use of negative & positive values (though it does not seem like sliding window would apply here otherwise)
 // this means within the constructor of our NumArray class we should calculate the cumulative sum at each index
 
-// EXAMPLES:
+// EXAMPLE: [0,1,2,3,4,5]
     // NumArray.sumRange(2,5) is equivalent to: NumArray.sumRange(0,5) - NumArray.sumRange(0,2)
+        // i.e. [0+1+2+3+4+5] - [0+1] = [2+3+4+5] :: which is equivalent to range (2,5)
+    // NOTE: because we want to be inclusive of left index (2), we cannot subtract this from the sum
+        // so this is more accurately: NumArray.sumRange(0,5) - NumArray.sumRange(0,(2-1))
