@@ -35,7 +35,9 @@ NumArray.prototype.sumRange = function(left, right) {
         // we need to subtract the cumulative sum up to the *previous* index
     return this.prefixSum[right] - this.prefixSum[left - 1];
 
-    // 8 ms / beats 45.34%
+    // 8 ms / beats 45.34% (first run)
+    // 8 ms / beats 45.34% (second run)
+    // 5 ms / beats 86.22% (third run)
         // without the prefix sum approach, *each instance* of calling sumRange() would be an O(n) operation
         // however, due to the precomputation of prefix sum we perform sumRange() as a constant time O(1) operation
             // i.e. at most 2 array lookups and a mathematical subtraction
