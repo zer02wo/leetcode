@@ -1,5 +1,37 @@
 // https://leetcode.com/problems/counting-bits/
-// tags: easy, bit manipulation
+// tags: easy, bit manipulation, dynamic programming
+
+/**
+ * @param {number} n
+ * @return {number[]}
+ */
+var countBits = function(n) {
+    const dp = new Array(n+1).fill(0);
+    let offset = 1;
+
+    for (let i = 1; i <= n; i++) {
+        // new most significant bit discovered
+        if (offset * 2 === i) {
+            // increase offset
+            offset = i;
+        }
+
+        // dp[i-offset] gives us the number of set bits for a value we've already calculated.
+        // +1 here is representing the most significant bit,
+        // as we have already handled case 0 separately
+        dp[i] = dp[i-offset] + 1;
+    }
+
+    return dp;
+
+    // O(n) solution, dynamic programming
+    // 0 ms / beats 100%
+
+    // struggled a lot with this one, not great at dynamic programming problems
+    // I also convinced myself at some point we were being given an unsorted array instead of a peak element
+        // (which is essentially used like a sorted array of consecutive numbers)
+        // this made it even more difficult on myself
+}
 
 var countBitsBruteForce = function(n) {
     const output = [0];
