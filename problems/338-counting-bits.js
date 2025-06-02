@@ -7,6 +7,25 @@
  */
 var countBits = function(n) {
     const dp = new Array(n+1).fill(0);
+
+    for (let i = 1; i <= n; i++) {
+        // instead of using an offset, we perform a bit shift [i >>1]
+        // this is essentially the same as (floor/integer) dividing by 2
+        // we can then check for odd/even using the least significant bit (i & 1)
+        dp[i] = dp[i >> 1] + (i & 1);
+    }
+
+    return dp;
+
+    // O(n) solution, dynamic programming + bitwise operators
+    // 1 ms / beats 91.69% (probably just variance)
+
+    // this is an excellent solution,
+    // and a bit more intuitive than the offset method (because we're dealing with binary)
+}
+
+var countBitsOffset = function(n) {
+    const dp = new Array(n+1).fill(0);
     let offset = 1;
 
     for (let i = 1; i <= n; i++) {
@@ -56,7 +75,6 @@ var countBitsBruteForce = function(n) {
 
     // O(nlogn) solution, brute force
     // 12 ms / beats 28.87%
-    // TODO: how can we do this in linear time O(n)?
 };
 
 // given integer n, return array for the number of set bits (1's) in the binary representation of i in: 0 <= i <= n
@@ -116,4 +134,34 @@ var countBitsBruteForce = function(n) {
             // i.e. 14 - 8 = 6 .. 6 - 4 = 2 (10)
         // e.g. 15= 1111, equivalent to 110 ignoring MSB
             // i.e. 15 - 8 = 7 .. 7 - 4 = 3 (11)
+        // etc.
+
+// NOTE: alternative solution using bit manipulation
+    // we shift the least significant bit, as we know all this tells us is odd/even
+    // we can then use previous answers for the current shifted value
+        // e.g. 8 = 1000, 8 >> 1 = 100
+            // 100 = 4 (1 bit)
+                // recursively.. 4 >> 1 = 10, 2 >> 1 = 1
+
+            // 1000 & 1 = 0 (0 bits) - i.e. even number
+            // = 1 bit total
+        // e.g. 9 = 1001, 9 >> 1 = 100
+            // 100 = 4 (1 bit)
+            // 1001 & 1 = 1 (1 bit) - i.e. odd number
+        // e.g. 10= 1010, 10>> 1 = 101
+            // 101 = 5 (2 bits)
+            // 1010 & 1 = 0 (0 bits)
+        // e.g. 11= 1011, 11>> 1 = 101
+            // 101 = 5 (2 bits)
+            // 1011 & 1 = 1 (1 bits)
+            // = 3 bits total
+        // e.g. 12= 1100, 12>> 1 = 110
+            // 110 = 6 (2 bits)
+            // 1100 & 1 = 0 (0 bits)
+        // e.g. 13= 1101, 13>> 1 = 110
+            // 110 = 6 (2 bits)
+            // 1101 & 1 = 1 (1 bit)
+        // e.g. 14= 1110, 14>> 1 = 111
+            // 111 = 7 (3 bits)
+            // 1110 & 1 = 0 (1 bit)
         // etc.
