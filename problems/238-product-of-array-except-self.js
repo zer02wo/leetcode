@@ -6,15 +6,42 @@
  * @return {number[]}
  */
 var productExceptSelf = function(nums) {
+    let size = nums.length;
+    let answers = new Array(size).fill(1);
+
+    // "prefix" pass (start -> end)
+    let prefixProduct = 1;
+    for (let i = 0; i < size; i++) {
+        answers[i] = prefixProduct;
+        prefixProduct *= nums[i];
+    }
+
+    // "suffix" pass (end -> start)
+    let suffixProduct = 1;
+    for (let i = size - 1; i >= 0; i--) {
+        answers[i] *= suffixProduct;
+        suffixProduct *= nums[i];
+    }
+
+    return answers;
+
+    // 5 ms / beats 78.14%
+    // I can understand this using less memory than my solution,
+    // but I'm not sure why it's so much slower consider they both use 2 iterations
+}
+
+var productExceptSelfMapSuffixSum = function(nums) {
     const size = nums.length - 1;
 
     // cumulative suffix product (i.e. end -> start)
     const suffixProduct = new Map();
     suffixProduct.set(size, nums[size]);
+    let currentSuffixProduct = nums[size];
 
     for (let i = size-1; i > 0; i--) {
         // cumulative suffix product
-        suffixProduct.set(i, suffixProduct.get(i+1) * nums[i])
+        currentSuffixProduct *= nums[i];
+        suffixProduct.set(i, currentSuffixProduct);
     }
 
     // calculate total product
@@ -51,11 +78,12 @@ var productExceptSelf = function(nums) {
 
     return answers;
 
-    // 74 ms / beats 5.01% (3 loops)
-    // 34 ms / beats 10.08% (2 loops)
+    // 74 ms / beats 5.01% (ORIGINAL 3 loops)
+    // 34 ms / beats 10.08% (IMPROVEMENT1: 2 loops)
+    // 28 ms / beats 13.06% (IMPROVEMENT2: 2 loops + cumulative suffix product)
     // not sure why this is performing so badly, let's do some optimisation
         // IMPROVEMENT1: removed additional HashMap/loop to calculate prefixProduct earlier
-
+        // IMPROVEMENT2: replaced calls to suffixPrefix.get() with a cumulative product variable `currentSuffixProduct`
 };
 
 // given integer array `nums`, return an array `answer` such that `answer[i]` = product of all elements of `nums` except `nums[i]`
