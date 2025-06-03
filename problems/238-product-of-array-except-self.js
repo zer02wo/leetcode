@@ -9,18 +9,41 @@ var productExceptSelf = function(nums) {
     let size = nums.length;
     let answers = new Array(size).fill(1);
 
+    let prefixProduct = 1;
+    let suffixProduct = 1;
+
+    for (let i = 0; i < size; i++) {
+        answers[i] *= prefixProduct;
+        prefixProduct *= nums[i];
+
+        let indexFromEnd = size - 1 - i;
+        answers[indexFromEnd] *= suffixProduct;
+        suffixProduct *= nums[indexFromEnd];
+    }
+
+    return answers;
+
+    // 1 ms / beats 99.28%
+    // this is an incredibly efficient approach,
+    // condenses previous approach into a single loop with opposite pointers
+}
+
+var productExceptSelfTwoPasses = function(nums) {
+    let size = nums.length;
+    let answers = new Array(size).fill(1);
+
     // "prefix" pass (start -> end)
     let prefixProduct = 1;
     for (let i = 0; i < size; i++) {
         answers[i] = prefixProduct;
-        prefixProduct *= nums[i];
+        prefixProduct *= nums[i]; // recalculate product after passing index
     }
 
     // "suffix" pass (end -> start)
     let suffixProduct = 1;
     for (let i = size - 1; i >= 0; i--) {
-        answers[i] *= suffixProduct;
-        suffixProduct *= nums[i];
+        answers[i] *= suffixProduct; // multiply by existing prefixProduct pass
+        suffixProduct *= nums[i]; // recalculate product after passing index
     }
 
     return answers;
