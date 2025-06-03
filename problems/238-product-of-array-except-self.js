@@ -8,41 +8,42 @@
 var productExceptSelf = function(nums) {
     const size = nums.length - 1;
 
-    // cumulative prefix product (i.e. start -> end)
-    const prefixProduct = new Map();
-    prefixProduct.set(0, nums[0])
     // cumulative suffix product (i.e. end -> start)
     const suffixProduct = new Map();
     suffixProduct.set(size, nums[size]);
 
-    for (let i = 1, j = size-1; i < size, j > 0; i++, j--) {
-        // cumulative prefix product
-        prefixProduct.set(i, prefixProduct.get(i-1) * nums[i]);
-
+    for (let i = size-1; i > 0; i--) {
         // cumulative suffix product
-        suffixProduct.set(j, suffixProduct.get(j+1) * nums[j])
+        suffixProduct.set(i, suffixProduct.get(i+1) * nums[i])
     }
 
     // calculate total product
     const answers = new Array(size + 1).fill(0);
+    // calculate prefixProduct as we go
+    let prefixProduct = 1;
 
     for (let i = 0; i <= size; i++) {
         switch (i) {
             case 0:
                 // no prefix (nothing on the left)
                 // i.e. only suffixProduct
-                answers[i] = suffixProduct.get(i+1)
+                answers[i] = suffixProduct.get(i+1);
 
                 break;
             case size:
+                // calculate prefixProduct one last time
+                prefixProduct *= nums[i-1];
+
                 // no suffix (nothing on the right)
                 // i.e. only prefixProduct
-                answers[i] = prefixProduct.get(i - 1);
+                answers[i] = prefixProduct;
 
                 break;
             default:
+                // calculate prefixProduct as we go
+                prefixProduct *= nums[i-1];
                 // suffix * prefix = product excluding [i]
-                answers[i] = prefixProduct.get(i - 1) * suffixProduct.get(i + 1);
+                answers[i] = prefixProduct * suffixProduct.get(i + 1);
 
                 break;
         }
@@ -50,9 +51,11 @@ var productExceptSelf = function(nums) {
 
     return answers;
 
-    // 74 ms / beats 5.01%
+    // 74 ms / beats 5.01% (3 loops)
+    // 34 ms / beats 10.08% (2 loops)
     // not sure why this is performing so badly, let's do some optimisation
-        // TODO: can this be done with only 2 loops instead of 3?
+        // IMPROVEMENT1: removed additional HashMap/loop to calculate prefixProduct earlier
+
 };
 
 // given integer array `nums`, return an array `answer` such that `answer[i]` = product of all elements of `nums` except `nums[i]`
