@@ -1,36 +1,32 @@
 // https://leetcode.com/problems/product-of-array-except-self/
-// tags: medium, leetle, arrays
+// tags: medium, leetle, arrays, prefix sum
 
 /**
  * @param {number[]} nums
  * @return {number[]}
  */
 var productExceptSelf = function(nums) {
-    const size = nums.length;
+    const size = nums.length - 1;
 
     // cumulative prefix product (i.e. start -> end)
     const prefixProduct = new Map();
     prefixProduct.set(0, nums[0])
-
-    // we can ignore the last index
-    for (let i = 1; i < size - 1; i++) {
-        // cumulative prefix product
-        prefixProduct.set(i, prefixProduct.get(i-1) * nums[i]);
-    }
-
     // cumulative suffix product (i.e. end -> start)
     const suffixProduct = new Map();
-    suffixProduct.set(size-1, nums[size-1])
+    suffixProduct.set(size, nums[size]);
 
-    // we can ignore the last index
-    for (let i = size - 2; i > 0; i--) {
-        suffixProduct.set(i, suffixProduct.get(i+1) * nums[i]);
+    for (let i = 1, j = size-1; i < size, j > 0; i++, j--) {
+        // cumulative prefix product
+        prefixProduct.set(i, prefixProduct.get(i-1) * nums[i]);
+
+        // cumulative suffix product
+        suffixProduct.set(j, suffixProduct.get(j+1) * nums[j])
     }
 
-    // calculate total sum
-    const answers = new Array(size).fill(0);
+    // calculate total product
+    const answers = new Array(size + 1).fill(0);
 
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i <= size; i++) {
         switch (i) {
             case 0:
                 // no prefix (nothing on the left)
@@ -38,7 +34,7 @@ var productExceptSelf = function(nums) {
                 answers[i] = suffixProduct.get(i+1)
 
                 break;
-            case size-1:
+            case size:
                 // no suffix (nothing on the right)
                 // i.e. only prefixProduct
                 answers[i] = prefixProduct.get(i - 1);
@@ -54,8 +50,9 @@ var productExceptSelf = function(nums) {
 
     return answers;
 
-    // 79 ms / beats 5.01%
+    // 74 ms / beats 5.01%
     // not sure why this is performing so badly, let's do some optimisation
+        // TODO: can this be done with only 2 loops instead of 3?
 };
 
 // given integer array `nums`, return an array `answer` such that `answer[i]` = product of all elements of `nums` except `nums[i]`
