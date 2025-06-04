@@ -24,6 +24,18 @@ var singleNumber = function(nums) {
         mask <<= 1;
     }
 
+    // EDIT: to find the mask (least significant set bit) without a loop, you could use:
+        // xorResult & ~(xorResult - 1)
+            // e.g. for xorResult = 12
+                // a = 1100
+                // a - 1 = 1011
+                    // i.e. flips all bits after lowest set bit
+                // ~(a - 1) = 0100
+                    // ~ = bitwise NOT
+                // a & ~(a - 1) = 1100 & 0100
+                    // = 0100 (4)
+        // great logic but I would never remember/figure this out in a short amount of time
+
     // number where mask position == 1
     let a = 0;
     // number where mask position == 0
@@ -58,6 +70,7 @@ var singleNumber = function(nums) {
 
 // constraints:
     // algorithim must run in linear runtime O(n) and only use constant extra space O(1)
+        // without this constraint you could use a frequency map approach
     // 2 <= nums.length <= 3 * 10^4
         // i.e. no empty/invalid cases need to be checked
     // -2^31 <= nums[i] <= (2^31) - 1
