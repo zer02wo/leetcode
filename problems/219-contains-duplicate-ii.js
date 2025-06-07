@@ -7,10 +7,16 @@
  * @return {boolean}
  */
 var containsNearbyDuplicate = function(nums, k) {
+    // cannot be duplicates when k == 0
+    if (!k) {
+        return false;
+    }
+
     const numMap = new Map();
+    const windowSize = Math.min(nums.length, k);
 
     // initialise sliding window & check for duplicates
-    for (let i = 0; i <= k; i++) {
+    for (let i = 0; i <= windowSize; i++) {
         const num = nums[i];
 
         if (numMap.has(num)) {
@@ -20,7 +26,7 @@ var containsNearbyDuplicate = function(nums, k) {
         numMap.set(num, 1);
     }
 
-    for (let i = k+1; i <= nums.length; i++) {
+    for (let i = windowSize+1; i <= nums.length; i++) {
         // delete old num that is no longer within range k
         const oldNum = nums[i - k - 1];
         numMap.delete(oldNum);
@@ -38,13 +44,23 @@ var containsNearbyDuplicate = function(nums, k) {
 
     return false;
 
-    // TODO: fails for following test case:
-        // nums = [1,2,3,4,5,6,7,8,9,10], k = 15
-        // should've checked the constraints!
+    // passes now after some additional validation of k
+    // 27 ms / beats 65.40%
+    // O(n) time complexity, O(n) space complexity
+    // TODO: feels like I should be able to optimise the instantiation of the sliding window / prevent duplicate code
+        // maybe using a Set? might be better than a HashMap in general
 };
 
 // duplicate if there are two *distinct indicies* (i & j) in the array
     // such that nums[i] === nums[j] and abs(i - j) <= k
+
+// constraints:
+    // 1 <= nums.length <= 10^5
+        // i.e. do not need empty nums check
+    // -10^9 <= nums[i] <= 10^5
+        // i.e. positive and negative numbers
+    // 0 <= k <= 10^5
+        // i.e. k needs additional validation
 
 // EXAMPLE: nums = [1,2,3,1], k = 3
 // OUTPUT: true
