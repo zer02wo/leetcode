@@ -1,4 +1,5 @@
 // https://leetcode.com/problems/isomorphic-strings/
+// tags: easy, hash map table
 
 /**
  * @param {string} s
@@ -83,3 +84,54 @@ var isIsomorphic = function(s, t) {
 
     return true;
 }
+
+
+// revisting problem:
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isIsomorphic = function(s, t) {
+    const characterMap = new Map();
+
+    for (let i = 0; i < s.length; i++) {
+        const sChar = s[i];
+        const tChar = t[i];
+
+        if (characterMap.has(sChar) && characterMap.get(sChar) !== tChar) {
+            return false;
+        }
+
+        characterMap.set(sChar, tChar);
+    }
+
+    return true;
+
+    // TODO: fails for following test case:
+        // s = 'badc', t = 'baba'
+};
+
+// two strings are isomorphic if the characters in s can be replaced to get t
+
+// EXAMPLE: s = 'egg', t = 'add'
+// OUTPUT: true
+    // mapping 'e' to 'a'
+    // mapping 'g' to 'd'
+
+// EXAMPLE s = 'paper', t = 'title'
+// OUTPUT: true
+    // mapping 'p' to 't'
+    // mapping 'a' to 'i'
+    // mapping 'e' to 'l'
+    // mapping 'r' to 'e'
+
+// constraints:
+    // t.length === s.length
+        // i.e. don't need to worry about differing lengths
+    // 1 <= s.length <= 5 * 10^4
+        // i.e.. don't need to worry about empty strings
+    // s & t consist of any valid ASCII character
+        // i.e. difficult to use constant space complexity
+        // (e.g. compared to if this was only english alphabet)
