@@ -94,23 +94,24 @@ var isIsomorphic = function(s, t) {
  * @return {boolean}
  */
 var isIsomorphic = function(s, t) {
-    const characterMap = new Map();
+    const sMap = new Map();
+    const tMap = new Map();
 
     for (let i = 0; i < s.length; i++) {
         const sChar = s[i];
         const tChar = t[i];
 
-        if (characterMap.has(sChar) && characterMap.get(sChar) !== tChar) {
+        if (!sMap.has(sChar) && !tMap.has(tChar)) {
+            sMap.set(sChar, tChar);
+            tMap.set(tChar, sChar);
+        } else if (sMap.get(sChar) !== tChar || tMap.get(tChar) !== sChar) {
             return false;
         }
-
-        characterMap.set(sChar, tChar);
     }
 
     return true;
 
-    // TODO: fails for following test case:
-        // s = 'badc', t = 'baba'
+    // 2 ms / beats 97.63%
 };
 
 // two strings are isomorphic if the characters in s can be replaced to get t
