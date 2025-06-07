@@ -36,9 +36,6 @@ var containsNearbyDuplicate = function(nums, k) {
     // 21 ms / beats 89.11%
     // much cleaner than the HashMap approach, unsure why this is flagged with that topic over a Set
         // we could initialise the set to a subarray of nums[0 -> k], but it would probably end up being slower/unnecessary?
-
-    // I did also overcomplicate my previous HashMap implementation
-        // TODO: tidy that up
 };
 
 
@@ -49,24 +46,8 @@ var containsNearbyDuplicateHashMap = function(nums, k) {
     }
 
     const numMap = new Map();
-    const windowSize = Math.min(nums.length, k);
 
-    // initialise sliding window & check for duplicates
-    for (let i = 0; i <= windowSize; i++) {
-        const num = nums[i];
-
-        if (numMap.has(num)) {
-            return true;
-        }
-
-        numMap.set(num, 1);
-    }
-
-    for (let i = windowSize+1; i <= nums.length; i++) {
-        // delete old num that is no longer within range k
-        const oldNum = nums[i - k - 1];
-        numMap.delete(oldNum);
-
+    for (let i = 0; i <= nums.length; i++) {
         const num = nums[i];
 
         // if num already exists in map, it's duplicate
@@ -76,15 +57,21 @@ var containsNearbyDuplicateHashMap = function(nums, k) {
 
         // num does not exist in map, set count to 1
         numMap.set(num, 1);
+
+        // delete old num that is no longer within range k
+        if (numMap.size > k) {
+            numMap.delete(nums[i - k]);
+        }
     }
 
     return false;
 
-    // passes now after some additional validation of k
-    // 27 ms / beats 65.40%
-    // O(n) time complexity, O(n) space complexity
-    // TODO: feels like I should be able to optimise the instantiation of the sliding window / prevent duplicate code
-        // maybe using a Set? might be better than a HashMap in general
+    // 27 ms / beats 65.40% (initial solution - see previous commits)
+    // 25 ms / beats 72.73 (after clean up)
+        // this is essentially identical to the Set approach above
+        // Set seems more appropriate as we're dealing with duplicates of any amount/do not need a specific count
+        // TODO: utilise the HashMap better we could reference the index instead of the count
+    // O(n) time complexity, O(k) space complexity
 };
 
 // duplicate if there are two *distinct indicies* (i & j) in the array
@@ -118,7 +105,7 @@ var containsNearbyDuplicateHashMap = function(nums, k) {
         // nums[1] & nums[4] :: abs(i - j) > k
         // nums[2] & nums[5] :: abs(i - j) > k
 
-// first thought for brute force is:
+// first thought for brute force O(n^2) is:
     // at each index [i]
     // loop through to [i+k]
     // return true if any element matches nums[i]
