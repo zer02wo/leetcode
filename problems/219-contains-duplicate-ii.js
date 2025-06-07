@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/contains-duplicate-ii/
-// tags: easy, hash table map, array
+// tags: easy, hash table map, array, set
 
 /**
  * @param {number[]} nums
@@ -7,6 +7,42 @@
  * @return {boolean}
  */
 var containsNearbyDuplicate = function(nums, k) {
+    // cannot be duplicates when k == 0
+    if (!k) {
+        return false;
+    }
+
+    const numSet = new Set();
+
+    for (let i = 0; i < nums.length; i++) {
+        const num = nums[i];
+
+        // if num already exists in set, it's duplicate
+        if (numSet.has(num)) {
+            return true;
+        }
+
+        // num does not exist in set, add to set
+        numSet.add(num);
+
+        // delete old num that is no longer within range k
+        if (numSet.size > k) {
+            numSet.delete(nums[i - k]);
+        }
+    }
+
+    return false;
+
+    // 21 ms / beats 89.11%
+    // much cleaner than the HashMap approach, unsure why this is flagged with that topic over a Set
+        // we could initialise the set to a subarray of nums[0 -> k], but it would probably end up being slower/unnecessary?
+
+    // I did also overcomplicate my previous HashMap implementation
+        // TODO: tidy that up
+};
+
+
+var containsNearbyDuplicateHashMap = function(nums, k) {
     // cannot be duplicates when k == 0
     if (!k) {
         return false;
