@@ -45,32 +45,33 @@ var containsNearbyDuplicateHashMap = function(nums, k) {
         return false;
     }
 
+    // maps nums[i] -> i (last index it appeared)
     const numMap = new Map();
 
     for (let i = 0; i <= nums.length; i++) {
         const num = nums[i];
 
-        // if num already exists in map, it's duplicate
+        // if map has previous index for num
         if (numMap.has(num)) {
-            return true;
+            // i > "j" so we don't need Math.abs()
+            if (i - numMap.get(num) <= k) {
+                return true;
+            }
         }
 
-        // num does not exist in map, set count to 1
-        numMap.set(num, 1);
-
-        // delete old num that is no longer within range k
-        if (numMap.size > k) {
-            numMap.delete(nums[i - k]);
-        }
+        // no duplicate in range, update current index
+        numMap.set(num, i);
     }
 
     return false;
 
     // 27 ms / beats 65.40% (initial solution - see previous commits)
-    // 25 ms / beats 72.73 (after clean up)
+    // 25 ms / beats 72.73% (after clean up)
         // this is essentially identical to the Set approach above
         // Set seems more appropriate as we're dealing with duplicates of any amount/do not need a specific count
-        // TODO: utilise the HashMap better we could reference the index instead of the count
+    // 46 ms / beats 33.02% (after altering from Set approach)
+    // 32 ms / beats 49.52% (after optimising new HashMap approach)
+
     // O(n) time complexity, O(k) space complexity
 };
 
