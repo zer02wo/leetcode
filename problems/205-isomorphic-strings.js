@@ -94,6 +94,9 @@ var isIsomorphic = function(s, t) {
  * @return {boolean}
  */
 var isIsomorphic = function(s, t) {
+    // we need to check the mapping goes both ways,
+    // so we have two maps to check this relationship
+        // more space complexity but faster than searching through values
     const sMap = new Map();
     const tMap = new Map();
 
@@ -101,10 +104,12 @@ var isIsomorphic = function(s, t) {
         const sChar = s[i];
         const tChar = t[i];
 
+        // set mapping if not already defined
         if (!sMap.has(sChar) && !tMap.has(tChar)) {
             sMap.set(sChar, tChar);
             tMap.set(tChar, sChar);
         } else if (sMap.get(sChar) !== tChar || tMap.get(tChar) !== sChar) {
+            // mapping does not match
             return false;
         }
     }
@@ -112,6 +117,7 @@ var isIsomorphic = function(s, t) {
     return true;
 
     // 2 ms / beats 97.63%
+    // much faster than my previous attemps with just some slight optimisation to the conditions
 };
 
 // two strings are isomorphic if the characters in s can be replaced to get t
