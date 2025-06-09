@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/intersection-of-two-arrays/
-// tags: easy, leetle, array
+// tags: easy, leetle, array, set
 
 /**
  * @param {number[]} nums1
@@ -46,6 +46,44 @@ var intersection = function(nums1, nums2) {
  * @param {number[]} nums2
  * @return {number[]}
  */
+var intersection = function(nums1, nums2) {
+    // a Set would make more sense than a HashMap, but challenging myself not to use Set
+    const numCount = new Map();
+
+    for (const num of nums1) {
+        // O(1) lookup
+        if (!numCount.has(num)) {
+            // we don't care about exact counts, only if it appears even once
+            numCount.set(num, 1);
+        }
+    }
+
+    const result = [];
+
+    for (const num of nums2) {
+        // check if number already recorded in previous count
+        if (numCount.has(num)) {
+            // push to result output
+            result.push(num);
+            // delete from map to prevent duplicates
+            numCount.delete(num);
+        }
+
+        // early return if all elements already visited
+        if (!numCount.size) {
+            break;
+        }
+    }
+
+    return result;
+
+    // 1 ms / beats 82.71%
+    // O(n) time complexity / O(n) space complexity
+
+    // TODO: probably something possible with sorting as another possible solution,
+    // but seems like it would be slower given the need to also sort the elements first
+};
+
 var intersectionNativeSet = function(nums1, nums2) {
     var set1 = new Set(nums1);
     var set2 = new Set(nums2);
@@ -53,6 +91,7 @@ var intersectionNativeSet = function(nums1, nums2) {
     return Array.from(set1.intersection(set2));
 
     // 1 ms / beats 82.71%
+    // all native implementation
 };
 
 // find intersection of two arrays
@@ -66,3 +105,8 @@ var intersectionNativeSet = function(nums1, nums2) {
 // as mentioned above the easiest method will be Set1.intersection(Set2)
     // but perhaps the question wants us to demonstrate how to do this without sets
     // this might be worth visiting afterwards
+
+// for a non-native implementation (without using Set at all):
+// we could use a HashMap to count each instance of the number,
+    // then check if it exists in the second array
+    // O(n1+n2)
