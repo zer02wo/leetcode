@@ -50,7 +50,17 @@ var intersection = function(nums1, nums2) {
     // a Set would make more sense than a HashMap, but challenging myself not to use Set
     const numCount = new Map();
 
-    for (const num of nums1) {
+    let longer, shorter = null;
+    // determine longer & shorter arrays to optimise
+    if (nums1.length >= nums2.length) {
+        longer = nums1;
+        shorter = nums2;
+    } else {
+        longer = nums2;
+        shorter = nums1;
+    }
+
+    for (const num of shorter) {
         // O(1) lookup
         if (!numCount.has(num)) {
             // we don't care about exact counts, only if it appears even once
@@ -60,7 +70,7 @@ var intersection = function(nums1, nums2) {
 
     const result = [];
 
-    for (const num of nums2) {
+    for (const num of longer) {
         // check if number already recorded in previous count
         if (numCount.has(num)) {
             // push to result output
@@ -70,6 +80,7 @@ var intersection = function(nums1, nums2) {
         }
 
         // early return if all elements already visited
+        // (because this is using the counts from shorter array, should be more likely to early return)
         if (!numCount.size) {
             break;
         }
@@ -77,8 +88,11 @@ var intersection = function(nums1, nums2) {
 
     return result;
 
-    // 1 ms / beats 82.71%
+    // 1 ms / beats 82.71% (first run)
     // O(n) time complexity / O(n) space complexity
+
+    // 0 ms / beats 100%
+    // after longer & shorter optimisation (could just have been due to variance)
 
     // TODO: probably something possible with sorting as another possible solution,
     // but seems like it would be slower given the need to also sort the elements first
