@@ -24,32 +24,31 @@ var validMountainArray = function(arr) {
             return false;
         }
 
-        if (!hasClimbed) {
-            if (prev < step) {
-                hasClimbed = true;
-            }
-        }
-
-        if (!hasPeaked) { // strictly increasing
-            // first decrease, must continue decreasing
-            if (prev > step) {
-                hasPeaked = true;
-            }
-        } else { // strictly decreasing
-            if (prev < step) { // not decreasing
+        if (prev < step) { // increasing
+            if (hasPeaked) { // peaked already, should be decreasing
                 return false;
             }
+
+            hasClimbed = true;
+        } else { // decreasing
+            if (!hasClimbed) { // needs to have increased at least once
+                return false
+            }
+
+            hasPeaked = true;
         }
 
-        // set new previous
+        // update previous to current step
         prev = step;
     }
 
-    // needs to have peaked (i.e. started decreasing) to be valid
+    // needs to have climbed & peaked
     return hasClimbed && hasPeaked;
 
     // 57 ms / beats 10.34%
-    // TODO: definitely some optimisation to be done
+    // 45 ms / beats 70.17% (after clean up (could just be variance))
+
+    // TODO: what about a two pointers approach?
 };
 
 // valid mountain array:
@@ -83,3 +82,9 @@ var validMountainArray = function(arr) {
 
     // so once the elements start to decrease we can define a peak element/flag
         // then change the comparison operator
+
+// fail conditions:
+    // if two consecutive elements are ever equal
+    // if increases after already decreasing
+    // if never increases
+    // if never decreases
