@@ -12,6 +12,7 @@ var validMountainArray = function(arr) {
     }
 
     // determine whether numbers should be increasing or decreasing
+    let hasClimbed = false
     let hasPeaked = false;
     let prev = arr[0];
 
@@ -21,6 +22,12 @@ var validMountainArray = function(arr) {
         // we can never have two equal elements
         if (prev === step) {
             return false;
+        }
+
+        if (!hasClimbed) {
+            if (prev < step) {
+                hasClimbed = true;
+            }
         }
 
         if (!hasPeaked) { // strictly increasing
@@ -39,11 +46,10 @@ var validMountainArray = function(arr) {
     }
 
     // needs to have peaked (i.e. started decreasing) to be valid
-    return hasPeaked;
+    return hasClimbed && hasPeaked;
 
-    // TODO: fails for the following test case:
-        // arr = [9,8,7,6,5,4,3,2,1,0]
-        // we are currently not keeping track that there is an element that has increased
+    // 57 ms / beats 10.34%
+    // TODO: definitely some optimisation to be done
 };
 
 // valid mountain array:
