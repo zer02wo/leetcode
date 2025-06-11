@@ -17,7 +17,7 @@ var search = function(nums, target) {
         if (nums[mid] > nums[pivotUpper]) {
             pivotLower = mid + 1;
         } else {
-            pivotUpper = mid - 1;
+            pivotUpper = mid;
         }
     }
 
@@ -27,6 +27,7 @@ var search = function(nums, target) {
     let lower = 0;
     let upper = nums.length - 1;
 
+    // binary search to find target
     while (lower <= upper) {
         const mid = Math.floor((upper + lower) / 2);
         const offsetMid = (mid + pivotIndex) % nums.length;
@@ -44,9 +45,8 @@ var search = function(nums, target) {
 
     return -1;
 
-    // TODO: fails for testcase:
-        // nums = [5.1,3], target = 5
-        // returning -1, not finding it
+    // 0 ms / beats 100%
+    // really complicated to solve, even with hints
 };
 
 // integer array nums of distinct values, sorted in ascending order
