@@ -1,11 +1,65 @@
 // https://leetcode.com/problems/valid-mountain-array/
-// tags: easy, leetle, array
+// tags: easy, leetle, array, two pointers
 
 /**
  * @param {number[]} arr
  * @return {boolean}
  */
 var validMountainArray = function(arr) {
+    // mountain array must be 3 or more elements
+    if (arr.length < 3)  {
+        return false;
+    }
+
+    // for two pointers at either end of array
+    // both should only see increasing values when going towards the "middle" (i.e. peak element)
+    // this means there should be no "local" maxima in either direction
+        // for a valid mountain array local maxima === global maxima
+
+    let peakClimbing = 0;
+
+    // find "local" maxima from start -> end
+    while (peakClimbing < arr.length) {
+        if (arr[peakClimbing] < arr[peakClimbing+1]) {
+            peakClimbing++;
+        } else {
+            break;
+        }
+    }
+
+    if (peakClimbing === arr.length - 1) {
+        // all steps are climbing, i.e. only left side of mountain
+        return false;
+    }
+
+    let peakDescending = arr.length - 1;
+
+    // find "local" maxima from end -> start
+    while (peakDescending >= 0) {
+        if (arr[peakDescending] < arr[peakDescending - 1]) {
+            peakDescending--;
+        } else {
+            break;
+        }
+    }
+
+    if (peakDescending === 0) {
+        // all steps are descending, i.e. only right side of mountain
+        return false;
+    }
+
+    // if both local maxima are equal, it is a valid global maxima (i.e. a mountain array)
+    if (peakClimbing === peakDescending) {
+        return true;
+    } else {
+        return false;
+    }
+
+    // 42 ms / beats 83.91%
+    // really interesting approach, needed a hint to get here but I understand the theory behind it
+}
+
+var validMountainArrayIntuitive = function(arr) {
     // mountain array must be 3 or more elements
     if (arr.length < 3)  {
         return false;
@@ -47,8 +101,6 @@ var validMountainArray = function(arr) {
 
     // 57 ms / beats 10.34%
     // 45 ms / beats 70.17% (after clean up (could just be variance))
-
-    // TODO: what about a two pointers approach?
 };
 
 // valid mountain array:
