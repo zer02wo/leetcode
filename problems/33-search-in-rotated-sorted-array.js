@@ -7,6 +7,65 @@
  * @return {number}
  */
 var search = function(nums, target) {
+    let lower = 0;
+    let upper = nums.length - 1;
+
+    while (lower <= upper) {
+        const mid = Math.floor((lower + upper) / 2);
+
+        // standard binary search up until this point
+        // doing this check here is quicker,
+            // and allows us to use (mid + 1) or (mid - 1) later on because we've already checked it here
+        if (nums[mid] === target) {
+            return mid;
+        }
+
+        // we now need the intuition that half of the array will still be sorted after the pivot
+            // e.g. [4,5,6,7] and [0,1,2]
+            // e.g. [4,5,6] and [7,0,1,2]
+            // etc.
+
+        // if midpoint > lower bound, numbers between them are sorted ascending
+        // [4,5,6,7,0,1,2]
+        //  L     M     U
+        if (nums[mid] >= nums[lower]) {
+            // if nums[lower] <= target <= nums[mid]
+                // we can essentially binary search this sorted "half"
+                // then we know if target exists within this range
+            if (nums[lower] <= target && target <= nums[mid]) {
+                // narrow search range to lower half
+                upper = mid - 1;
+            } else {
+                // target must exist in upper half
+                lower = mid + 1
+            }
+        }
+        // else, numbers between midpoint & lower bound are not (fully) sorted
+            // [4,5,6,7,0,1,2]
+            //  L       M   U
+        else {
+            // if nums[mid] <= target <= nums[upper]
+                // again we can essentially binary search this (potentialy sorted) half
+                // then we know if target exists within this range
+            if (nums[mid] <= target && target <= nums[upper]) {
+                // this half is sorted & target exists within range
+                // narrow search range to upper half
+                lower = mid + 1;
+            } else {
+                // target must exist in lower half
+                upper = mid - 1;
+            }
+        }
+    }
+
+    return -1;
+
+    // solution informed by:
+    // https://leetcode.com/problems/search-in-rotated-sorted-array/solutions/6753669/video-find-a-sorted-part-in-ascending-order
+    // 0 ms / beats 100%
+};
+
+var searchTwoSearches = function(nums, target) {
     let pivotLower = 0;
     let pivotUpper = nums.length - 1;
 
@@ -47,6 +106,8 @@ var search = function(nums, target) {
 
     // 0 ms / beats 100%
     // really complicated to solve, even with hints
+
+    // TODO: see if there is a more intuitive alternative approach
 };
 
 // integer array nums of distinct values, sorted in ascending order
