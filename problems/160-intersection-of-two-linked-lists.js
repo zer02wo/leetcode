@@ -14,6 +14,31 @@
  * @param {ListNode} headB
  * @return {ListNode}
  */
+var getIntersectionNodeConstantSpaceClean = function(headA, headB) {
+    // optimal solution from leetcode submission
+    // best explained by commenter here: https://leetcode.com/problems/intersection-of-two-linked-lists/solutions/49785/Java-solution-without-knowing-the-difference-in-len/comments/165648/
+    // essentially, to account for the (potential) offset in lists A & B:
+        // when reaching the end, swap the pointers to the opposite list to account for the offset
+            // this will align the nodes on a second pass
+        // if lists are the same length, they will reach the target/tail nodes simulateneously to exit in a single iteration
+
+    let nodeA = headA;
+    let nodeB = headB;
+
+    while (nodeA !== nodeB) {
+        nodeA = (nodeA === null) ? headB : nodeA.next;
+        nodeB = (nodeB === null) ? headA : nodeB.next;
+    }
+
+    return nodeA;
+
+    // 71 ms / beats 31.78% (first run)
+    // 51 ms / beats 84.62% (second run)
+
+    // this is much cleaner than the other solution, but also a lot less intuitive for *similar* performance
+    // without a diagram/walkthrough this is pretty difficult to understand
+}
+
 var getIntersectionNodeConstantSpace = function(headA, headB) {
     // the only space we need:
         // lengthA
@@ -87,7 +112,9 @@ var getIntersectionNodeConstantSpace = function(headA, headB) {
 
     return null;
 
-    // 68 ms / beats 18.11
+    // 68 ms / beats 18.11% (first run)
+    // 60 ms / beats 47.69% (second run)
+    // 52 ms / beats 81.61% (third run)
     // obviously slower than the other solution as we need to:
         // iterate listA
         // iterate listB
