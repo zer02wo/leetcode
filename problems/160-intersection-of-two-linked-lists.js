@@ -14,6 +14,87 @@
  * @param {ListNode} headB
  * @return {ListNode}
  */
+var getIntersectionNodeConstantSpace = function(headA, headB) {
+    // the only space we need:
+        // lengthA
+        // lengthB
+        // nodeA
+        // nodeB
+        // lengthOffset
+
+    let nodeA = headA;
+    // init to 1 for head node
+    let lengthA = 1;
+
+    // iterate through nodes in listA to end
+    while (nodeA && nodeA.next) {
+        // increase list length by node
+        lengthA++;
+        // increment to next node
+            // this will be the last node after iteration complete
+        nodeA = nodeA.next;
+    }
+
+    let nodeB = headB;
+    // init to 1 for head node
+    let lengthB = 1;
+
+    // iterate through nodes in listB to end
+    while (nodeB && nodeB.next) {
+        // increase list length by node
+        lengthB++;
+        // increment to next node
+            // this will be last node after iteration complete
+        nodeB = nodeB.next;
+    }
+
+    // last nodes must be the same for an intersection to occur
+    if (nodeA !== nodeB) {
+        return null;
+    }
+
+    let lengthOffset = Math.abs(lengthA - lengthB);
+    // reset nodes to head
+    nodeA = headA;
+    nodeB = headB;
+
+    // offset longer list by difference in length
+    if (lengthA > lengthB) {
+        let count = 0;
+        while (count < lengthOffset) {
+            nodeA = nodeA.next;
+            count++;
+        }
+    } else {
+        let count = 0;
+        while (count < lengthOffset) {
+            nodeB = nodeB.next;
+            count++;
+        }
+    }
+
+    // nodeA & nodeB are now aligned towards intersection
+    while (nodeA && nodeB) {
+        // nodes are equal, intersection!
+        if (nodeA === nodeB) {
+            return nodeA;
+        }
+
+        // continue to next node
+        nodeA = nodeA.next;
+        nodeB = nodeB.next;
+    }
+
+    return null;
+
+    // 68 ms / beats 18.11
+    // obviously slower than the other solution as we need to:
+        // iterate listA
+        // iterate listB
+        // iterate listA & listB simulatenously
+    // set solution below was a single iteration
+}
+
 var getIntersectionNode = function(headA, headB) {
     const nodeSet = new Set();
 
@@ -87,3 +168,23 @@ var getIntersectionNode = function(headA, headB) {
 // the question suggests an O(n + m) time complexity and O(1) solution is possible
     // but for now, lets use extra memory and create a similar solution to question #349 (intersection of two arrays)
     // I'm assuming a Set can still be used to compare nodes by reference, as we cannot use it to compare their (potentially duplicate) values
+
+// implementing constant O(1) space complexity (after some hints):
+    // if we know the length of both lists, we can offset the length of the smaller list to align the pointers
+        // iterate through listA to get the tail node (informs us the length)
+        // iterate through listB to get the tail node (informs us the length)
+    // if tailA !== tailB, no intersection
+
+    // calculate the offset (difference in length) and apply x amount of imaginary head nodes to the shorter list,
+    // e.g. for a difference in length of 2
+        // [x1] > [x2] > 4 > 1 \
+        //                      {8} > 4 > 5
+        //   3  >   5  > 6 > 1 /
+    // in practice we can simply start the pointer of the second list by the offset x nodes,
+    // e.g. for a difference in length of 2
+        //         [4] > 1 \
+        //                 {8} > 4 > 5
+        // 3 > 5 > [6] > 1 /
+        // listA starts at [4]
+        // listB starts at [6] (2 nodes after its actual start)
+    // then the pointers are aligned, so compare the nodes
