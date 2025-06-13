@@ -32,6 +32,7 @@ var merge = function(nums1, m, nums2, n) {
 
     // https://leetcode.com/problems/merge-sorted-array/solutions/5714203/video-simple-solution-coding-exercise
     // 0 ms / beats 100%
+    // O(m + n) time complexity, O(1) spce complexity
 
     // I hated this question, modifying in place seems like a really forced constraint
     // iterating backwards made it easier but by that point I had already seen the solution linked above
@@ -63,3 +64,29 @@ var merge = function(nums1, m, nums2, n) {
 
 // because this requires in-place memory usage:
 // HINT: iterate from the end to fill in the space to prevent need for additional memory
+
+// EXAMPLE WALKTHROUGH:
+//      i     e
+// [1,2,3,0,0,0]
+// [2,5,6]
+//      i
+
+//      i   e
+// [1,2,3,0,0,6]
+// [2,5,6]
+//    i
+
+//      i e
+// [1,2,3,0,5,6]
+// [2,5,6]
+//  i
+
+//    i e
+// [1,2,3,3,5,6]
+// [2,5,6]
+//  i
+
+//    ie
+// [1,2,2,3,5,6]
+// [2,5,6]
+//i
