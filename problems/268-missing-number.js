@@ -7,11 +7,10 @@
  */
 var missingNumber = function(nums) {
     // calculate sum of range [0,n]
-    let rangeSum = 0;
-    // start at 1 as 0 is given, inclusive of n in range
-    for (let i = 1; i <= nums.length; i++) {
-        rangeSum += i;
-    }
+    // EDIT: now using Gauss sum formula,
+        // previously iterating through range and summing each number
+    const n = nums.length;
+    let rangeSum = (n * (n + 1)) / 2;
 
     // subtract each element in nums from range sum total
     for (let i = 0; i < nums.length; i++) {
@@ -22,7 +21,11 @@ var missingNumber = function(nums) {
     return rangeSum;
 
     // O(n) time complexity - two iterations, O(1) space complexity
-    // 46 ms / beats 12.75%
+    // 46 ms / beats 12.75% (before optimisation)
+    // 1 ms / beats 70.15% (after Gauss sum formula)
+
+    // NOTE: could cause overflow if the numbers were large enough,
+    // but not a problem in our constraints
 };
 
 // given array nums containing n distinct numbers [0 -> n]
