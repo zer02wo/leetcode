@@ -5,6 +5,25 @@
  * @param {number[]} nums
  * @return {number}
  */
+var missingNumberBitManipulation = function(nums) {
+    // a number XOR with itself === 0
+    let xorResult = 0;
+
+    for (let i = 1; i <= nums.length; i++) {
+        // this will (eventually) cancel out
+            // i.e. i === nums[i] at *some* point during this iteration
+            // EXCEPT for the missing number
+        xorResult ^= i;
+        xorResult ^= nums[i];
+    }
+
+    // 0 XOR missingNumber === missingNumber
+    return xorResult;
+
+    // 0 ms / beats 100%
+    // O(n) time complexity, O(1) space complexity
+};
+
 var missingNumber = function(nums) {
     // calculate sum of range [0,n]
     // EDIT: now using Gauss sum formula,
@@ -20,7 +39,7 @@ var missingNumber = function(nums) {
     // result is the missing number
     return rangeSum;
 
-    // O(n) time complexity - two iterations, O(1) space complexity
+    // O(n) time complexity, O(1) space complexity
     // 46 ms / beats 12.75% (before optimisation)
     // 1 ms / beats 70.15% (after Gauss sum formula)
 
@@ -52,4 +71,10 @@ var missingNumber = function(nums) {
         // O(1) space compared to a HashMap or Set which would be O(n)
         // TODO: I like this solution to start with, so lets go with that
 
-    // TODO: there is probably a bit manipulation (probably XOR) solution as well
+// TODO: there is probably a bit manipulation (probably XOR) solution as well
+    // a number XOR'd with itself === 0
+    // so if we iterate through the array and perform:
+        // XOR with i
+        // XOR with nums[i]
+    // eventually every i will cancel out every nums[i],
+        // EXCEPT for the missing number
