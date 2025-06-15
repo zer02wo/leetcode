@@ -91,10 +91,44 @@ var findDisappearedNumbers = function(nums) {
     return output;
 
     // 20 ms / beats 45.38%
+    // O(n) time complexity, O(n) space complexity
     // TODO: what would be a faster solution?
 
     // TODO: question also suggests an O(n) solution without using extra space (i.e. using input array)
         // probably marking by negation?
+};
+
+var findDisappearedNumbersByNegation = function(nums) {
+    // for each number in array
+    for (const num of nums) {
+        // get index (absolute to ignore existing negations from duplicates)
+            // -1 to align with 0 start indexing of array
+        const indexFromNum = Math.abs(num) - 1;
+
+        // check for existing negation at index
+        if (nums[indexFromNum] > 0) {
+            // mark index by negation
+            nums[indexFromNum] *= -1;
+        }
+    }
+
+    const output = [];
+
+    for (let i = 0; i < nums.length; i++) {
+        // index with a negative number == value we've seen
+        // index with a positive number == value NOT seen
+        if (nums[i] > 0) {
+            // +1 to align with range [1,n] (instead of 0 start array indexing)
+            output.push(i+1);
+        }
+    }
+
+    return output;
+
+    // 9 ms / beats 71.68%
+    // O(n) time complexity, O(1) space complexity
+    // surprised this is so much faster than the Set solution
+        // even when using the "native" method for creating a Set from array
 };
 
 // first thoughts:
