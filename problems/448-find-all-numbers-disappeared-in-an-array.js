@@ -1,4 +1,5 @@
 // https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/
+// tags: easy, array
 
 /**
  * @param {number[]} nums
@@ -69,3 +70,37 @@ var findDisappearedNumbers = function(nums) {
 
     return output;
 }
+
+
+// revisiting problem:
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var findDisappearedNumbers = function(nums) {
+    const numSet = new Set(nums);
+    const output = [];
+
+    for (let i = 1; i <= nums.length; i++) {
+        if (!numSet.has(i)) {
+            output.push(i);
+        }
+    }
+
+    return output;
+
+    // 20 ms / beats 45.38%
+    // TODO: what would be a faster solution?
+
+    // TODO: question also suggests an O(n) solution without using extra space (i.e. using input array)
+        // probably marking by negation?
+};
+
+// first thoughts:
+    // could use sorting, but this would require O(n log n) + O(n) to check
+    // could use a Set (or HashMap) to identify each number
+        // TODO: let's start with this one because it'll be nice and easy
+    // because there are multiple "disappeared" numbers, we can't do a sum trick like leetcode #268
+        // but could we do something with bitwise XOR?
+            // *probably* not (at least to my knowledge), as there can be duplicates (e.g. [1,1] for the range [1,2])
