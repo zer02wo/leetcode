@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/single-number/
-// tags: easy, bit manipulation
+// tags: easy, array, bit manipulation
 
 /**
  * @param {number[]} nums
@@ -38,3 +38,30 @@ var singleNumber = function(nums) {
     // 2 ^ 2 = 0
     // 1 ^ 1 = 0
     // leaves 5 remaining as all the pairs get cancelled out
+
+
+// revisiting problem:
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var singleNumber = function(nums) {
+    let xorResult = 0;
+
+    for (const num of nums) {
+        xorResult ^= num;
+    }
+
+    return xorResult;
+
+    // 1 ms / beats 74.96%
+    // O(n) time complexity, O(1) space complexity
+};
+
+// this is *the* bitwise XOR question
+    // a ^ a == 0
+    // b ^ b == 0
+    // i.e. all the pairs cancel each other out...
+    // n ^ 0 == n
+        // leaving just the single number as the output
