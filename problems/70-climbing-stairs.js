@@ -28,6 +28,24 @@ var climbStairs = function(n) {
     // TODO: recursive approach
 };
 
+var climbStairsRecursive = function(n) {
+    function fibonacciSum(num) {
+        if (num === 0) {
+            return 1;
+        }
+
+        if (num < 0) {
+            return 0;
+        }
+
+        return fibonacciSum(num-1) + fibonacciSum(num-2);
+    }
+
+    return fibonacciSum(n);
+
+    // TODO: unsurprisingly, we get TLE (Time Limit Exceeded) for case: n = 44
+};
+
 // climbing a staircase takes n steps to reach the top
 // if you can climb either 1 or 2 steps at a time: how many distinct ways can you reach the top?
 
