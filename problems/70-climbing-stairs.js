@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/climbing-stairs/
-// tags: easy
+// tags: easy, dynamic programming, memoization, fibonacci
 
 /**
  * @param {number} n
@@ -25,25 +25,35 @@ var climbStairs = function(n) {
     // O(n) time complexity, O(1) space complexity
 
     // without finding the Fibonacci pattern, this would've been a very difficult problem to solve
-    // TODO: recursive approach
 };
 
 var climbStairsRecursive = function(n) {
+    // Memoization - store result of previous computations as optimisation
+    const memo = new Map();
+
     function fibonacciSum(num) {
-        if (num === 0) {
-            return 1;
+        // n == output, when n in [1,2,3]
+        if (num <= 3) {
+            return num;
         }
 
-        if (num < 0) {
-            return 0;
+        // if value has not been previously
+        if (!memo.has(num)) {
+            // calculate recursively
+            memo.set(num, (fibonacciSum(num-1) + fibonacciSum(num-2)));
         }
 
-        return fibonacciSum(num-1) + fibonacciSum(num-2);
+        // get previously computed value
+        return memo.get(num);
     }
 
+    // call recursive helper function to get nth value in Fibonacci sequence
     return fibonacciSum(n);
 
-    // TODO: unsurprisingly, we get TLE (Time Limit Exceeded) for case: n = 44
+    // 0 ms / beats 100%
+    // definitely *more* complicated compared to the bottom-up/iterative approach
+        // also requires O(n) space (in comparison to O(1))
+    // but still pretty intuitive after implementing
 };
 
 // climbing a staircase takes n steps to reach the top
