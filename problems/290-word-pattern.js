@@ -50,6 +50,48 @@ var wordPattern = function(pattern, s) {
         // so not surprised I got it quickly/on first run
 };
 
+var wordPatternOneMapOneSet = function(pattern, s) {
+    // same principle as previous solution above, but using a Set instead of one of the Maps
+
+    const sArray = s.split(' ');
+
+    if (sArray.length !== pattern.length) {
+        return false;
+    }
+
+    const pMap = new Map();
+    // using Set instead of Map
+    const seenWords = new Set();
+
+    for (let i = 0; i < pattern.length; i++) {
+        const sWord = sArray[i];
+        const pChar = pattern[i];
+
+        // if we have seen this pattern character before:
+        if (pMap.has(pChar)) {
+            // it should map to the current word
+            if (pMap.get(pChar) !== sWord) {
+                return false;
+            }
+        } else { // we haven't seen this character before
+            // which means we shouldn't have seen this word before
+            if (seenWords.has(sWord)) {
+                return false;
+            }
+
+            // set mapping / mark word as seen
+            pMap.set(pChar, sWord);
+            seenWords.add(sWord);
+        }
+    }
+
+    return true;
+
+    // 0 ms / beats 100%
+    // a little less intuitive/harder to read than the two Maps solution (in my opinion)
+    // but would use a bit less memory in practice, despite having same time/space complexity in big-O notation
+};
+
 // find if string s follows the pattern (defined as a string),
 // specifically: full match such that there is a bijection between a letter in pattern and a non-empty word in s
     // each letter in pattern maps to exactly one unique word in s
