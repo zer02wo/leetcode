@@ -29,6 +29,7 @@ var wordPattern = function(pattern, s) {
         const sWord = sArray[i];
         const pChar = pattern[i];
 
+        // two if conditions for readability, could be a single condition
         if (sMap.has(sWord) && sMap.get(sWord) !== pChar) {
             return false;
         }
@@ -44,6 +45,7 @@ var wordPattern = function(pattern, s) {
     return true;
 
     // 0 ms / beats 100%
+    // O(n) time complexity, O(n) space complexity
     // basically the same as a problem I've seen before (#205),
         // so not surprised I got it quickly/on first run
 };
