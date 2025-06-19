@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-// tags: easy, array, sliding window
+// tags: easy, array, sliding window, dynamic programming
 
 /**
  * @param {number[]} prices
@@ -25,8 +25,10 @@ var maxProfit = function(prices) {
     return profit;
 
     // 3 ms / beats 63.44%
+    // O(n) time complexity, O(1) space complexity
     // I got the intuition pretty much immediately,
         // just took a little bit to figure out the variables/data structures required
+        // originally I was going to keep an array of the future days, before realising that would still be O(n^2)
 };
 
 // given array prices,  prices[i] represents price of given stock on the ith day
@@ -81,6 +83,7 @@ var maxProfit = function(prices) {
 // price = 8
 // cost = 1
 // profit = 8 - 1 = 7
+
 
 // EXAMPLE ALGORITHM 2:
 // prices = [2,7,1,4,3]
