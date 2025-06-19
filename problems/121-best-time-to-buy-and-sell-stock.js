@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-// tags: easy, array, sliding window, dynamic programming
+// tags: easy, array, sliding window, dynamic programming, greedy
 
 /**
  * @param {number[]} prices
@@ -29,6 +29,8 @@ var maxProfit = function(prices) {
     // I got the intuition pretty much immediately,
         // just took a little bit to figure out the variables/data structures required
         // originally I was going to keep an array of the future days, before realising that would still be O(n^2)
+    // because we're dealing with time, we only need to consider the min/max of data that from past -> present
+        // making this perfect for the greedy approach we've taken
 };
 
 // given array prices,  prices[i] represents price of given stock on the ith day
