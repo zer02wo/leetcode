@@ -25,6 +25,64 @@ function solveRegex(s) {
         // matches whitespace chars (\s)
         spaces: s.match(/[\s]/g)?.length ?? 0,
     };
+
+    // passes all test cases
+    // O(n) time complexity, O(1) space complexity
+        // 4 passes - 1 for each character count type recorded
+};
+
+function solveNoRegex(s) {
+    const counts = {
+        vowels: 0,
+        consonants: 0,
+        digits: 0,
+        spaces: 0,
+    };
+
+    // get charCode for vowel, upper & lower case
+    function isVowel(code) {
+        switch (code) {
+            case 65:    // A
+            case 69:    // E
+            case 73:    // I
+            case 79:    // O
+            case 85:    // U
+            case 97:    // a
+            case 101:   // e
+            case 105:   // i
+            case 111:   // o
+            case 117:   // u
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    for (let i = 0; i < s.length; i++) {
+        const charCode = s.charCodeAt(i);
+
+        if (isVowel(charCode)) {
+            counts.vowels++;
+        } else if (!isNaN(parseInt(s[i]))) {
+            counts.digits++;
+        } else if (s[i] === ' ') {
+            counts.spaces++;
+        } else {
+            // assuming no special chars (we are not provided constraints)
+                // otherwise this would need a function similar to isVowel to check charCode
+            counts.consonants++;
+        }
+    }
+
+    return counts;
+
+    // passes all test cases
+    // O(n) time complexity, O(1) space complexity
+        // single pass to get all character type counts
+
+    // don't know if this even ends up being faster than the regex.
+        // leetle has no time execution feedback
+    // it's also not particularly nice to need to hardcode charCodes
 };
 
 // I can see two immediate solutions:
