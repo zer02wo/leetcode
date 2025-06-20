@@ -12,9 +12,20 @@
 // Input: "Hello World 123"
 // Output: {"vowels": 3, "consonants": 7, "digits": 3, "spaces": 2}
 
-function solve(s) {
-    // pass
-}
+function solveRegex(s) {
+    // flags: /g used to get all matches, /i used to check case insensitive
+    // optional chaining on length, otherwise if null result return a count of 0
+    return {
+        // matches vowels i.e. chars in group [aeiou]
+        vowels: s.match(/[aeiou]/gi)?.length ?? 0,
+        // matches consonants i.e. word chars (\w) that are NOT vowels or digits (\d)
+        consonants: s.match(/(?![aeiou\d])\w/gi)?.length ?? 0,
+        // matches digits (\d)
+        digits: s.match(/[\d]/g)?.length ?? 0,
+        // matches whitespace chars (\s)
+        spaces: s.match(/[\s]/g)?.length ?? 0,
+    };
+};
 
 // I can see two immediate solutions:
 // 1. 4 passes of regex
