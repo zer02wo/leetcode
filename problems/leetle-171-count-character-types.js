@@ -12,6 +12,30 @@
 // Input: "Hello World 123"
 // Output: {"vowels": 3, "consonants": 7, "digits": 3, "spaces": 2}
 
+// Test Case 1:
+// Input: s = "Hello World 123"
+// Output: {"consonants":7, "digits":3, "spaces":2, "vowels":3}
+
+// Test Case 2:
+// Input: s = ""
+// Output: {"consonants":0, "digits":0, "spaces":0, "vowels":0}
+
+// Test Case 3:
+// Input: s = "AEIOU"
+// Output: {"consonants":0, "digits":0, "spaces":0, "vowels":5}
+
+// Test Case 4:
+// Input: s = "bcdfg"
+// Output: {"consonants":5, "digits":0, "spaces":0, "vowels":0}
+
+// Test Case 5:
+// Input: s = "12345"
+// Output: {"consonants":0, "digits":5, "spaces":0, "vowels":0}
+
+// Test Case 6:
+// Input: s = " "
+// Output: {"consonants":0, "digits":0, "spaces":3, "vowels":0}
+
 function solveRegex(s) {
     // flags: /g used to get all matches, /i used to check case insensitive
     // optional chaining on length, otherwise if null result return a count of 0
