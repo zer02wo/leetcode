@@ -165,3 +165,57 @@ var countBitsBruteForce = function(n) {
             // 111 = 7 (3 bits)
             // 1110 & 1 = 0 (1 bit)
         // etc.
+
+
+// revisiting solution:
+
+/**
+ * @param {number} n
+ * @return {number[]}
+ */
+var countBits = function(n) {
+    const bitCounts = [0];
+
+    for (let i = 1; i <= n; i++) {
+        // right bitshift to reuse previous computation
+        // bitwise AND to add shifted bit for even/odd
+        bitCounts[i] = bitCounts[i >> 1] + (i & 1);
+    }
+
+    return bitCounts;
+
+    // 3 ms / beats 57.72%
+    // needed a hint to get this one again
+};
+
+// we need to prevent doing repeated work checking for bits we already know
+    // e.g. 4 = 100, then we already know that 5 = 2 set-bits
+        // i.e. because the least significant bit represents odd
+
+// EXAMPLE n = 8
+// 0 -> 000
+// 1 -> 001
+// 2 -> 010
+// 3 -> 011
+// 4 -> 100
+// 5 -> 101
+// 6 -> 110
+// 7 -> 111
+// 8 ->1000
+
+// we know that every 2^n introduces a new most significant bit
+// we know that the least significant bit represents odd or even
+    // 8 / 2 = 4
+        // 1000 >> 1 = 100 (4)
+            // gives us the correct answer of 1 set-bit
+    // 7 / 2 = 3 (rounded down)
+        // 111 >> 1 = 11 (3)
+            // this only gives us 2 set-bits, the 3rd comes from the fact that 7 is odd
+            // i.e. 7 & 1 = 1
+    // 6 / 2 = 3
+        // 110 >> 1 = 11 (3)
+            // correct answer of two set-bits, because 6 is even we can check that:
+            // 6 & 1 = 0
+
+// by storing reference to previous set-bit counts we can reduce repeated computation
+    // dp[i] = dp[i >> 1] + dp[i & 1]
