@@ -5,7 +5,7 @@
  * @param {number[]} arr
  * @return {boolean}
  */
-var canMakeArithmeticProgression = function(arr) {
+var canMakeArithmeticProgressionConstantSpaceAttempt = function(arr) {
     const min = Math.min(...arr);
     const max = Math.max(...arr);
 
@@ -17,6 +17,17 @@ var canMakeArithmeticProgression = function(arr) {
 
     // difference = max - min / arr.length-1
     const difference = (max - min) / (arr.length - 1);
+
+    // check for duplicates
+    if (parseInt(difference) !== difference) {
+        // e.g. [1,10,10,10,19] gives difference = 4.5
+        // which satisfies for the modulo operator done later
+            // but this is an invalid test case due to duplicates
+
+        // given we are dealing with integers (as per the constraints)
+        // the difference should also be an integer
+        return false;
+    }
 
     for (let i = 0; i < arr.length; i++) {
         // excluding the offset (i.e. the min value)
@@ -31,9 +42,16 @@ var canMakeArithmeticProgression = function(arr) {
     return true;
 
     // TODO: fails for test case:
-        // arr = [1,10,10,10,19]
-        // we have no knowledge of duplicates, unlike the Set solution
-        // TODO: is this as simple as checking for an integer difference?
+        // arr = [1,2,3,2,5]
+        // difference = 1
+            // this circumvents the duplicate check I just added
+
+    // if there were no duplicates, this would work and be extremely clean
+    // O(n) time complexity, O(1) space complexity
+
+    // if I hadn't looked up the Set solution below,
+        // I might've eventually figured out this pattern
+        // but I also would've probably gotten stuck with the duplicates check still...
 };
 
 
