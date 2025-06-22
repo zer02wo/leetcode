@@ -1,11 +1,35 @@
 // https://leetcode.com/problems/can-make-arithmetic-progression-from-sequence/
-// tags: easy, array, maths
+// tags: easy, array, maths, sorting, set
 
 /**
  * @param {number[]} arr
  * @return {boolean}
  */
 var canMakeArithmeticProgression = function(arr) {
+    const min = Math.min(...arr);
+    const max = Math.max(...arr);
+
+    // difference = max - min / arr.length-1
+    const difference = (max - min) / (arr.length - 1);
+
+    for (let i = 0; i < arr.length; i++) {
+        // excluding the offset (i.e. the min value)
+        // each nth term should be a multiple of the difference
+            // therefore nthVal - min % difference === 0
+            // for valid arithmetic progressions
+        if ((arr[i] - min) % difference !== 0) {
+            return false;
+        }
+    }
+
+    return true;
+
+    // TODO: fails for test case:
+        // arr = [0,0,0,0]
+};
+
+
+var canMakeArithmeticProgressionSet = function(arr) {
     const min = Math.min(...arr);
     const max = Math.max(...arr);
 
@@ -127,3 +151,19 @@ var canMakeArithmeticProgressionSorting = function(arr) {
 // TODO: how can we use this difference to check without sorting..?
     // we could use a Set to lookup expected values (i.e. min + (n * diff)) in O(1) time
     // i.e. arithmetic progression = min, min + diff, min + 2*diff, min + 3*diff, ..., min + n-1*diff, max
+
+// TODO: to do this without a Set:
+// we know: max - min % difference === 0
+        // therefore: nthVal - min % difference === 0
+        // i.e. excluding the offset (the minimum value), this is just a multiple of the difference
+// EXAMPLE: [1,3,5,7,9]
+    // 7 - 1 = 6
+    // 6 % 2 = 0
+// EXAMPLE:
+    // 4 - (-2) = 6
+    // 6 % 3 = 0
+// EXAMPLE: [4,8,12,16,20]
+    // 16 - 4 = 12
+    // 12 % 4 = 0
+
+//
