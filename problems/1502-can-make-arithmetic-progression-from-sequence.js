@@ -9,6 +9,12 @@ var canMakeArithmeticProgression = function(arr) {
     const min = Math.min(...arr);
     const max = Math.max(...arr);
 
+    // all values are the same, e.g. [3,3,3,3]
+    if (max === min) {
+        // prevents NaN from modulo (division) by 0
+        return true;
+    }
+
     // difference = max - min / arr.length-1
     const difference = (max - min) / (arr.length - 1);
 
@@ -25,7 +31,9 @@ var canMakeArithmeticProgression = function(arr) {
     return true;
 
     // TODO: fails for test case:
-        // arr = [0,0,0,0]
+        // arr = [1,10,10,10,19]
+        // we have no knowledge of duplicates, unlike the Set solution
+        // TODO: is this as simple as checking for an integer difference?
 };
 
 
