@@ -8,7 +8,7 @@
 var canMakeArithmeticProgression = function(arr) {
     // sort the array to create consistent order
         // I can't think of a case where arithmetic progression would be possible using an unsorted array
-    const sortedArr = arr.sort();
+    const sortedArr = arr.sort((a, b) =>  a - b);
     // the difference between *any two* consecutive elements should be the same
     const difference = Math.abs(sortedArr[0] - sortedArr[1]);
 
@@ -22,10 +22,10 @@ var canMakeArithmeticProgression = function(arr) {
 
     return true;
 
-    // TODO: fails for the following test-case:
-        // arr = [-68,-96,-12,-40,16]
-        // sortedArr = [-12,-40,-68,-96,16]
-            // so this is just JavaScript being JavaScript...
+    // 2 ms / beats 43.57%
+    // O(n log n) time complexity (due to sort), O(1) space complexity
+    // TODO: is there a more efficient approach?
+        // what patterns emerge from reviewing alternative test cases?
 };
 
 // arithmetic progression: difference between any two consecutive elements are the same
