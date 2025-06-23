@@ -35,6 +35,33 @@ var middleNode = function(head) {
     // got this really quick because of doing another fast-slow pointer linked-list question the other day
 };
 
+var middleNodeBruteForce = function(head) {
+    // calculate length of linked list, init to 1 for head
+    let length = 1;
+    let tail = head;
+
+    while (tail.next) {
+        tail = tail.next;
+        length++;
+    }
+
+    // iterate to middle by half of length
+    const mid = Math.floor(length / 2);
+
+    for (let i = 1; i <= mid; i++) {
+        head = head.next;
+    }
+
+    // head has been moved to middle node
+    return head;
+
+    // 0 ms / beats 100%
+    // O(n) time complexity, O(1) space complexity
+        // 1.5 iterations
+    // this performs fine still, but the fast-slow pointer solution is cleaner
+};
+
+
 // given head of linked list, return the middle node
     // if there are two middle nodes, return the *second* middle node
 
