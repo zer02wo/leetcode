@@ -38,9 +38,30 @@ var reverseList = function(head) {
 
     // 0 ms / beats 100%
     // O(n) time complexity, O(1) space complexity
-
-    // TODO: problem suggests a recursive solution as well
 };
+
+var reverseListRecursive = function(head) {
+    function reverseConnection(node, prev) {
+        if (!node) {
+            // old tail node / new reversed head node
+            return prev;
+        }
+
+        // keep reference to next node in list
+        const next = node.next;
+        // reverse connection by linking to previous node
+        node.next = prev;
+
+        // recursively reverse connection for next/current node
+        return reverseConnection(next, node);
+    }
+
+    // connect to null as previous node, because head becomes new tail
+    return reverseConnection(head, null);
+
+    // 0 ms / beats 100%
+};
+
 
 // given head of singly linked list, reverse the list & return it
 
