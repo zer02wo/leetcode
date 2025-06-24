@@ -54,33 +54,22 @@ var reverseList = function(head) {
 // first thought: keep reference to previous node and override the Node.next pointer with the current node
     // but we also need to keep reference to the current next node before we modify it, to continue iterating through list
 
-// EXAMPLE: 1 > 2 > 3 > 4
-// START
-// prev = null
-// node = 1
-// next = 2
-    // 1 > null
-    // 2 > 3 > 4
+// EXAMPLE: p = prev, c = current, n = next
 
-// prev = 1
-// node = 2
-// next = 3
-    // 2 > 1
-    // 3 > 4
+//  p     c   n
+// null | 1 > 2 > 3 > 4 > null
 
-// prev = 2
-// node = 3
-// next = 4
-    // 3 > 2 > 1
-    // 4
+//        p   c   n
+// null < 1 | 2 > 3 > 4 > null
 
-// prev = 3
-// node = 4
-// next = null
-    // 4 > 3 > 2 > 1
-    // null
+//            p   c   n
+// null < 1 < 2 | 3 > 4 > null
 
-// RETURN prev
-// END
+//                p   c    n
+// null < 1 < 2 < 3 | 4 > null
+
+//                    p   c/n
+// null < 1 < 2 < 3 < 4 | null
 
 // we need a while loop to stop after current node is set to null
+    // then return prev
