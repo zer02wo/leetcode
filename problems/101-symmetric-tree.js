@@ -46,8 +46,35 @@ var isSymmetric = function(root) {
     // needed a hint to get here quickly, but maybe should've spent more time thinking about it
         // we're allowed to break the "rules" of a BFS algorithm because we only care about symmetry
         // i.e. making assumptions that there are left & right nodes is fine, because this helps us identify the answer
+};
 
-    // TODO: implement recursive solution
+var isSymmetricRecursive = function(root) {
+    // recursive helper function
+    function areNodesSymmetric(leftNode, rightNode) {
+        // nothing to compare as both "nodes" are null
+        if (!leftNode && !rightNode) {
+            return true;
+        }
+
+        // check that left & right nodes are equal
+            // optional chaining in case *either* of the nodes are null
+            // i.e. this is equivalent to adding: || leftNode === null || rightNode === null
+        if (leftNode?.val !== rightNode?.val) {
+            return false;
+        }
+
+        return areNodesSymmetric(leftNode.left, rightNode.right) // outer pair
+            && areNodesSymmetric(leftNode.right, rightNode.left);// inner pair
+    }
+
+    return areNodesSymmetric(root.left, root.right);
+
+    // 0 ms / beats 100%
+    // O(n) time complexity, O(n) space complexity
+    // largely just copied from the iterative solution above
+        // I typically tend to opt for iterative solutions first as they're more intuitive to me,
+            // and also don't need to worry about call stack depth issues
+        // but in this case it might have been easier to start with the recursive implementation
 };
 
 // given the root of a binary tree, check whether it is a mirror of itself
@@ -85,3 +112,9 @@ var isSymmetric = function(root) {
     // outer nodes {3} are equal, inner nodes [4] are equal
         // we would then compare nodes [5,6] with [6,5]
         // and nodes [7,8] with [8,7]
+
+// recursive solution:
+    // similar to the iterative solution, we will need to check the left & right nodes each iteration
+        // so the recursive helper function will have 2 nodes as the input
+    // then make the same null/value comparisons
+    // then recursively call the function with the outer & inner pairs respectively
