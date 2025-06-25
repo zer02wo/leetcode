@@ -14,11 +14,11 @@
  * @return {boolean}
  */
 var isSymmetric = function(root) {
-    let queue = [root.left, root.right];
+    const queue = [root.left, root.right];
 
     while (queue.length) {
-        let leftNode = queue.shift();
-        let rightNode = queue.shift();
+        const leftNode = queue.shift();
+        const rightNode = queue.shift();
 
         // nothing to compare as both "nodes" are null
         if (!leftNode && !rightNode) {
@@ -50,7 +50,7 @@ var isSymmetric = function(root) {
 
 var isSymmetricRecursive = function(root) {
     // recursive helper function
-    function areNodesSymmetric(leftNode, rightNode) {
+    function isMirrored(leftNode, rightNode) {
         // nothing to compare as both "nodes" are null
         if (!leftNode && !rightNode) {
             return true;
@@ -63,11 +63,11 @@ var isSymmetricRecursive = function(root) {
             return false;
         }
 
-        return areNodesSymmetric(leftNode.left, rightNode.right) // outer pair
-            && areNodesSymmetric(leftNode.right, rightNode.left);// inner pair
+        return isMirrored(leftNode.left, rightNode.right) // outer pair
+            && isMirrored(leftNode.right, rightNode.left);// inner pair
     }
 
-    return areNodesSymmetric(root.left, root.right);
+    return isMirrored(root.left, root.right);
 
     // 0 ms / beats 100%
     // O(n) time complexity, O(n) space complexity
