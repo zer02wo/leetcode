@@ -13,6 +13,56 @@
  * @return {boolean}
  */
 var isPalindrome = function(head) {
+    // O(1) constant memory solution
+    let slow = head;
+    let fast = head;
+
+    while (fast) {
+        // move slow pointer 1 node per iteration
+        slow = slow.next;
+        // move fast pointer 2 nodes per iteration
+        fast = fast.next.next;
+    }
+
+    // when fast node reaches the end, the slow node will be at the midpoint
+    let mid = slow;
+
+    // reverse the second half of the linked list
+    let prev = null;
+    let node = slow;
+    let next = null;
+
+    while (node) {
+        // get next node in list
+        next = node.next;
+
+        // point current node to prev node (reverse connection)
+        node.next = prev;
+
+        // iterate through nodes
+        prev = node;
+        node = next;
+    }
+
+    // prev node now points to the head of the reversed second half
+    let halfHead = prev;
+
+    // iterate from head > mid and reversedHead > null
+    while (head !== mid && halfHead) {
+        if (head.val !== halfHead.val) {
+            return false;
+        }
+
+        head = head.next;
+        halfHead = halfHead.next;
+    }
+
+    return true;
+
+    // TODO: fails for test case: head = [1]
+};
+
+var isPalindromeAdditionalMemory = function(head) {
     // store linked list values in array
     let sequence = [];
 
@@ -71,4 +121,23 @@ var isPalindrome = function(head) {
         // when the fast pointer reaches the end,
         // the slow pointer will be at the midpoint
     // then from the midpoint, reverse the second half of the list
-// TODO: implement this
+        // then we iterate from start -> mid and mid -> end simultaneously
+            // return false if nodes do not match
+
+// FIND MIDPOINT:
+// sf
+// 1 > 2 > 2 > 1 > null
+//     s   f
+// 1 > 2 > 2 > 1 > null
+//         s        f
+// 1 > 2 > 2 > 1 > null
+
+// REVERSE SECOND HALF
+//         m   n
+// 1 > 2 > 2 > 1 > null
+//         m          n
+// 1 > 2 > 2 > null | 1 > null
+//         m
+// 1 > 2 > 2 > null
+//     1 -/
+//     n
