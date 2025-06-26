@@ -13,12 +13,14 @@
  * @return {boolean}
  */
 var isPalindrome = function(head) {
+    // O(1) constant memory solution
+
     // true for single node (e.g. [1] is the same backwards: a palindrome)
     if (!head.next) {
         return true;
     }
 
-    // O(1) constant memory solution
+    // STEP 1 - find midpoint
     let slow = head;
     let fast = head;
 
@@ -33,7 +35,7 @@ var isPalindrome = function(head) {
     // when fast node reaches the end, the slow node will be at the midpoint
     let mid = slow;
 
-    // reverse the second half of the linked list
+    // STEP 2 - reverse the second half of the linked list
     let prev = null;
     let node = slow;
     let next = null;
@@ -53,6 +55,8 @@ var isPalindrome = function(head) {
     // prev node now points to the head of the reversed second half
     let halfHead = prev;
 
+    // STEP 3 - palindrome check
+
     // iterate from head > mid and reversedHead > null
     while (head !== mid && halfHead) {
         if (head.val !== halfHead.val) {
@@ -69,6 +73,10 @@ var isPalindrome = function(head) {
     // O(n) time complexity, O(1) space complexity
     // really happy with my performance on this one, pretty tough question (for an easy at least)
     // drawing out the pointers in a diagram definitely helped with my understanding
+
+    // TODO: this could made a bit simpler by getting the (mid - 1)th node as the reversal point
+    // TODO: memory could obviously be reduced, but having nice variable names makes the code more readable
+    // this solution is a bit cleaner than mine: https://leetcode.com/problems/palindrome-linked-list/solutions/6784203/video-two-pointers/
 };
 
 var isPalindromeAdditionalMemory = function(head) {
