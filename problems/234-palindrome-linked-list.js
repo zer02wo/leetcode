@@ -13,6 +13,11 @@
  * @return {boolean}
  */
 var isPalindrome = function(head) {
+    // true for single node (e.g. [1] is the same backwards: a palindrome)
+    if (!head.next) {
+        return true;
+    }
+
     // O(1) constant memory solution
     let slow = head;
     let fast = head;
@@ -21,7 +26,8 @@ var isPalindrome = function(head) {
         // move slow pointer 1 node per iteration
         slow = slow.next;
         // move fast pointer 2 nodes per iteration
-        fast = fast.next.next;
+            // optional chaining for odd length lists (e.g. [1,0,0])
+        fast = fast.next?.next;
     }
 
     // when fast node reaches the end, the slow node will be at the midpoint
@@ -59,7 +65,10 @@ var isPalindrome = function(head) {
 
     return true;
 
-    // TODO: fails for test case: head = [1]
+    // 4 ms / beats 76.36%
+    // O(n) time complexity, O(1) space complexity
+    // really happy with my performance on this one, pretty tough question (for an easy at least)
+    // drawing out the pointers in a diagram definitely helped with my understanding
 };
 
 var isPalindromeAdditionalMemory = function(head) {
@@ -88,6 +97,7 @@ var isPalindromeAdditionalMemory = function(head) {
     return true;
 
     // 13 ms / beats 34.74%
+    // O(n) time complexity, O(n) space complexity
     // "brute force" solution
 };
 
