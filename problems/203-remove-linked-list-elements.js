@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/remove-linked-list-elements/
-// tags: easy, linked list
+// tags: easy, linked list, dummy node
 
 /**
  * Definition for singly-linked list.
@@ -13,6 +13,33 @@
  * @param {number} val
  * @return {ListNode}
  */
+var removeElementsDummyNode = function(head, val) {
+    // create dummy node before head
+        // this means unlike my solution we don't need to keep unlinking/updating the head node
+    const dummy = new ListNode(0, head);
+    // node to iterate through list
+    let node = dummy;
+
+    while (node.next) {
+        if (node.next.val === val) {
+            // skip over next node in list with node after
+            node.next = node.next.next;
+        } else {
+            // iterate to next node
+            node = node.next;
+        }
+    }
+
+    // i.e. dummy.next = (new) head node
+    return dummy.next;
+
+    // O(n) time complexity, O(1) space complexity
+    // much cleaner/simpler to read than my solution
+        // this does *technically* modify the list, but this wouldn't be known from the return value
+    // based on solution here:
+        // https://leetcode.com/problems/remove-linked-list-elements/solutions/6750348/video-dummy-pointer/
+};
+
 var removeElements = function(head, val) {
     let node = head;
     let prev = null;
