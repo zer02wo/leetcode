@@ -75,3 +75,38 @@ var removeElements = function(head, val) {
     // and there is no previous node to check it from
     // do we need to keep a 'prev' variable to keep track of the previous node and compare from here instead?
         // TODO: I think this is probably the better approach to take
+
+// walkthrough: 1 > 2 > 6 > 3 > 6, val = 6
+//  p     n
+// null | 1 > 2 > 6 > 3 > 6 > null
+// p   n
+// 1 > 2 > 6 > 3 > 6 > null
+//     p   n
+// 1 > 2 > 6 > 3 > 6 > null
+    // link   2 > 3     (skip over node with matching val)
+    // unlink 6 > null  (unlink node from linked list)
+//     p   n
+// 1 > 2 > 3 > 6 > null
+//         p   n
+// 1 > 2 > 3 > 6 > null
+    // link   3 > null (skip over node with matching val)
+//         p    n
+// 1 > 2 > 3 > null
+    // return head (1 > 2 > 3)
+
+// walkthrough: 7 > 7 > 7, val = 7
+//  p     n
+// null | 7 > 7 > 7 > null
+    // set head = node.next
+    // unlink 7 (head) > null
+//  p     n
+// null | 7 > 7 > null
+    // set head = node.next
+    // unlink 7 (head) > null
+//  p     n
+// null | 7 > null
+    // set head = node.next
+    // unlink 7 (head) > null
+// p    | n
+// null | null
+    // return head (null)
