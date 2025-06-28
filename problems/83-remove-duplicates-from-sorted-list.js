@@ -12,7 +12,28 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
-var deleteDuplicates = function(head) {
+var deleteDuplicatesNext = function(head) {
+    let node = head;
+
+    while (node && node.next) {
+        if (node.val === node.next.val) {
+            // remove next node from list, it's a duplicate
+            node.next = node.next.next;
+        } else {
+            // iterate through list
+            node = node.next;
+        }
+    }
+
+    return head;
+
+    // 0 ms / beats 100%
+    // O(n) time complexity, O(1) space complexity
+    // a bit of a smaller footprint compared to keeping the previous node,
+    // only needs 1 new variable in memory compared to 2 for previous node
+};
+
+var deleteDuplicatesPrev = function(head) {
     let prevNode = null;
     let node = head;
 
@@ -30,6 +51,7 @@ var deleteDuplicates = function(head) {
 
     return head;
 
+    // 0 ms / beats 100%
     // O(n) time complexity, O(1) space complexity
     // very similar to leetcode #203 which I did yesterday,
     // so it was easy to arrive at a solution
