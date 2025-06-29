@@ -19,8 +19,11 @@ var mergeTwoLists = function(list1, list2) {
     let mergedNode = dummy;
 
     while (list1 || list2) {
-        // TODO: do I need to do a separate null and set to Infinity or something?
-        if (list1?.val <= list2?.val) {
+        // set value to infinity if there are no nodes left in list
+        const val1 = list1?.val ?? Infinity;
+        const val2 = list2?.val ?? Infinity;
+
+        if (val1 <= val2) {
             // merge node from list1 into new list
             mergedNode.next = list1;
             // iterate in list1
@@ -28,6 +31,7 @@ var mergeTwoLists = function(list1, list2) {
         } else {
             // merge node from list2 into new list
             mergedNode.next = list2;
+            // iterate in list2
             list2 = list2.next;
         }
 
@@ -37,9 +41,12 @@ var mergeTwoLists = function(list1, list2) {
 
     return dummy.next;
 
-    // TODO: fails for following test case:
-        // list1 = [1], list2 = []
-        // need to improve null checking as already theorised above
+    // 0 ms / beats 100%
+    // O(m+n) time complexity, O(1) space complexity
+    // very nice question after the recent linked list questions I've been doing,
+    // probably not *perfectly* optimal but I got here quickly and it's 0 ms runtime
+
+    // TODO: what about a recursive solution?
 };
 
 // given heads of two *sorted* linked lists, merge the two lists into one sorted list
