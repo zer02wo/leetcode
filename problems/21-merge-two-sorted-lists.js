@@ -14,8 +14,32 @@
  * @return {ListNode}
  */
 var mergeTwoLists = function(list1, list2) {
-    let
+    // dummy node to start new merged list
+    let dummy = new ListNode(0, null);
+    let mergedNode = dummy;
 
+    while (list1 || list2) {
+        // TODO: do I need to do a separate null and set to Infinity or something?
+        if (list1?.val <= list2?.val) {
+            // merge node from list1 into new list
+            mergedNode.next = list1;
+            // iterate in list1
+            list1 = list1.next;
+        } else {
+            // merge node from list2 into new list
+            mergedNode.next = list2;
+            list2 = list2.next;
+        }
+
+        // iterate through merged list
+        mergedNode = mergedNode.next;
+    }
+
+    return dummy.next;
+
+    // TODO: fails for following test case:
+        // list1 = [1], list2 = []
+        // need to improve null checking as already theorised above
 };
 
 // given heads of two *sorted* linked lists, merge the two lists into one sorted list
