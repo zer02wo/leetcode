@@ -31,6 +31,8 @@ var search = function(nums, target) {
         }
     }
 
+    // 0 ms / beats 100%
+    // O(log n) time complexity, O(1) space complexity
     // target does not exist in array
     return -1;
 };
