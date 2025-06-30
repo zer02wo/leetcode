@@ -7,7 +7,35 @@
  * @return {number}
  */
 var search = function(nums, target) {
+    let lower = 0;
+    let upper = nums.length - 1;
 
+    // continue until bounds overlap
+    while (lower < upper) {
+        // find midpoint
+        const mid = Math.floor((upper + lower) / 2);
+
+        // target found
+        if (nums[mid] === target) {
+            return mid;
+        }
+
+        if (nums[mid] < target) {
+            // value too low, constrain to upper half of array
+            // mid + 1, as we have already checked mid in the above condition
+            lower = mid + 1;
+        } else {
+            // value too high, constrain to lower half of array
+            // mid - 1, as we have already checked mid in the above condition
+            upper = mid - 1;
+        }
+    }
+
+    // target does not exist in array
+    return -1;
+
+    // TODO: fails for following test case:
+        // nums = [5]
 };
 
 // given array of integers nums sorted in ascending order, and integer target
