@@ -11,7 +11,7 @@ var search = function(nums, target) {
     let upper = nums.length - 1;
 
     // continue until bounds overlap
-    while (lower < upper) {
+    while (lower <= upper) {
         // find midpoint
         const mid = Math.floor((upper + lower) / 2);
 
@@ -33,9 +33,6 @@ var search = function(nums, target) {
 
     // target does not exist in array
     return -1;
-
-    // TODO: fails for following test case:
-        // nums = [5]
 };
 
 // given array of integers nums sorted in ascending order, and integer target
