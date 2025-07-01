@@ -7,6 +7,12 @@
  * @return {character}
  */
 var nextGreatestLetter = function(letters, target) {
+    // check target is within bounds
+    if (target >= letters[letters.length-1] || target < letters[0]) {
+        // return first letter in array
+        return letters[0];
+    }
+
     let lower = 0;
     let upper = letters.length - 1;
 
@@ -14,7 +20,7 @@ var nextGreatestLetter = function(letters, target) {
         const mid = Math.floor((upper + lower) / 2);
 
         // modify binary search: do not do the standard midpoint == target check
-        // because we're looking for target, but the smallest value greater than the target
+        // because we're not looking for target, but the smallest value greater than the target
 
         if (target < letters[mid]) {
             upper = mid - 1;
@@ -23,11 +29,13 @@ var nextGreatestLetter = function(letters, target) {
         }
     }
 
-    // if greater character not present, lower == 0
+    // smallest character greater than target
     return letters[lower];
 
-    // TODO: fails for following test case:
-        // letters = ["x","x","y","y"], target = "z"
+    // 0 ms / beats 100%
+    // O(log n) time complexity, O(1) space complexity
+
+    // even if this is basically just a binary search, it took me a little bit to wrap my head around it
 };
 
 // given alphabetically sorted array of letters, and character target
