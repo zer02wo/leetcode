@@ -7,7 +7,27 @@
  * @return {character}
  */
 var nextGreatestLetter = function(letters, target) {
+    let lower = 0;
+    let upper = letters.length - 1;
 
+    while (lower <= upper) {
+        const mid = Math.floor((upper + lower) / 2);
+
+        // modify binary search: do not do the standard midpoint == target check
+        // because we're looking for target, but the smallest value greater than the target
+
+        if (target < letters[mid]) {
+            upper = mid - 1;
+        } else { // target >= letters[mid]
+            lower = mid + 1;
+        }
+    }
+
+    // if greater character not present, lower == 0
+    return letters[lower];
+
+    // TODO: fails for following test case:
+        // letters = ["x","x","y","y"], target = "z"
 };
 
 // given alphabetically sorted array of letters, and character target
