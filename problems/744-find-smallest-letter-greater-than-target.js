@@ -23,8 +23,10 @@ var nextGreatestLetter = function(letters, target) {
         // because we're not looking for target, but the smallest value greater than the target
 
         if (target < letters[mid]) {
+            // constrain search to lower half of array
             upper = mid - 1;
         } else { // target >= letters[mid]
+            // constrain search to upper half of array
             lower = mid + 1;
         }
     }
@@ -68,3 +70,12 @@ var nextGreatestLetter = function(letters, target) {
     // so we likely want to use charCode for the comparison
         // but JS does allow string greater/less-than comparisons too
     // this means we don't need to create some sort of additional memory structure to compare by index (for example)
+
+// walkthrough: target = b
+//  l   m     u
+// [a,c,d,e,f,g]
+// lm u
+// [a,c,d,e,f,g]
+//   lmu
+// [a,c,d,e,f,g]
+// OUTPUT: 'c'
