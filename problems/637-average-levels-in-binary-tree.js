@@ -14,7 +14,44 @@
  * @return {number[]}
  */
 var averageOfLevels = function(root) {
+    const queue = [root];
+    const averages = [];
 
+    while (queue.length) {
+        // to prevent creating a new O(n) structure of the current nodes
+        // just iterate through the ones we have currently, ignore any newly added nodes
+        const levelSize = queue.length;
+        let sum = 0;
+
+        // for each node currently in queue/at current level
+        for (let i = 0; i < levelSize; i++) {
+            // retrieve node from front of queue
+            const node = queue.shift();
+
+            // calculate cumulative sum for nodes at level
+            sum += node.val;
+
+            // append child nodes to end of queue
+            if (node.left) {
+                queue.push(node.left);
+            }
+
+            if (node.right) {
+                queue.push(node.right);
+            }
+        }
+
+        // push average to output array
+        averages.push(sum / levelSize);
+    }
+
+    return averages;
+
+    // 1 ms / beats 99.45%
+    // O(n) time complexity - despite nested loops, as we are only visiting each node once
+    // O(n) space complexity - i.e. the queue
+    // nice BFS problem, DFS is probably possible but wouldn't be nearly as intuitive
+        // recursive BFS could also be used, but iteration is more intuitive to me
 };
 
 // given root of binary tree, return the average value of the nodes on each level (in an array)
