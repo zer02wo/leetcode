@@ -14,7 +14,38 @@
  * @return {number}
  */
 var minDepth = function(root) {
+    if (!root) {
+        return 0; // no nodes = depth of 0
+    }
 
+    const queue = [root];
+    let depth = 0;
+
+    while (queue.length) {
+        depth++;
+
+        const node = queue.shift();
+
+        // check if leaf node
+        if (!node.left && !node.right) {
+            // first leaf node encountered, return depth
+            return depth;
+        }
+
+        // push child nodes to queue
+        if (node.left) {
+            queue.push(node.left);
+        }
+
+        if (node.right) {
+            queue.push(node.right);
+        }
+    }
+
+    return depth;
+
+    // TODO: fails for following test case:
+        // root = [1,2,3,4,5]
 };
 
 // given the root of a binary tree, find its minimum depth:
