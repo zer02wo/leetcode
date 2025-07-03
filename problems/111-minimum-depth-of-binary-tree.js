@@ -24,28 +24,35 @@ var minDepth = function(root) {
     while (queue.length) {
         depth++;
 
-        const node = queue.shift();
+        const size = queue.length;
 
-        // check if leaf node
-        if (!node.left && !node.right) {
-            // first leaf node encountered, return depth
-            return depth;
-        }
+        // similar to leetcode #637
+        // we need to review all nodes per level in one iteration
+        for (let i = 0; i < size; i++) {
+            const node = queue.shift();
 
-        // push child nodes to queue
-        if (node.left) {
-            queue.push(node.left);
-        }
+            // check if leaf node
+            if (!node.left && !node.right) {
+                // first leaf node encountered, return depth
+                return depth;
+            }
 
-        if (node.right) {
-            queue.push(node.right);
+            // push child nodes to queue
+            if (node.left) {
+                queue.push(node.left);
+            }
+
+            if (node.right) {
+                queue.push(node.right);
+            }
         }
     }
 
     return depth;
 
-    // TODO: fails for following test case:
-        // root = [1,2,3,4,5]
+    // 0 ms / beats 100%
+    // I think the "depth" in the question made me too quickly assume DFS,
+    // when this BFS was very easy to implement based off leetcode #637 done yesterday
 };
 
 // given the root of a binary tree, find its minimum depth:
