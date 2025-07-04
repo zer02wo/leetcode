@@ -14,6 +14,43 @@
  * @return {number}
  */
 var minDepth = function(root) {
+    // typically opt for iterative solutions
+    // but given that we need to pass [node,depth] between iterations
+    // this makes more sense for a recursive function
+
+    if (!root) {
+        return 0; // empty/null node = no depth
+    }
+
+    // leaf node
+    if (!root.left && !root.right) {
+        return 1;
+    }
+
+    // +1 is used below to account for the parent node
+
+    // no left subtree
+    if (!root.left) {
+        // search the right subtree
+        return minDepth(root.right) + 1;
+    }
+
+    // no right subtree
+    if (!root.right) {
+        // search the left subtree
+        return minDepth(root.left) + 1;
+    }
+
+    // search both subtrees
+    return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
+
+    // 6 ms / beats 39.09%
+    // glad I did not opt for DFS initially
+        // the approach simply wasn't clicking for me, so I looked at other's solutions
+        // and it's much less efficient than BFS too
+};
+
+var minDepthBFS = function(root) {
     if (!root) {
         return 0; // no nodes = depth of 0
     }
@@ -80,3 +117,4 @@ var minDepth = function(root) {
 // recursion may be a more intuitive solution in this case
 
 // let's start with BFS
+// and now let's try DFS
