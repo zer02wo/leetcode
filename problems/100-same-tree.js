@@ -20,6 +20,26 @@ var isSameTree = function(p, q) {
         return true;
     }
 
+    // node values are equal
+        // use optional chaining to prevent need for extra condition
+    if (p?.val === q?.val) {
+        // recursively check left subtree and right subtree
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+
+    return false;
+
+    // 0 ms / beats 100%
+    // this is an incredibly intuitive solution to read
+    // I definitely need to consider recursion more
+};
+
+var isSameTreeBFSIterative = function(p, q) {
+    // both trees have 0 nodes
+    if (!p && !q) {
+        return true;
+    }
+
     // one tree has 0 nodes, the other does not
     if (!p || !q) {
         return false;
