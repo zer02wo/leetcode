@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/path-sum/
-// tags: easy, binary tree
+// tags: easy, binary tree, depth-first search
 
 /**
  * Definition for a binary tree node.
