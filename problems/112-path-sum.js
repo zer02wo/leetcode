@@ -15,7 +15,29 @@
  * @return {boolean}
  */
 var hasPathSum = function(root, targetSum) {
+    // handle base case of root = []
+    // also handles recursive child search for empty left or right subtrees
+    if (!root) {
+        return false;
+    }
 
+    // check leaf node
+    if (!root.left && !root.right) {
+        // determine if root -> leaf path === targetSum
+        return targetSum === root.val;
+    }
+
+    // not a leaf node, so include in root -> leaf path sum
+    targetSum -= root.val;
+
+    // recursively search left/right subtrees
+    return hasPathSum(root.left, targetSum) || hasPathSum(root.right, targetSum);
+
+    // 0 ms / beats 100%
+    // perhaps it's just the order of the questions I'm picking,
+        // but recursion gets used a lot for binary tree problems
+    // an iterative solution is possible, but would require a modified stack:
+        // [[node, prevSum]] or [[node, newTarget]]
 };
 
 // given root of a binary tree and an integer targetSum
@@ -43,3 +65,11 @@ var hasPathSum = function(root, targetSum) {
         // or totalSum - previous values from nodes on the branch
     // this means we don't need to declare a helper function within the provided function skeleton
         // as we already have two arguments: a node, an integer value
+
+// handle base case
+    // i.e. when root = []
+// check for leaf node
+    // check if root -> leaf sum === original targetSum
+        // i.e. targetSum - leaf.val === 0
+// else recursively search child nodes, including current node in root -> leaf path
+    // i.e. subtract current node value from targetSum
