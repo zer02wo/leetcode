@@ -40,6 +40,48 @@ var hasPathSum = function(root, targetSum) {
         // [[node, prevSum]] or [[node, newTarget]]
 };
 
+var hasPathSumIterativeDFS = function(root, targetSum) {
+    // handle base case of root = []
+    if (!root) {
+        return false;
+    }
+
+    let stack = [[root, targetSum]];
+
+    while (stack.length) {
+        // get current node and current target value for root -> leaf path
+        let [node, pathTarget] = stack.pop();
+
+        // include current node in root -> leaf path sum
+        pathTarget -= node.val;
+
+        // check leaf node matches target root -> leaf path sum
+        if (!node.left && !node.right && pathTarget === 0) {
+            // i.e. targetSum - (all root->leaf path values) === 0
+            return true;
+        }
+
+        // add right subtree to search stack
+        if (node.right) {
+            stack.push([node.right, pathTarget]);
+        }
+
+        // add left subtree to search stack
+        if (node.left) {
+            stack.push([node.left, pathTarget]);
+        }
+    }
+
+    // all nodes searched but no matching root -> leaf sum found
+    return false;
+
+    // 9 ms / beats 5.24%
+    // I'm surprised the iterative version of this is *so* much slower
+        // given that they're both DFS
+    // the 2D array operations must slow this down quite a bit?
+        // as well as increasing used memory
+};
+
 // given root of a binary tree and an integer targetSum
     // return true if tree has a root-to-leaf path summing to equal targetSum
 
