@@ -14,6 +14,23 @@
  * @return {number}
  */
 var maxDepth = function(root) {
+    // empty node
+    if (!root) {
+        return 0;
+    }
+
+    // recursively search left / right subtrees
+    // +1 to account for current node in depth
+    return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+
+    // 0 ms / beats 100%
+    // much cleaner solution,
+        // I do think using the helper function is more explicit
+        // but this solution is more optimal
+    // O(n) time complexity, O(h) space complexity (maximum height of binary tree)
+};
+
+var maxDepthRecursiveHelperDFS = function(root) {
     function findDeepestNode(node, prevDepth) {
         // empty node, return previous depth
         if (!node) {
@@ -37,7 +54,7 @@ var maxDepth = function(root) {
     // 1 ms / beats 48.25%
     // very happy with getting to this recursive DFS solution,
         // but seems like there is a more efficient approach
-    // TODO: look for improvement
+    // O(n) time complexity, O(h) space complexity (maximum height of binary tree)
 };
 
 // given the root of a binary tree, return its maximum depth:
@@ -52,3 +69,13 @@ var maxDepth = function(root) {
     // within an iterative solution we would need to create a modified stack:
         // e.g. [[node, prevDepth]]
     // which would be easier to do in a recursive helper function (node, prevDepth)
+
+// IMPROVEMENT:
+// we don't need to supply a (prevDepth) argument for a recursive solution
+// from the root node we have a left & right subtree
+    // the maximum depth is therefore the subtree with the greatest depth
+    // i.e. Math.max(root.left, root.right)
+// given that we're asking for depth (rather than height), we also need to +1 for the root node
+    // i.e. Math.max(root.left, root.right) + 1
+// this formula can be applied recursively, where each subtree becomes its own root node
+    // i.e. +1 for every node visited in the root -> leaf path (+0 for when you reach a null/empty node)
