@@ -14,7 +14,30 @@
  * @return {number}
  */
 var maxDepth = function(root) {
+    function findDeepestNode(node, prevDepth) {
+        // empty node, return previous depth
+        if (!node) {
+            return prevDepth;
+        }
 
+        // increment prevDepth for current node depth - new variable for readability
+        const curDepth = ++prevDepth;
+
+        // check leaf node
+        if (!node.left && !node.right) {
+            return curDepth;
+        }
+
+        // not a leaf node, recursively search child nodes
+        return Math.max(findDeepestNode(node.left, curDepth), findDeepestNode(node.right, curDepth));
+    }
+
+    return findDeepestNode(root, 0);
+
+    // 1 ms / beats 48.25%
+    // very happy with getting to this recursive DFS solution,
+        // but seems like there is a more efficient approach
+    // TODO: look for improvement
 };
 
 // given the root of a binary tree, return its maximum depth:
