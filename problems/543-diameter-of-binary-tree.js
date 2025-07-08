@@ -14,7 +14,13 @@
  * @return {number}
  */
 var diameterOfBinaryTree = function(root) {
+    if (!root) {
+        return 0;
+    }
 
+    // TODO: this is accounting for *every* node in the tree, not just along the deepest path
+        // very quick attempt to build off previous solution for leetcode #104
+    return diameterOfBinaryTree(root.left) + diameterOfBinaryTree(root.right) + 1;
 };
 
 // given root of binary tree, return the length of the diameter of the tree
