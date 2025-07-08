@@ -37,7 +37,8 @@ var diameterOfBinaryTree = function(root) {
     }
 
     // 1 ms / beats 87.18%
-    // O(n) time complexity, O(h) space complexity (h = height of tree)
+    // O(n) time complexity
+    // O(h) space complexity (h = height of tree) due to recursive call stack
 
     // great solution here: https://leetcode.com/problems/diameter-of-binary-tree/
         // includes great/visual explanation here: https://www.youtube.com/watch?v=Tu-9JVF0Mz0
@@ -46,6 +47,7 @@ var diameterOfBinaryTree = function(root) {
         // would've really struggled to get this without a hint
         // I had the initial logic/formula for the diameter,
         // but tried to early/over-optimise without a helper function
+    // probably one I will need to revisit to really cement the idea in my head
 };
 
 // given root of binary tree, return the length of the diameter of the tree
@@ -69,3 +71,20 @@ var diameterOfBinaryTree = function(root) {
     // but I'm not provided an example where this isn't the case
     // maybe a situation where e.g. a child node in the left subtree has two deep subtrees
         // and no right subtree is provided from the root node
+
+// example walkthrough:
+
+// nodes [4] and [5] have no child nodes,
+// i.e. their subtrees have a maximum depth of 0
+// max(left, right) + 1 when backtracking up to node [2]
+
+// node [2] has two children, each with a maximum depth of 1
+// therefore the current diameter = max(left) + max(right) = 1 + 1 = 2
+// max(left, right) + 1 when backtracking up to node [1]
+
+// node [1] has two children:
+    // left subtree has a maximum depth of 2
+    // right subtree has a maximum depth of 1
+// therefore, the current diameter = max(left) + max(right) = 2 + 1 = 3
+
+// no parent nodes to backtrack to, END
