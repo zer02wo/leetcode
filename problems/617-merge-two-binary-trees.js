@@ -15,7 +15,31 @@
  * @return {TreeNode}
  */
 var mergeTrees = function(root1, root2) {
+    // both nodes null
+    if (!root1 && !root2) {
+        return null;
+    }
 
+    // handle if either node is null
+    const mergedNode = root1 || root2;
+
+    // nodes present from both trees
+    if (root1 && root2) {
+        // "merge" (sum) values from both trees
+        mergedNode.val = root1.val + root2.val;
+    }
+
+    // recursively merge children nodes
+        // optional chaining to handle null nodes
+    mergedNode.left = mergeTrees(root1?.left, root2?.left);
+    mergedNode.right = mergeTrees(root1?.right, root2?.right);
+
+    return mergedNode;
+
+    // 3 ms / beats 13.12% (first run)
+    // 1 ms / beats 66.67% (second run)
+    // TODO: investigate how to optimise
+        // or is this just variance?
 };
 
 // given roots of two binary trees
