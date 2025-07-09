@@ -14,6 +14,33 @@
  * @param {TreeNode} root2
  * @return {TreeNode}
  */
+var mergeTreesAlt = function(root1, root2) {
+    // either node null
+    // also handles when both null
+    if (!root1 || !root2) {
+        // return other node
+        return root1 || root2;
+    }
+
+    // nodes present from both trees, use tree1 as merge
+    // "merge" (sum) values from both trees
+    root1.val += root2.val;
+
+    // recursively merge children nodes
+    root1.left = mergeTrees(root1.left, root2.left);
+    root1.right = mergeTrees(root1.right, root2.right);
+
+    return root1;
+
+    // 1 ms / beats 66.67% (first run)
+    // 1 ms / beats 66.67% (second run)
+    // O(n) time complexity - total number of nodes in merged tree
+    // O(h) space complexity - call stack equal to height of the larger tree
+
+    // this solution would be more concise (without my comments)
+        // but I do like the explicit/verbose way each case is handled in the previous one
+};
+
 var mergeTrees = function(root1, root2) {
     // both nodes null
     if (!root1 && !root2) {
@@ -38,8 +65,11 @@ var mergeTrees = function(root1, root2) {
 
     // 3 ms / beats 13.12% (first run)
     // 1 ms / beats 66.67% (second run)
-    // TODO: investigate how to optimise
-        // or is this just variance?
+    // O(n) time complexity - total number of nodes in merged tree
+    // O(h) space complexity - call stack equal to height of the larger tree
+
+    // really happy with getting to this solution as quickly/efficiently as I did
+        // recursive binary trees actually felt intuitive after previous days questions
 };
 
 // given roots of two binary trees
@@ -60,7 +90,8 @@ var mergeTrees = function(root1, root2) {
     // we can update one of the existing trees to reduce new space used
 // a recursive solution likely makes sense, as we're given a function to deal with two nodes at a time
     // i.e. we can recursively merge the two nodes
-// an iterative solution would be possible, probably BFS with a queue for each tree
+// an iterative solution would be possible, probably BFS with a queue for each tree?
+    // or a modified queue with subarray of nodes from each tree
 
 // cases:
     // both nodes are null
