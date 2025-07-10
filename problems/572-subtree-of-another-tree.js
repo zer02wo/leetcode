@@ -15,7 +15,26 @@
  * @return {boolean}
  */
 var isSubtree = function(root, subRoot) {
+    // base / leaf node case
+    if (!root && !subRoot) {
+        return true;
+    } else if (!root || !subRoot) {
+        // either node is null, not equal/subtree
+        return false;
+    }
 
+    if (root.val !== subRoot.val) {
+        // recursively check subtrees of root for subRoot tree
+        return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+    }
+
+    // recursively check if current root is identical to subRoot
+    return root.val === subRoot.val
+        && isSubtree(root.left, subRoot.left)
+        && isSubtree(root.right, subRoot.right);
+
+    // TODO: fails for following test case:
+        // root = [1,1], subRoot = [1]
 };
 
 // given roots of two binary trees (root and subRoot)
