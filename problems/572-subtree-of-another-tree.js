@@ -15,6 +15,24 @@
  * @return {boolean}
  */
 var isSubtree = function(root, subRoot) {
+    // searched entire root tree
+    if (!root) {
+        return false;
+    }
+
+    // if not identical, recursively check subtrees of root for subRoot tree
+    return isIdentical(root, subRoot)
+        || isSubtree(root.left, subRoot)
+        || isSubtree(root.right, subRoot);
+
+    // 10 ms / beats 20.77% (first run)
+    // 6 ms / beats 82.26% (second run)
+
+    // I liked this question until it introduced duplicates
+    // needing to define a second recursive helper function outside the initial recursive function was unintuitive
+        // maybe I'm just used to solving problems within the confines of the provided skeleton function
+};
+function isIdentical(root, subRoot) {
     // base / leaf node case
     if (!root && !subRoot) {
         return true;
@@ -23,21 +41,10 @@ var isSubtree = function(root, subRoot) {
         return false;
     }
 
-    // recursively check if current root is identical to subRoot
-    const isIdentical = root.val === subRoot.val
-        && isSubtree(root.left, subRoot.left)
-        && isSubtree(root.right, subRoot.right);
-
-    // only return if identical to continue searching subtrees
-    if (isIdentical) {
-        return true;
-    }
-
-    // recursively check subtrees of root for subRoot tree
-    return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
-
-    // TODO: fails for following test case:
-        // root = [3,4,5,1,null,2], subRoot = [3,1,2]
+    // if root nodes are identical, recursively compare subtrees
+    return root.val === subRoot.val
+        && isIdentical(root.left, subRoot.left)
+        && isIdentical(root.right, subRoot.right);
 };
 
 // given roots of two binary trees (root and subRoot)
