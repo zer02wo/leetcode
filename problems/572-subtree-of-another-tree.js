@@ -23,18 +23,21 @@ var isSubtree = function(root, subRoot) {
         return false;
     }
 
-    if (root.val !== subRoot.val) {
-        // recursively check subtrees of root for subRoot tree
-        return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
-    }
-
     // recursively check if current root is identical to subRoot
-    return root.val === subRoot.val
+    const isIdentical = root.val === subRoot.val
         && isSubtree(root.left, subRoot.left)
         && isSubtree(root.right, subRoot.right);
 
+    // only return if identical to continue searching subtrees
+    if (isIdentical) {
+        return true;
+    }
+
+    // recursively check subtrees of root for subRoot tree
+    return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+
     // TODO: fails for following test case:
-        // root = [1,1], subRoot = [1]
+        // root = [3,4,5,1,null,2], subRoot = [3,1,2]
 };
 
 // given roots of two binary trees (root and subRoot)
