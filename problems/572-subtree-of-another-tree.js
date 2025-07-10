@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/subtree-of-another-tree/
-// tags: easy, binary tree,
+// tags: easy, binary tree, depth-first search
 
 /**
  * Definition for a binary tree node.
@@ -27,6 +27,8 @@ var isSubtree = function(root, subRoot) {
 
     // 10 ms / beats 20.77% (first run)
     // 6 ms / beats 82.26% (second run)
+    // O(n*m) time complexity - O(n) calls of isIdentical, which compute in O(m) time each
+    // O(h) space complexity - h = height of the tree, recursive stack call
 
     // I liked this question until it introduced duplicates
     // needing to define a second recursive helper function outside the initial recursive function was unintuitive
