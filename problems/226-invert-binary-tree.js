@@ -14,7 +14,26 @@
  * @return {TreeNode}
  */
 var invertTree = function(root) {
+    if (!root) {
+        return null;
+    }
 
+    // swap current node left/right
+    const tempLeft = root.left;
+    root.left = root.right;
+    root.right = tempLeft;
+
+    // recursively invert subtree of child nodes
+    invertTree(root.left);
+    invertTree(root.right);
+
+    return root;
+
+    // 0 ms / beats 100%
+    // O(n) time complexity, O(n) space complexity
+
+    // arrived at this solution really quickly, really happy with it
+    // TODO: feels like there's probably a way to optimise the assignment (without a temp variable/separate calls)
 };
 
 // given root of binary tree, invert the tree and return its root
