@@ -34,6 +34,9 @@ var invertTree = function(root) {
 
     // arrived at this solution really quickly, really happy with it
     // TODO: feels like there's probably a way to optimise the assignment (without a temp variable/separate calls)
+        // yes, here's a one-liner to both swap the current nodes and apply recursively to the child nodes
+            // [root.left, root.right] = [invertTree(root.right), invertTree(root.left)];
+        // keeping original solution for posterity/readability
 };
 
 // given root of binary tree, invert the tree and return its root
