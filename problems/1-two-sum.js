@@ -53,3 +53,11 @@ var twoSum = function(nums, target) {
 // the problem also suggests coming up with improved over O(n^2)
     // but nothing is immediately coming to mind
     // start with brute force and see if that jogs any ideas
+
+// intuition:
+// within the brute force solutiong we're checking every element multiple times
+    // if we created an additional data structure, like a HashMap
+    // we can do an O(n) operation to populate the count of numbers
+        // value => index mapping
+    // then loop through again (another O(n) operation)
+        // then we can do an O(1) lookup to get the index for (target - currentValue)
