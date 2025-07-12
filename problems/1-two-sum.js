@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/two-sum/
-// tags: easy, array
+// tags: easy, array, HashMap
 
 /**
  * @param {number[]} nums
@@ -7,32 +7,30 @@
  * @return {number[]}
  */
 var twoSum = function(nums, target) {
-    // create map of value => index
+    // value => index mapping for nums
     const numMap = new Map();
 
     for (let i = 0; i < nums.length; i++) {
-        numMap.set(nums[i], i);
-    }
+        const num = nums[i];
+        const sumPair = target - num;
 
-    // find the counterpart for nums[i] - target in the map
-    for (let i = 0; i < nums.length; i++) {
-        const sumPair = target - nums[i];
-
-        // check value exists in map, prevent duplicate index
-        if (pairIndex = numMap.get(sumPair)) {
-            if (pairIndex !== i) {
-                return [i, pairIndex];
-            }
+        // check if complement exists in HashMap
+        if (numMap.has(sumPair)) {
+            return [i, numMap.get(sumPair)];
         }
+
+        // add to value => index mapping
+        numMap.set(num, i);
     }
 
     // should never occur given constraints
     return -1;
 
-    // 4 ms / beats 55.39%
-    // O(n) time complexity - 2 loops worst case
+    // 4 ms / beats 55.39% (2 loops)
+    // 0 ms / beats 100% (1 loop)
+    // O(n) time complexity - 1 loop worst case
+        // HashMap allows O(1) lookups for sum complement
     // O(n) space complexity - store value => index key in HashMap
-    // TODO: how can we improve this further?
 };
 
 var twoSumBruteForce = function(nums, target) {
