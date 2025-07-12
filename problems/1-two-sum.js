@@ -7,6 +7,35 @@
  * @return {number[]}
  */
 var twoSum = function(nums, target) {
+    // create map of value => index
+    const numMap = new Map();
+
+    for (let i = 0; i < nums.length; i++) {
+        numMap.set(nums[i], i);
+    }
+
+    // find the counterpart for nums[i] - target in the map
+    for (let i = 0; i < nums.length; i++) {
+        const sumPair = target - nums[i];
+
+        // check value exists in map, prevent duplicate index
+        if (pairIndex = numMap.get(sumPair)) {
+            if (pairIndex !== i) {
+                return [i, pairIndex];
+            }
+        }
+    }
+
+    // should never occur given constraints
+    return -1;
+
+    // 4 ms / beats 55.39%
+    // O(n) time complexity - 2 loops worst case
+    // O(n) space complexity - store value => index key in HashMap
+    // TODO: how can we improve this further?
+};
+
+var twoSumBruteForce = function(nums, target) {
     // for each element
     for (let i = 0; i < nums.length; i++) {
         // check if every other element can sum to target
