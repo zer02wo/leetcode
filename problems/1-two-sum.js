@@ -7,7 +7,23 @@
  * @return {number[]}
  */
 var twoSum = function(nums, target) {
+    // for each element
+    for (let i = 0; i < nums.length; i++) {
+        // check if every other element can sum to target
+        for (let j = i+1; j < nums.length; j++) {
+            if (nums[i] + nums[j] === target) {
+                return [i,j];
+            }
+        }
+    }
 
+    // should never occur given constraints
+    return [-1];
+
+    // 33 ms / beats 34.59%
+    // O(n^2) time complexity, O(1) space complexity
+    // not awful for a brute force solution
+        // but we're doing a lot of repeated work
 };
 
 // given array of integers `nums` and an integer `target`:
