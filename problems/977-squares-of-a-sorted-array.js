@@ -6,7 +6,40 @@
  * @return {number[]}
  */
 var sortedSquares = function(nums) {
+    const output = [];
 
+    // "negative" and "positive" variable names are used to make this more intuitive to read
+    // but this also works in scenarios where all values in nums are of the same sign
+    // but it would be more accurate to label these as "lower" and "upper" (or left/right)
+    let negIdx = 0;
+    let posIdx = nums.length-1;
+
+    // all elements visited when pointers overlap
+    while (negIdx <= posIdx) {
+        const negNum = nums[negIdx];
+        const posNum = nums[posIdx];
+
+        // we have a negative number with a greater magnitude than any positive number
+        if (Math.abs(negNum) >= Math.abs(posNum)) {
+            // push squared value to array
+            output.push(negNum * negNum);
+            // iterate inwards
+            negIdx++;
+        } else { // we have a positive number with a greater magnitude than any negative number
+            // push squared value to array
+            output.push(posNum * posNum);
+            // iterate inwards
+            posIdx--;
+        }
+    }
+
+    // squared values have been added in descending ("non-increasing") order, so reverse it
+    return output.reverse();
+
+    // 4 ms / beats 73.35%
+    // O(n) time complexity, O(1) space complexity
+    // I did see the topic hint for "two pointers",
+        // otherwise it would've taken me a bit longer to think of this
 };
 
 // given integer array `nums` sorted in ascending (""non-decreasing"") order
