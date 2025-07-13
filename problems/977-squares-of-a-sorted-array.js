@@ -37,9 +37,26 @@ var sortedSquares = function(nums) {
     return output.reverse();
 
     // 4 ms / beats 73.35%
-    // O(n) time complexity, O(1) space complexity
+    // O(n) time complexity, O(n) space complexity
     // I did see the topic hint for "two pointers",
         // otherwise it would've taken me a bit longer to think of this
+};
+
+var sortedSquaresBruteForce = function(nums) {
+    // brute force/unoptimal solution
+
+    // calculate squares for each element
+    for (let i = 0; i < nums.length; i++) {
+        nums[i] = nums[i] ** 2;
+    }
+
+    // return array sorted in "non-decreasing" order
+    return nums.sort((a, b) => a - b);
+
+    // 13 ms / beats 18.17%
+    // O(n log n) time complexity - due to sorting
+    // O(1) space complexity - due to modifying existing array
+        // although nums.sort() may actually be O(n) space for JS
 };
 
 // given integer array `nums` sorted in ascending (""non-decreasing"") order
