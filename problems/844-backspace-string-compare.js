@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/backspace-string-compare/
-// tags: easy, string
+// tags: easy, string, two pointers
 
 /**
  * @param {string} s
@@ -7,6 +7,33 @@
  * @return {boolean}
  */
 var backspaceCompare = function(s, t) {
+    let sIdx = s.length - 1;
+    let tIdx = t.length - 1;
+
+    // iterate backwards through strings
+    while (sIdx >= 0 || tIdx >= 0) {
+        // TODO: this doesn't account for consecutive backspaces
+        while (s[sIdx] === '#') {
+            sIdx -= 2;
+        }
+        while (t[tIdx] === '#') {
+            tIdx -= 2;
+        }
+
+        // check if characters are equal
+        if (s[sIdx] !== t[tIdx]) {
+            return false;
+        }
+
+        // continue iteration
+        sIdx--;
+        tIdx--;
+    }
+
+    return true;
+};
+
+var backspaceCompareBruteForce = function(s, t) {
     // helper function to reduce code duplication
     function renderBackspaces(str) {
         const output = [];
@@ -88,3 +115,9 @@ var backspaceCompare = function(s, t) {
 
 // TODO: the problem suggests an O(n) time and O(1) space solution is possible
     // this would mean modifying the existing string
+// I saw a hint for this to iterate backwards which makes this much simpler
+    // as we're not returning the strings, just a boolean value
+    // we don't need to modify/swap any values in the string
+// use a pointer in each string starting at the end
+    // whenever encountering a '#' skip ahead
+        // continue doing this until both strings are at a lowercase letter character to compare
