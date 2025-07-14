@@ -12,13 +12,20 @@ var backspaceCompare = function(s, t) {
 
     // iterate backwards through strings
     while (sIdx >= 0 || tIdx >= 0) {
-        // TODO: this doesn't account for consecutive backspaces
+        // TODO: this also doesn't seem comprehensive enough (even if I fix the sIdx/tIdx not being updated)
+            // i.e. what if we go into another backspace character?
+            // TODO: convert to helper function
+        let sBackspaces = 0;
         while (s[sIdx] === '#') {
-            sIdx -= 2;
+            sBackspaces++;
         }
+        sIdx -= sBackspaces;
+
+        let tBackspaces = 0;
         while (t[tIdx] === '#') {
-            tIdx -= 2;
+            tBackspaces++;
         }
+        tIdx -= tBackspaces;
 
         // check if characters are equal
         if (s[sIdx] !== t[tIdx]) {
