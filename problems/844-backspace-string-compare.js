@@ -7,25 +7,36 @@
  * @return {boolean}
  */
 var backspaceCompare = function(s, t) {
+    // helper function to skip over backspace(d) characters
+    function findNextChar(i, str) {
+        let backspaces = 0;
+
+        while (i >= 0) {
+            if (str[i] === '#') { // backspace character
+                // increase number of backspaces
+                backspaces++;
+            } else if (backspaces > 0) { // letter character, with backspaces to perform
+                // reduce number of backspaces to perform
+                backspaces--;
+            } else { // no backspaces remaining, reached next character
+                break;
+            }
+
+            i--;
+        }
+
+        return i;
+    }
+
+    // two pointers, iterating backwards through strings
     let sIdx = s.length - 1;
     let tIdx = t.length - 1;
 
     // iterate backwards through strings
     while (sIdx >= 0 || tIdx >= 0) {
-        // TODO: this also doesn't seem comprehensive enough (even if I fix the sIdx/tIdx not being updated)
-            // i.e. what if we go into another backspace character?
-            // TODO: convert to helper function
-        let sBackspaces = 0;
-        while (s[sIdx] === '#') {
-            sBackspaces++;
-        }
-        sIdx -= sBackspaces;
-
-        let tBackspaces = 0;
-        while (t[tIdx] === '#') {
-            tBackspaces++;
-        }
-        tIdx -= tBackspaces;
+        // find next character after skipping backspace(d) characters
+        sIdx = findNextChar(sIdx, s);
+        tIdx = findNextChar(tIdx, t);
 
         // check if characters are equal
         if (s[sIdx] !== t[tIdx]) {
@@ -38,6 +49,12 @@ var backspaceCompare = function(s, t) {
     }
 
     return true;
+
+    // 0 ms / beats 100%
+    // O(n) time complexity - characters are only visited once, despite nested loops
+    // O(1) space complexity - two pointers only memory created
+    // jumps up quite a bit in difficulty to do it this way,
+    // I still feel like the helper function isn't particularly readable/intuitive
 };
 
 var backspaceCompareBruteForce = function(s, t) {
