@@ -82,3 +82,54 @@ var majorityElementSorting = function(nums) {
     // current number of votes
     // current element associated with those votes
 // if the current element has no votes, a new element is 'elected' for the voting system
+
+
+
+// REVISITING PROBLEM:
+// already seen from my notes above/glimpse at previous solution before resetting that this uses the voting algorithm
+// because we know there is a *majority* that appears more than n / 2 times (i.e. 50%)
+    // we keep track of a `candidate` and assign them votes each time the element appears
+    // but we subtract votes whenever another element appears
+    // if the vote count reaches 0, assign the current element as the new candidate
+// because the majority element will have more than [n / 2] of the "votes"
+    // even after subtracting all the other votes it will still remain at the end
+
+// an alternative solution would be to use a HashMap
+    // O(n) to collect the count for each element
+        // as soon as an item count is greater than 50%, it can be returned
+        // no need for an additional loop
+
+// another alternative is to sort the array in O(n log n) time complexity
+    // then return the midpoint
+    // as we know the majority element takes up over 50% of the array
+        // when sorted, it has to pass through the midpoint
+        // (even if it is also the smallest or largest number in the array)
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var majorityElement = function(nums) {
+    let candidate = nums[0];
+    let votes = 1;
+
+    for (let i = 0; i < nums.length; i++) {
+        // vote for/against candidate
+        if (nums[i] === candidate) {
+            votes++;
+        } else {
+            votes--;
+        }
+
+        // elect a new candidate
+        if (votes === 0) {
+            candidate = nums[i];
+            votes = 1;
+        }
+    }
+
+    return candidate;
+
+    // 6 ms / beats 36.64% (variance?)
+    // O(n) time complexity, O(1) space complexity
+};
