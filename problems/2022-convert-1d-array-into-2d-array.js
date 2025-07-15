@@ -17,16 +17,17 @@ var construct2DArray = function(original, m, n) {
 
     // 2D output array
     const output = [];
-    // number of elements in each row of matrix
-    const rowSize = original.length / m;
     // outer index for original array
     let i = 0;
 
     while (i < original.length) {
         const row = [];
 
-        // construct 1D row array of appropriate size
-        for (let j = 0; j < rowSize; j++) {
+        // alternatively, instead of nested loops, use slice:
+        // original.slice(i * n, (i+1) * n);
+
+        // construct 1D row array of appropriate size (number of columns)
+        for (let j = 0; j < n; j++) {
             row.push(original[i]);
             i++;
         }
@@ -37,10 +38,10 @@ var construct2DArray = function(original, m, n) {
 
     return output;
 
-    // 13 ms / beats 32.88%
+    // 13 ms / beats 32.88% (first run)
+    // 4 ms / beats 88.36% (second run)
     // O(n) time complexity - visits each element once, despite nested loops
     // O(n) space complexity - 2D array size directly proportional to size of 1D input array
-    // TODO: why is performance so poor?
 };
 
 // given 0-index 1D integer array `original`, and two integers `m` and `n`:
