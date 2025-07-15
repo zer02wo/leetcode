@@ -8,7 +8,39 @@
  * @return {number[][]}
  */
 var construct2DArray = function(original, m, n) {
+    // check if matrix is possible/valid
+    if (m * n !== original.length) {
+        // problem says to return empty 2D array
+        // but actually expects empty 1D array?
+        return [];
+    }
 
+    // 2D output array
+    const output = [];
+    // number of elements in each row of matrix
+    const rowSize = original.length / m;
+    // outer index for original array
+    let i = 0;
+
+    while (i < original.length) {
+        const row = [];
+
+        // construct 1D row array of appropriate size
+        for (let j = 0; j < rowSize; j++) {
+            row.push(original[i]);
+            i++;
+        }
+
+        // push row to 2D array
+        output.push(row);
+    }
+
+    return output;
+
+    // 13 ms / beats 32.88%
+    // O(n) time complexity - visits each element once, despite nested loops
+    // O(n) space complexity - 2D array size directly proportional to size of 1D input array
+    // TODO: why is performance so poor?
 };
 
 // given 0-index 1D integer array `original`, and two integers `m` and `n`:
