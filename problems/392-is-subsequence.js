@@ -164,3 +164,41 @@ var isSubsequence = function(s, t) {
 // when both pointers have the same value,
     // start looking for the next string in the subsequence
 // otherwise, continue looking in original string 't' until it is exhausted
+
+// EXAMPLE WALKTHROUGH: s = 'abc', t = 'ahbgdc'
+
+// v
+// abc
+// ahbgdc
+// ^
+    // match found, progress s pointer
+
+//  v
+// abc
+// ahbgdc
+//  ^
+    // no match found, only progress t pointer
+
+//  v
+// abc
+// ahbgdc
+//   ^
+
+//   v
+// abc
+// ahbgdc
+//    ^
+
+//   v
+// abc
+// ahbgdc
+//     ^
+
+//   v
+// abc
+// ahbgdc
+//      ^
+    // both strings exhausted at same time, loop ends
+
+// sp = 3 === s.length
+    // therefore it is a subsequence, return true
