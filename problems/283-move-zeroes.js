@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/move-zeroes/
-// tags: easy, arrays
+// tags: easy, arrays, two pointers
 
 /**
  * @param {number[]} nums
@@ -72,3 +72,33 @@ var moveZeroes = function(nums) {
         }
     }
 }
+
+
+// REVISITING problem:
+
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function(nums) {
+    let nonZeroPos = 0;
+
+    for (let i = 0; i < nums.length; i++) {
+        // current element is 0, swap with known non-zero position
+        if (nums[i] !== 0) {
+            [nums[i], nums[nonZeroPos]] = [nums[nonZeroPos], nums[i]];
+            nonZeroPos++;
+        }
+    }
+
+    // 5 ms / beats 25.87% (not sure why this is so slow?)
+    // O(n) time complexity, O(1) space complexity
+};
+
+// I vaguely remember a two pointers solution for this:
+    // first pointer moves start -> end and looks for next non-zero element
+    // second pointer moves start -> end and keeps track of current count of non-zero elements
+        // defines the position to swap non-zero values to
+// swap pointers when current value !== 0
+    // then continue iteration
+// better explained/walkthrough here: https://leetcode.com/problems/move-zeroes/solutions/6743967/video-two-pointer-solution/
