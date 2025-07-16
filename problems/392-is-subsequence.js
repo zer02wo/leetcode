@@ -118,3 +118,49 @@ var isSubsequenceWithRestart = function(s, t) {
             // feels pretty similar to that problem in general
 
 // not using String.indexOf() as that feels like cheating
+
+
+
+// REVISITING problem:
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isSubsequence = function(s, t) {
+    // pointer for subsequence s
+    let sp = 0;
+    // pointer for original string t
+    let tp = 0;
+
+    // continue until either string out of bounds
+    while (sp < s.length && tp < t.length) {
+        // value in subsequence found
+        if (s[sp] === t[tp]) {
+            // look for next value in subsequence
+            sp++;
+        }
+
+        // continue searching original string
+        tp++;
+    }
+
+    // if all values are found,
+        // pointer for subsequence will match subsequence length
+    // else, not all values in subsequence were found
+    return sp === s.length;
+
+    // 3 ms / beats 20.53% (first run)
+    // 1 ms / beats 74.33% (second run)
+    // O(n) time complexity, O(1) space complexity
+};
+
+// I've already seen the topic hint for two pointers,
+    // else I may have overengineered an initial solution
+
+// we need to keep track of s & t simulateneously,
+    // so we have a pointer for each string
+// when both pointers have the same value,
+    // start looking for the next string in the subsequence
+// otherwise, continue looking in original string 't' until it is exhausted
