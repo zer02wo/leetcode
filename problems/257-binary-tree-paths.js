@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/binary-tree-paths/
-// tags: easy, binary tree
+// tags: easy, binary tree, depth-first search
 
 /**
  * Definition for a binary tree node.
@@ -14,7 +14,46 @@
  * @return {string[]}
  */
 var binaryTreePaths = function(root) {
+    const output = [];
 
+    function createTreePath(node, pathStr) {
+        // null node, nothing to add to path
+        if (!node) {
+            return;
+        }
+
+        // if previous node in path, add '->' to link previous node
+            // otherwise, first node in string so no link is added
+        const strLink = (pathStr !== '') ? '->' : '';
+
+        // update string path with current node
+        pathStr += strLink + node.val;
+
+        // leaf node
+        if (!node.left && !node.right) {
+            // push path to output
+            output.push(pathStr);
+            // no children to search
+            return;
+        }
+
+        // recursively search child nodes
+        createTreePath(node.left, pathStr);
+        createTreePath(node.right, pathStr);
+    }
+
+    createTreePath(root, '');
+
+    return output;
+
+    // 0 ms / beats 100%
+    // O(n) time complexity - recursively visits each node once
+    // O(n) space complexity - output array & recursive call stack
+
+    // very happy with how quickly I arrived at this solution
+        // glad I'm considering recursion first when dealing with binary trees
+        // iterative approach would've been much less intuitive I think
+    // TODO: what if we used an array for the path instead of a string?
 };
 
 // given root of a binary tree
