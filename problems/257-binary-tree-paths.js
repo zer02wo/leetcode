@@ -13,7 +13,48 @@
  * @param {TreeNode} root
  * @return {string[]}
  */
-var binaryTreePaths = function(root) {
+var binaryTreePathsArray = function(root) {
+    const output = [];
+
+    function createTreePath(node, pathArr) {
+        // null node, nothing to add to path
+        if (!node) {
+            return;
+        }
+
+        // push current node to path
+        pathArr.push(node.val);
+
+        // leaf node
+        if (!node.left && !node.right) {
+            // push string path to output, joining elements by '->' link
+            output.push(pathArr.join('->'));
+            // no children to search
+            return;
+        }
+
+        // recursively search child nodes - destructure array to clone/remove reference updates
+            // i.e. pass path array by value
+        createTreePath(node.left, [...pathArr]);
+        createTreePath(node.right, [...pathArr]);
+    }
+
+    createTreePath(root, []);
+
+    return output;
+
+    // 1 ms / beats 20.97% (first run)
+    // 1 ms / beats 20.97% (second run)
+    // I'm sure the 1ms is just runtime variance
+
+    // but this definitely does use more memory/doesn't seem worth it compared to string
+        // i.e. we don't need to use those previous values for anything other than output
+            // makes no sense to keep access to them in memory
+        // especially when we need to clone the array to update by value instead of reference
+            // does this make the space complexity O(n^2) ?
+};
+
+var binaryTreePathsString = function(root) {
     const output = [];
 
     function createTreePath(node, pathStr) {
@@ -84,8 +125,8 @@ var binaryTreePaths = function(root) {
         // push string representation to array
     // return output array once all nodes traversed
 
-// 2. iterative BFS/DFS
-    // create a modified stack/queue to keep track of previous nodes along path
+// 2. iterative DFS (or BFS)
+    // create a modified stack (or queue) to keep track of previous nodes along path
     // iterate through modified data structure and pop/shift elements as appropriate
         // update the relevant paths for the nodes
         // push to an output array when leaf node encountered
