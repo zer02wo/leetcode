@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/maximum-average-subarray-i/
-// tags: easy, array
+// tags: easy, array, sliding window
 
 /**
  * @param {number[]} nums
@@ -7,7 +7,32 @@
  * @return {number}
  */
 var findMaxAverage = function(nums, k) {
+    // initialise max average to lowest possible value
+    let maxAverage = -Infinity;
+    let windowSum = 0;
 
+    for (let i = 0; i < nums.length; i++) {
+        // add current number to sliding window
+        windowSum += nums[i];
+
+        // initialising first k values in sliding window
+        if (i < k-1) {
+            continue;
+        }
+
+        // remove previous number from sliding window
+        windowSum -= nums[i-k] ?? 0;
+        // calculate average for current values in sliding window
+        let windowAverage = windowSum / k;
+        // update maximum average if a higher value found in current window
+        maxAverage = Math.max(maxAverage, windowAverage);
+    }
+
+    return maxAverage;
+
+    // 8 ms / beats 13.62%
+    // O(n) time complexity, O(1) space complexity
+    // maybe overcomplicated this by trying to initialise the sliding window in the same loop
 };
 
 // given integer array `nums` consisting of `n` elements, and an integer `k`:
