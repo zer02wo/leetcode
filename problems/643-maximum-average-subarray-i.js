@@ -6,6 +6,39 @@
  * @param {number} k
  * @return {number}
  */
+var findMaxAverageImproved = function(nums, k) {
+    let windowSum = 0;
+
+    // initialise sliding window with k elements
+    for (let i = 0; i < k; i++) {
+        windowSum += nums[i];
+    }
+
+    // keep reference to the maximum sum instead of average
+        // prevents needing to calculate divison/average each iteration
+        // still equates to the highest average, due to fixed window size k
+    let maxSum = windowSum;
+
+    for (let i = k; i < nums.length; i++) {
+        // add new element to sliding window
+        windowSum += nums[i];
+        // remove old element from sliding window
+        windowSum -= nums[i-k];
+        // update maximum average if higher value found in current window
+        maxSum = Math.max(maxSum, windowSum);
+    }
+
+    // return average of maximum sum (i.e. the maximum average)
+    return maxSum / k;
+
+    // 1 ms / beats 99.01%
+    // O(n) time complexity, O(1) space complexity
+    // much more readable than the previous version
+    // also more efficient due to removing unnecessary calculations each iteration
+        // i.e. average is calculated at the end, instead of per iteration
+        // i.e. sliding window initialised in separate loop, no if condition check per iteration
+};
+
 var findMaxAverage = function(nums, k) {
     // initialise max average to lowest possible value
     let maxAverage = -Infinity;
