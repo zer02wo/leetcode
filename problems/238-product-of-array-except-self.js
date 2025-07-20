@@ -152,23 +152,34 @@ var productExceptSelfMapSuffixSum = function(nums) {
  */
 var productExceptSelf = function(nums)
 {
+    // array size
     const n = nums.length - 1;
+    // current cumulative product for numbers [0->n]
     let prefixProduct = 1;
+    // current cumulative product for numbers [n->0]
     let suffixProduct = 1;
-    const answer = [];
+    // prefill array to make prefix/suffix assignment easier
+        // use value `1` to allow multiplicative assignment
+    const answer = new Array(n+1).fill(1);
 
     for (let i = 0; i <= n; i++) {
-        // push "previous" prefix/suffix products (i.e. excluding current index)
-            // TODO: suffixProduct needs to be done in a separate pass
-                // i.e. prefixProduct pushes to answer[i]
-                // i.e. suffixProduct pushes to answer[n-i];
-                // eventually they will overlap with the appropriate values
-        answer.push(prefixProduct * suffixProduct);
-
-        // calculate prefix/suffix products (i.e. including current index)
+        // push "previous" prefix product to current index (i.e. excluding current index)
+        answer[i] *= prefixProduct;
+        // calculate prefix product including current index
         prefixProduct *= nums[i];
+
+        // push "previous" suffix product to current reverse index (i.e. excluding current relative index from end)
+        answer[n-i] *= suffixProduct;
+        // calculate suffix product including current reverse index
         suffixProduct *= nums[n-i];
     }
 
     return answer;
+
+    // 4 ms / beats 87.5%
+    // O(n) time complexity, O(n) space complexity
+    // to be a bit more intuitive/readable, this could be done in two loops/passes:
+        // first loop sets prefixProduct at each index
+        // second loop sets suffixProduct at each index
+    // I do like this pattern a lot though, this is a good question
 };
