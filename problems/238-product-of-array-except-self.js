@@ -138,3 +138,37 @@ var productExceptSelfMapSuffixSum = function(nums) {
     // 1 * (3 * 4) = prefixProduct[1] * suffixProduct[1]
     // 1 * 2 * (4) = prefixProduct[2] * suffixProduct[2]
     // 1 * 2 * 3 = prefixProduct[3]
+
+
+
+// REVISITING PROBLEM:
+// intuition: to exclude nums[i] you need nums[0->(i-1)] * nums[(i+1)->n]
+    // therefore we need a PrefixSum and SuffixSum (*Product, but Sum is the pattern term typically used)
+    // this is slightly given away within the question:
+        // "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer."
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var productExceptSelf = function(nums)
+{
+    const n = nums.length - 1;
+    let prefixProduct = 1;
+    let suffixProduct = 1;
+    const answer = [];
+
+    for (let i = 0; i <= n; i++) {
+        // push "previous" prefix/suffix products (i.e. excluding current index)
+            // TODO: suffixProduct needs to be done in a separate pass
+                // i.e. prefixProduct pushes to answer[i]
+                // i.e. suffixProduct pushes to answer[n-i];
+                // eventually they will overlap with the appropriate values
+        answer.push(prefixProduct * suffixProduct);
+
+        // calculate prefix/suffix products (i.e. including current index)
+        prefixProduct *= nums[i];
+        suffixProduct *= nums[n-i];
+    }
+
+    return answer;
+};
