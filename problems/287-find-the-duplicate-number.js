@@ -5,6 +5,46 @@
  * @param {number[]} nums
  * @return {number}
  */
+var findDuplicate = function(nums) {
+    // start pointers at 0, we know this is outside the cycle
+    let slow = 0;
+    let fast = 0;
+
+    while (true) {
+        // move slow pointer to next "node"
+        slow = nums[slow];
+        // move slow pointer 2 "nodes" ahead
+        fast = nums[nums[fast]];
+
+        // intersection point within cycle
+        if (slow === fast) {
+            break;
+        }
+    }
+
+    // create new slow pointer at 0 (outside the cycle)
+    let intersect = 0;
+
+    // move both slow pointers until they intersect
+    while (slow !== intersect) {
+        slow = nums[slow];
+        intersect = nums[intersect];
+    }
+
+    // pointers intersect at start of cycle (duplicate value)
+    return intersect;
+
+    // 6 ms / beats 84.88%
+    // absolutely had to look up the solution to this
+        // explanation/link to video below
+    // would not have even remotely thought about solving this in this manner
+        // definitely not a medium when forcing these constraints
+
+    // if there weren't *both* the constraints, I would've solved this easily
+        // i.e. either using a HashMap if extra memory allowed
+        // i.e. or using mark by negation if modifying original array allowed
+};
+
 var findDuplicateBruteForce = function(nums) {
     for (let i = 0; i < nums.length; i++) {
         for (let j = i+1; j < nums.length; j++) {
