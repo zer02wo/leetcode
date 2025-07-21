@@ -6,7 +6,19 @@
  * @return {number}
  */
 var findDuplicate = function(nums) {
+    for (let i = 0; i < nums.length; i++) {
+        for (let j = i+1; j < nums.length; j++) {
+            if (nums[i] === nums[j]) {
+                return nums[i];
+            }
+        }
+    }
 
+    // should not be possible given constraints
+    return -1;
+
+    // TLE: Time Limit Exceeded
+    // test case 56 / 59
 };
 
 // given integer array `nums` containing `n + 1` integers, where each integer in range [1, n] *inclusive*
