@@ -64,3 +64,34 @@ var findDuplicates = function(nums) {
 // also because we are only dealing with positive numbers
     // we can mark the numbers as "seen" by making them negative
     // this keeps their absolute value but allows us to see that we've visited this index before (i.e. there is a duplicate element)
+
+// WALKTHROUGH: nums = [4,3,2,7,8,2,3,1]
+//  i     p                 p=3 (4-1)
+// [4,3,2,7,8,2,3,1]
+
+//    i p                   p=2 (3-1)
+// [4,3,2,-7,8,2,3,1]
+
+//    p  i                  p=1 (2-1)
+// [4,3,-2,-7,8,2,3,1]
+
+//           i     p        p=6 (7-1)
+// [4,-3,-2,-7,8,2,3,1]
+
+//             i      p     p=7 (8-1)
+// [4,-3,-2,-7,8,2,-3,1]
+
+//     p         i          p=1 (2-1)
+// [4,-3,-2,-7,8,2,-3,-1]
+    // visited a negative value, duplicate found [2] (p+1)
+
+//        p         i       p=2 (3-1)
+// [4,-3,-2,-7,8,2,-3,-1]
+    // visited a negative value, duplicate found [3] (p+1)
+
+//  p                  i    p=2 (3-1)
+// [4,-3,-2,-7,8,2,-3,-1]
+
+// [-4,-3,-2,-7,8,2,-3,-1]
+    // note: indexes [4] and [5] are not marked because values (5) and (6) are not present in the array
+// duplicates/answer = [2,3]
