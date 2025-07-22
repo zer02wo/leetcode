@@ -9,12 +9,14 @@ var findDuplicates = function(nums) {
     const duplicates = [];
 
     for (let i = 0; i < nums.length; i++) {
-        const p = Math.abs(nums[i]);
+        // need to -1 to map 0-start array index to map to range [1,n]
+        const p = Math.abs(nums[i]) - 1;
 
         // if the value at the specified index is negative
         if (nums[p] < 0) {
-            // push the *index* to the output array, as it has been seen before
-            duplicates.push(p);
+            // push the *unmapped index* to the output array, as it has been seen before
+            // +1 here to revert mapping done at start of iteration
+            duplicates.push(p + 1);
         } else {
             // mark specified index as visited by negation
             nums[p] *= -1;
@@ -23,7 +25,12 @@ var findDuplicates = function(nums) {
 
     return duplicates;
 
-    // TODO: fails for test case: nums = [2,2]
+    // 4 ms / beats 95.04%
+    // should've done a bit better on this one
+        // relied too much on my work from yesterday in leetcode #287
+        // which made me use the same linked-list style approach at first
+    // figuring out the mapping was also a bit annoying
+        // i.e. needing to access at -1 (mapped), but push as unmapped value
 };
 
 // given integer array `nums` of length `n`, where elements are in the range `[1, n]` and each integer appears *at most twice*:
