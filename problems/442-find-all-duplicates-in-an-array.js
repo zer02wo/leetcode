@@ -6,7 +6,24 @@
  * @return {number[]}
  */
 var findDuplicates = function(nums) {
+    const duplicates = [];
 
+    for (let i = 0; i < nums.length; i++) {
+        const p = Math.abs(nums[i]);
+
+        // if the value at the specified index is negative
+        if (nums[p] < 0) {
+            // push the *index* to the output array, as it has been seen before
+            duplicates.push(p);
+        } else {
+            // mark specified index as visited by negation
+            nums[p] *= -1;
+        }
+    }
+
+    return duplicates;
+
+    // TODO: fails for test case: nums = [2,2]
 };
 
 // given integer array `nums` of length `n`, where elements are in the range `[1, n]` and each integer appears *at most twice*:
