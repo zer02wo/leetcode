@@ -56,6 +56,14 @@ var spiralOrder = function(matrix) {
     // this question was really difficult,
         // lots of variables/directions/conditions to keep track of
     // pretty satisfying to get there in the end
+
+    // alternative solution here has some great ideas (using similar vector approach as me):
+    // https://leetcode.com/problems/spiral-matrix/solutions/5513240/video-explanation/
+        // simplifies direction change to: [dx, dy] = [-dy, dx]
+            // i.e. rotating 90 degrees
+        // modifies the matrix with a string element
+            // i.e. instead of keeping track of the boundary by index
+            // draw the boundary out with a '.' character to cause a direction change when reached
 };
 
 // given `m x n` matrix, return all elements in "spiral" order
