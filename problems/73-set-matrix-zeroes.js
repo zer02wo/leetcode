@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/set-matrix-zeroes/
-// tags: medium, array, matrix
+// tags: medium, array, matrix, mark by zero
 
 /**
  * @param {number[][]} matrix
@@ -30,9 +30,9 @@ var setZeroesConstantMemory = function(matrix) {
     }
 
     // second pass: set zeroes
-        // TODO: would this be better to do in 3 passes?
-    for (let row = 0; row < matrix.length; row++) {
-        for (let col = 0; col < matrix[row].length; col++) {
+        // ignore row/column 0, as these are our marks
+    for (let row = 1; row < matrix.length; row++) {
+        for (let col = 1; col < matrix[row].length; col++) {
             if (row === 0 && isFirstRowZero) {
                 matrix[row][col] = 0;
                 continue;
@@ -44,9 +44,33 @@ var setZeroesConstantMemory = function(matrix) {
         }
     }
 
-    // TODO: fails for following test case:
-        // matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
-        // TODO: seems to be because we're updating row/column 0
+    // third pass: set zeroes in first column
+    // if first element in first column is 0
+    if (matrix[0][0] === 0) {
+        // set all values to 0 for each row in column 0
+        for (let row = 0; row < matrix.length; row++) {
+            matrix[row][0] = 0;
+        }
+    }
+
+    // fourth pass: set zeroes in first row
+    // if first row boolean flag is true
+    if (isFirstRowZero) {
+        // set all values to 0 for each column in row 0
+        for (let col = 0; col < matrix[0].length; col++) {
+            matrix[0][col] = 0;
+        }
+    }
+
+    // 7 ms / beats 18.32% (first run)
+    // 0 ms / beats 100% (second run)
+    // O (m * n) time complexity - 2 full iterations + m + n
+    // O (1) time complexity - boolean flag/loop pointers
+
+    // first run only beat ~30% on memory, second run only beat ~50% on memory
+        // so clearly not particularly accurate
+    // this was pretty tricky, I had the right idea with marking but there were some extra steps needed for this to work
+    //
 };
 
 var setZeroes = function(matrix) {
@@ -133,5 +157,6 @@ var setZeroes = function(matrix) {
 // EDIT AFTER WATCHING EXPLANATION: https://www.youtube.com/watch?v=T41rL0L3Pnw
     // we can use 0 to mark, as we're going to update to that value regardless
         // clearly I was overcomplicating this a little bit
+        // but this is still tricky as the first row/column will need to be updated separately to prevent overwriting our marks
     // we just need to keep the marks for rows and columns separate
         // be aware of the overlap in cell [0,0] which will need additional (O(1)) memory
