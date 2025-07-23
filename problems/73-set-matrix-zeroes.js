@@ -6,7 +6,41 @@
  * @return {void} Do not return anything, modify matrix in-place instead.
  */
 var setZeroes = function(matrix) {
+    const zeroRows = new Set();
+    const zeroCols = new Set();
 
+    // first pass: identify zeroes
+    for (let row = 0; row < matrix.length; row++) {
+        for (let col = 0; col < matrix[row].length; col++) {
+            // mark the current row/column to be set to 0's
+            if (matrix[row][col] === 0) {
+                zeroRows.add(row);
+                zeroCols.add(col);
+            }
+        }
+    }
+
+    // second pass: set zeroes
+    for (let row = 0; row < matrix.length; row++) {
+        for (let col = 0; col < matrix[row].length; col++) {
+            // if matrix cell aligned with zeroRows or zeroCols value
+                // i.e. aligned with 0 in same row and/or column in unmodified matrix
+            if (zeroRows.has(row) || zeroCols.has(col)) {
+                // set element to 0
+                matrix[row][col] = 0;
+            }
+        }
+    }
+
+    // 2 ms / beats 77.93% (first run)
+    // 1 ms / beats 95.85% (second run)
+    // O(m * n) time complexity - two iterations
+    // O(m + n) space complexity - space for rows + space for cols
+
+    // really happy with this solution and how quickly I arrived at it
+    // even beats 88.27% on memory as well which is nice
+
+    // TODO: how to improve this to constant space?
 };
 
 // given an `m x n` integer matrix:
