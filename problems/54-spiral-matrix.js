@@ -8,34 +8,37 @@
 var spiralOrder = function(matrix) {
     const output = [];
     // start at [0,0]
-    let x = 0;
-    let y = 0;
+    let x = 0; let y = 0;
     // moving along positive x (i.e. right) to start
-    let dx = 1;
-    let dy = 0;
+    let dx = 1; let dy = 0;
     // define boundaries
-    let rowSize = matrix.length;
-    let colSize = matrix[0].length;
+    let rowMin = 0;
+    let rowMax = matrix.length;
+    let colMin = 0;
+    let colMax = matrix[0].length;
 
-    for (let i = 0; i < (rowSize * colSize); i++) {
-        console.log(x + ', '+ y);
+    // total number of elements in matrix
+    const nm = rowMax * colMax;
+
+    for (let i = 0; i < nm; i++) {
         // push element to output array
         output.push(matrix[y][x]);
 
         // check if coordinate will exceed any boundary in next move
-            // then change direction (i.e. rotate 90 degrees)
-        if (x + dx >= colSize) {
-            dx = 0;
-            dy = 1;
-        } else if (y + dy >= rowSize) {
-            dx = -1;
-            dy = 0
-        } else if (x + dx < 0) {
-            dx = 0;
-            dy = -1;
-        } else if (y + dy < 0) {
-            dx = 1;
-            dy = 0;
+            // 1. change direction (i.e. rotate 90 degrees)
+            // 2. constrain boundaries
+        if (x + dx >= colMax) {
+            dx = 0; dy = 1;
+            rowMin++;
+        } else if (y + dy >= rowMax) {
+            dx = -1; dy = 0;
+            colMax--;
+        } else if (x + dx < colMin) {
+            dx = 0; dy = -1;
+            rowMax--;
+        } else if (y + dy < rowMin) {
+            dx = 1; dy = 0;
+            colMin++;
         }
 
         // moving position == coordinate + direction
@@ -46,10 +49,13 @@ var spiralOrder = function(matrix) {
 
     return output;
 
-    // TODO: failing due to not constraining boundaries
-        // E.g. for first example of 3x3 matrix (1 -> 9)
-        // This is returning to [0,0] instead of moving to [1,1] as we're not moving the boundary inwards
-        // TODO: may need a lower boundary for each direction as well?
+    // 0 ms / beats 100%
+    // O(m * n) time complexity - visits each element once
+    // O(1) time complexity - lots of variables, but all static size
+
+    // this question was really difficult,
+        // lots of variables/directions/conditions to keep track of
+    // pretty satisfying to get there in the end
 };
 
 // given `m x n` matrix, return all elements in "spiral" order
