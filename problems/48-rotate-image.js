@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/rotate-image/
-// tags: medium, leetle
+// tags: medium, leetle, array, matrix
 
 /**
  * @param {number[][]} matrix
@@ -78,3 +78,45 @@ var rotate = function(matrix) {
         // [0][0] -> [0][n-1]
         // [0][1] -> [0][n-2]
         // [0][2] -> [0][n-3] // equivalent to n - 1 - col
+
+
+
+// REVISITING PROBLEM:
+// intuition: in-place swaps
+    // as we *must* rotate the image (matrix) in-place (without an additional matrix),
+    // this means performing swaps (perhaps multiple passes) to make the transformation
+// we can't use negation as another in-place method as the constraints specify negative values can be used
+    // we could use a value *outside* the [-1000, 1000] range but then we lose the crucial data of the element
+        // unless we did 2000 + matrix[i][j] I suppose...
+// to determine the exact swaps needed...
+
+// EXAMPLE WALKTHROUGH:
+// 1 2 3    7 4 1
+// 4 5 6 => 8 5 2
+// 7 8 9    9 6 3
+
+// [0][0] => [0][2]
+// [0][1] => [1][2]
+// [0][2] => [2][2]
+
+// [1][0] => [0][1]
+// [1][1] => [1][1]
+// [1][2] => [2][1]
+
+// [2][0] => [0][0]
+// [2][1] => [1][0]
+// [2][2] => [2][0]
+
+// we can see from above that at least part of the solution is swapping the columns with the rows,
+    // i.e. matrix[i][j] = matrix[j][i]
+    // more specifically, as a swap:
+        // [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]]
+// that would create the following matrix:
+// 1 2 3    1 4 7
+// 4 5 6 => 2 5 8
+// 7 8 9    3 6 9
+
+// then from here, reverse each row:
+// 1 4 7    7 4 1
+// 2 5 8 => 8 5 2
+// 3 6 9    9 6 3
