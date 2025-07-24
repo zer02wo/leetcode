@@ -116,7 +116,7 @@ var rotate = function(matrix) {
 // 4 5 6 => 2 5 8
 // 7 8 9    3 6 9
 
-// then from here, reverse each row:
+// then from here, reverse columns in each row:
 // 1 4 7    7 4 1
 // 2 5 8 => 8 5 2
 // 3 6 9    9 6 3
@@ -128,13 +128,13 @@ var rotate = function(matrix) {
 var rotate = function(matrix) {
     const n = matrix.length;
 
-    // first pass: swap columns and rows
+    // first pass: swap columns and rows (transpose)
     for (let row = 0; row < n; row++) {
-        for (let col = 0; col < n; col++) {
+        // col < row here to ensure we're swapping *once*
+            // i.e. splits the matrix in half *diagonally* - to swap *across* the diagonal
+            // using (n / 2) would split each column/row and not fully cover the matrix swaps
+        for (let col = 0; col < row; col++) {
             [matrix[row][col], matrix[col][row]] = [matrix[col][row], matrix[row][col]];
         }
     }
-
-    // TODO: this is currently swapping the elements, but then swapping them back (resulting in an unmodified array)
-        // TODO: need to constrain the iteration in a way to only only perform the swaps once
 };
