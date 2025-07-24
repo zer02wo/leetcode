@@ -137,4 +137,20 @@ var rotate = function(matrix) {
             [matrix[row][col], matrix[col][row]] = [matrix[col][row], matrix[row][col]];
         }
     }
+
+    // second pass: reverse the rows
+    for (let row = 0; row < n; row++) {
+        // only iterate up to halfway to prevent swapping back
+        for (let col = 0; col < n / 2; col++) {
+            // could also just call matrix[row].reverse() on row, but this feels more "in-place"
+            [matrix[row][col], matrix[row][n - 1 - col]] = [matrix[row][n - 1 - col], matrix[row][col]];
+        }
+    }
+
+    // 1 ms / beats 28.43%
+    // more intuitive this time around when solving it for sure
+        // figured out the pattern of transposing then reversing by the walkthrough
+        // even if it did take some time
+    // but remembering/figuring out to swap along the diagonal was difficult,
+        // had to get a hint for that
 };
