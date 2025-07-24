@@ -120,3 +120,21 @@ var rotate = function(matrix) {
 // 1 4 7    7 4 1
 // 2 5 8 => 8 5 2
 // 3 6 9    9 6 3
+
+/**
+ * @param {number[][]} matrix
+ * @return {void} Do not return anything, modify matrix in-place instead.
+ */
+var rotate = function(matrix) {
+    const n = matrix.length;
+
+    // first pass: swap columns and rows
+    for (let row = 0; row < n; row++) {
+        for (let col = 0; col < n; col++) {
+            [matrix[row][col], matrix[col][row]] = [matrix[col][row], matrix[row][col]];
+        }
+    }
+
+    // TODO: this is currently swapping the elements, but then swapping them back (resulting in an unmodified array)
+        // TODO: need to constrain the iteration in a way to only only perform the swaps once
+};
