@@ -15,8 +15,11 @@ var exist = function(board, word) {
     for (let row = 0; row < m; row++) {
         for (let col = 0; col < n; col++) {
             if (board[row][col] === start) {
+                // create set to store nodes on word path
+                const path = new Set();
+
                 // DFS to find subsequent characters in word
-                if (searchAdjacent(row, col, 0)) {
+                if (searchAdjacent(row, col, 0, path)) {
                     return true;
                 }
             }
@@ -24,7 +27,7 @@ var exist = function(board, word) {
     }
 
     // DFS helper function
-    function searchAdjacent(row, col, index) {
+    function searchAdjacent(row, col, index, path) {
         // full length of word has been found
         if (index === word.length) {
             return true;
@@ -35,30 +38,34 @@ var exist = function(board, word) {
             return false;
         }
 
+        // check coordinate has been visited previously in word path
+        if (path.has(`[${row}][${col}]`)) {
+            return false;
+        }
+
         // check current character matches supplied index of word
         if (board[row][col] !== word[index]) {
             return false;
         }
 
+        // current element is valid for word, add to path
+        path.add(`[${row}][${col}]`);
+
+        // search adjacent nodes for next character in word
         const nextIndex = index+1;
 
-        return searchAdjacent(row-1, col, nextIndex) // above
-            || searchAdjacent(row, col+1, nextIndex) // right
-            || searchAdjacent(row+1, col, nextIndex) // below
-            || searchAdjacent(row, col-1, nextIndex);// left
+        return searchAdjacent(row-1, col, nextIndex, path) // above
+            || searchAdjacent(row, col+1, nextIndex, path) // right
+            || searchAdjacent(row+1, col, nextIndex, path) // below
+            || searchAdjacent(row, col-1, nextIndex, path);// left
     }
 
     // word not found in board
     return false;
 
-    // TODO: fails for the following test case:
-        // board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]
-        // word = "ABCB"
-        // returns true, when it should return false
-    // this is because it's going back to the B to its left, which is invalid as it would be visited twice
-        // we need to prevent re-searching elements on the path
-            // we can't modify the board as that ruins the recursive backtracking
-            // TODO: we could pass along an additional data structure of all the current elements on the path?
+    // TODO: fails for following test case:
+        // board = [["A","B","C","E"],["S","F","E","S"],["A","D","E","E"]]
+        // word = "ABCEFSADEESE"
 };
 
 // given an `m x n` grid of characters `board`, and a string `word`:
