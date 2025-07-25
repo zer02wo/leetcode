@@ -54,18 +54,21 @@ var exist = function(board, word) {
         // search adjacent nodes for next character in word
         const nextIndex = index+1;
 
-        return searchAdjacent(row-1, col, nextIndex, path) // above
-            || searchAdjacent(row, col+1, nextIndex, path) // right
-            || searchAdjacent(row+1, col, nextIndex, path) // below
-            || searchAdjacent(row, col-1, nextIndex, path);// left
+        // clone path sets as otherwise they're updating by reference
+        return searchAdjacent(row-1, col, nextIndex, new Set(path)) // above
+            || searchAdjacent(row, col+1, nextIndex, new Set(path)) // right
+            || searchAdjacent(row+1, col, nextIndex, new Set(path)) // below
+            || searchAdjacent(row, col-1, nextIndex, new Set(path));// left
     }
 
     // word not found in board
     return false;
 
-    // TODO: fails for following test case:
-        // board = [["A","B","C","E"],["S","F","E","S"],["A","D","E","E"]]
-        // word = "ABCEFSADEESE"
+    // TODO: Time Limit Exceeded (TLE) for test case:
+        // board = [["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"]]
+        // word = "AAAAAAAAAAAAAAa"
+    // doesn't look like recursion is acceptible...
+    // TODO: come up with alternative approach
 };
 
 // given an `m x n` grid of characters `board`, and a string `word`:
