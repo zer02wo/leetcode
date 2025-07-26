@@ -56,10 +56,10 @@ var existOptimal = function(board, word) {
         const nextIndex = index+1;
 
         // clone path sets as otherwise they're updating by reference
-        const res = searchAdjacent(row-1, col, nextIndex)   // above
-            || searchAdjacent(row, col+1, nextIndex)        // right
+        const res = searchAdjacent(row, col+1, nextIndex)   // right
             || searchAdjacent(row+1, col, nextIndex)        // below
-            || searchAdjacent(row, col-1, nextIndex);       // left
+            || searchAdjacent(row, col-1, nextIndex)        // left
+            || searchAdjacent(row-1, col, nextIndex);       // above
 
         // remove current character from path, unmark as '!' with original value
         board[row][col] = temp;
@@ -72,6 +72,8 @@ var existOptimal = function(board, word) {
 
     // 388 ms / beats 38.68% (first run)
     // 373 ms / beats 40.71% (second run)
+    // 368 ms / beats 41.75% (third run - after changing search order)
+        // doesn't seem to have made a difference
     // O(m * n * 4^w) time complexity
         // m * n characters in the board
         // each have 4 recursive paths that can happen up to w times (the length of the word)
