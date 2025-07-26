@@ -67,7 +67,18 @@ var exist = function(board, word) {
     // TODO: Time Limit Exceeded (TLE) for test case:
         // board = [["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"]]
         // word = "AAAAAAAAAAAAAAa"
+    // O(m * n * 4w) time complexity
+        // where 4w = 4 * the length of the word
+    // O(w^2) space complexity
+        // where w = the length of the word
+        // this is due to cloning the set in each recursive call
+            // could be reduced to O(w) by managing a single Set within the outer function
     // doesn't look like recursion is acceptible...
+    // the following solution uses a heuristic trick to determine whether to search the word forward or reversed:
+        // https://leetcode.com/problems/word-search/solutions/5767663/video-check-4-directions-with-counting-length-of-a-path/
+        // but this feels like a trick, rather than a proper solution
+            // although you could argue the leetcode testcases are also intentionally tricks...
+
     // TODO: come up with alternative approach
 };
 
