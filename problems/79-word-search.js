@@ -79,6 +79,12 @@ var existOptimal = function(board, word) {
         // each have 4 recursive paths that can happen up to w times (the length of the word)
     // O(w) space complexity
         // depth of recursive call stack = length of a word
+
+    // TODO: potential optimisations by frequency analysis:
+        // early return if the number of required characters do not exist in the board
+            // reduces impossible solutions down to O(m * n)
+        // search backwards if the last character is less frequent than the first character
+            // drastically reduces number of recursive calls that need to be made
 };
 
 var exist = function(board, word) {
