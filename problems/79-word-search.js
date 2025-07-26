@@ -6,6 +6,79 @@
  * @param {string} word
  * @return {boolean}
  */
+var existOptimal = function(board, word) {
+    const start = word[0];
+    const m = board.length;
+    const n = board[0].length;
+    // previous solution used a Set to prevent revisiting same node
+    // this has been replaced with modifying the board with a '!' character
+        // prevents additional overhead of accessing set from outer scope/keeping it in memory
+        // using the string as the Set key probably also wasn't the most efficient either
+
+    // search board for first character in word
+    for (let row = 0; row < m; row++) {
+        for (let col = 0; col < n; col++) {
+            if (board[row][col] === start) {
+                // DFS to find subsequent characters in word
+                if (searchAdjacent(row, col, 0)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    // recursive/backtracking DFS helper function
+    function searchAdjacent(row, col, index) {
+        // full length of word has been found
+        if (index === word.length) {
+            return true;
+        }
+
+        // check coordinate is in-bounds
+        if (row < 0 || row >= m || col < 0 || col > n) {
+            return false;
+        }
+
+        // check current character matches supplied index of word
+        if (board[row][col] !== word[index]) {
+            return false;
+        }
+
+        // current element is valid for word
+
+        // store current value
+        const temp = board[row][col];
+        // overwrite with '!' to mark as visited in path
+            // prevents the same cell on board from being reused
+        board[row][col] = '!';
+
+        // search adjacent nodes for next character in word
+        const nextIndex = index+1;
+
+        // clone path sets as otherwise they're updating by reference
+        const res = searchAdjacent(row-1, col, nextIndex)   // above
+            || searchAdjacent(row, col+1, nextIndex)        // right
+            || searchAdjacent(row+1, col, nextIndex)        // below
+            || searchAdjacent(row, col-1, nextIndex);       // left
+
+        // remove current character from path, unmark as '!' with original value
+        board[row][col] = temp;
+
+        return res;
+    }
+
+    // word not found in board
+    return false;
+
+    // 388 ms / beats 38.68% (first run)
+    // 373 ms / beats 40.71% (second run)
+    // O(m * n * 4^w) time complexity
+        // m * n characters in the board
+        // each have 4 recursive paths that can happen up to w times (the length of the word)
+    // O(w) space complexity
+        // depth of recursive call stack = length of a word
+};
+
 var exist = function(board, word) {
     const start = word[0];
     const m = board.length;
@@ -56,10 +129,10 @@ var exist = function(board, word) {
         const nextIndex = index+1;
 
         // clone path sets as otherwise they're updating by reference
-        const res = searchAdjacent(row-1, col, nextIndex) // above
-            || searchAdjacent(row, col+1, nextIndex) // right
-            || searchAdjacent(row+1, col, nextIndex) // below
-            || searchAdjacent(row, col-1, nextIndex);// left
+        const res = searchAdjacent(row-1, col, nextIndex)   // above
+            || searchAdjacent(row, col+1, nextIndex)        // right
+            || searchAdjacent(row+1, col, nextIndex)        // below
+            || searchAdjacent(row, col-1, nextIndex);       // left
 
         // remove current character from path, as we're not visiting the position any longer
         path.delete(pathCoord);
