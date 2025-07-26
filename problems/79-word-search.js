@@ -10,16 +10,15 @@ var exist = function(board, word) {
     const start = word[0];
     const m = board.length;
     const n = board[0].length;
+    // create set to store nodes on word path
+    const path = new Set();
 
     // search board for first character in word
     for (let row = 0; row < m; row++) {
         for (let col = 0; col < n; col++) {
             if (board[row][col] === start) {
-                // create set to store nodes on word path
-                const path = new Set();
-
                 // DFS to find subsequent characters in word
-                if (searchAdjacent(row, col, 0, path)) {
+                if (searchAdjacent(row, col, 0)) {
                     return true;
                 }
             }
@@ -27,7 +26,7 @@ var exist = function(board, word) {
     }
 
     // DFS helper function
-    function searchAdjacent(row, col, index, path) {
+    function searchAdjacent(row, col, index) {
         // full length of word has been found
         if (index === word.length) {
             return true;
@@ -38,8 +37,10 @@ var exist = function(board, word) {
             return false;
         }
 
+        const pathCoord = `[${row}][${col}]`;
+
         // check coordinate has been visited previously in word path
-        if (path.has(`[${row}][${col}]`)) {
+        if (path.has(pathCoord)) {
             return false;
         }
 
@@ -49,37 +50,39 @@ var exist = function(board, word) {
         }
 
         // current element is valid for word, add to path
-        path.add(`[${row}][${col}]`);
+        path.add(pathCoord);
 
         // search adjacent nodes for next character in word
         const nextIndex = index+1;
 
         // clone path sets as otherwise they're updating by reference
-        return searchAdjacent(row-1, col, nextIndex, new Set(path)) // above
-            || searchAdjacent(row, col+1, nextIndex, new Set(path)) // right
-            || searchAdjacent(row+1, col, nextIndex, new Set(path)) // below
-            || searchAdjacent(row, col-1, nextIndex, new Set(path));// left
+        const res = searchAdjacent(row-1, col, nextIndex) // above
+            || searchAdjacent(row, col+1, nextIndex) // right
+            || searchAdjacent(row+1, col, nextIndex) // below
+            || searchAdjacent(row, col-1, nextIndex);// left
+
+        // remove current character from path, as we're not visiting the position any longer
+        path.delete(pathCoord);
+
+        return res;
     }
 
     // word not found in board
     return false;
 
-    // TODO: Time Limit Exceeded (TLE) for test case:
-        // board = [["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"]]
-        // word = "AAAAAAAAAAAAAAa"
-    // O(m * n * 4w) time complexity
-        // where 4w = 4 * the length of the word
-    // O(w^2) space complexity
+    // O(m * n * 4^w) time complexity
+        // where 4^w = 4 ^ the length of the word
+    // O(w) space complexity
         // where w = the length of the word
-        // this is due to cloning the set in each recursive call
-            // could be reduced to O(w) by managing a single Set within the outer function
-    // doesn't look like recursion is acceptible...
+    // doesn't look like recursion is acceptible..?
     // the following solution uses a heuristic trick to determine whether to search the word forward or reversed:
         // https://leetcode.com/problems/word-search/solutions/5767663/video-check-4-directions-with-counting-length-of-a-path/
         // but this feels like a trick, rather than a proper solution
             // although you could argue the leetcode testcases are also intentionally tricks...
 
-    // TODO: come up with alternative approach
+    // TLE fixed by also reducing memory overhead of cloning sets (which was also causing additional time to be spent on this)
+    // 2053 ms / beats 6.45%
+        // not exactly efficient...
 };
 
 // given an `m x n` grid of characters `board`, and a string `word`:
@@ -123,3 +126,5 @@ var exist = function(board, word) {
             // would likely need some form of backtracking in case there are multiple options in neighbour searches
             // or search all options recursively
 // I can already tell this isn't going to be an easy one, but lots to learn!
+
+// video explanation uses same method: https://www.youtube.com/watch?v=pfiQ_PS1g8E
