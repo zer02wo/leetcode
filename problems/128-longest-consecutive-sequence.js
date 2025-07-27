@@ -50,3 +50,10 @@ var longestConsecutive = function(nums) {
         // does nums[i-1] exist in the Set
         // but this only tells us individually how many numbers have a consecutive pair
             // how do we expand this to merge all consecutive numbers?
+// walkthrough here has a great visualisation: https://www.youtube.com/watch?v=P6RZZMu_maU
+// <------------------------->
+// [1,2,3,4]    [100]    [200]
+// the groups/sequences of numbers have distinct starting positions
+
+// INTUITION: we should only attempt to find a consecutive length if we're at the *start* of a sequence
+        // i.e. nums[i-1] does not exist in the Set
