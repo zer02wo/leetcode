@@ -1,12 +1,50 @@
 // https://leetcode.com/problems/longest-consecutive-sequence/
-// tags: medium, array
+// tags: medium, array, set
 
 /**
  * @param {number[]} nums
  * @return {number}
  */
 var longestConsecutive = function(nums) {
+    // remove duplicates from nums and allow O(1) lookups
+    const numsSet = new Set(nums);
+    // maximum consecutive length
+    let maxConLen = 0;
 
+    for (const num of numsSet) {
+        // this is not the start of a consecutive sequence, as there is a prior consecutive element
+        if (numsSet.has(num-1)) {
+            continue;
+        }
+
+        // this is the start of a consecutive sequence
+        let conLen = 0;
+        while (numsSet.has(num + conLen)) {
+            // delete the number from the sequence to prevent visiting it later
+            numsSet.delete(num + conLen);
+
+            // increase current consecutive length
+            // also iterates to next consecutive number (if it exists)
+            conLen++;
+        }
+
+        // update the maximum consecutive length if the current consecutive length sequence is greater
+        maxConLen = Math.max(maxConLen, conLen);
+    }
+
+    return maxConLen;
+
+    // 47 ms / beats 24.33%
+    // O(n) time complexity:
+        // despite nested loops this is O(3n) at the worst case:
+            // O(n) to create the set
+            // O(n) to iterate through the set
+            // O(n) to find the consecutive length (which could be the entire set/input array)
+        // because we skip over any elements that are not the beginning of a sequence, this is not O(n^2)
+            // as there is only one number that performs the inner O(n) loop, rather *every* element
+        // TODO: I'm deleting numbers from the sequence in hopes of improving performance,
+            // but this might just be more overhead than not doing so?
+    // O(n) space complexity - the set from nums
 };
 
 // given unsorted integer array `nums`
