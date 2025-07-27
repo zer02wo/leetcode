@@ -18,10 +18,11 @@ var longestConsecutive = function(nums) {
         }
 
         // this is the start of a consecutive sequence
-        let conLen = 0;
+        let conLen = 1;
         while (numsSet.has(num + conLen)) {
             // delete the number from the sequence to prevent visiting it later
-            numsSet.delete(num + conLen);
+            // NOTE: commented out as this seems to worsen the performance
+            // numsSet.delete(num + conLen);
 
             // increase current consecutive length
             // also iterates to next consecutive number (if it exists)
@@ -34,7 +35,12 @@ var longestConsecutive = function(nums) {
 
     return maxConLen;
 
-    // 47 ms / beats 24.33%
+    // 47 ms / beats 24.33% (first run with set delete)
+    // 37 ms / beats 76.10% (second run with set delete)
+    // 41 ms / beats 49.90% (first run after improvements)
+    // 30 ms / beats 97.52% (second run after improvements)
+        // *seems* like the set delete isn't worth it, but inconclusive
+
     // O(n) time complexity:
         // despite nested loops this is O(3n) at the worst case:
             // O(n) to create the set
