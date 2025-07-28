@@ -6,7 +6,52 @@
  * @return {string[]}
  */
 var letterCasePermutation = function(s) {
+    const permutations = [];
 
+    function backtrack(str, index) {
+        // end of string has been reached, no further characters
+        if (index === str.length) {
+            return;
+        }
+
+        const char = s[index];
+        const nextIndex = index + 1;
+
+        // current character is a digit
+        if (char >= 0 && char <= 9) {
+            // push current permutation
+            // TODO: this will probably create duplicates, need to use a Set?
+                // we can't *not* push for digits in the case where the entire input string is digits
+            permutations.push(str);
+            // no other permutations to create, so continue through string
+            return backtrack(str, nextIndex);
+        }
+
+        let charAlt = '';
+
+        if (/[a-z]/.test(char)) {
+            // is lowercase, create uppercase permutation
+            charAlt = char.toUpperCase();
+        } else {
+            // is uppercase, create lowercase permutation
+            charAlt = char.toLowerCase();
+        }
+
+        // generate permutation for alternative character case
+        // TODO: is there a more efficient way to do this?
+        const strAlt = str.substring(0, index) + charAlt + str.substring(index+1);
+
+        permutations.push(str);
+        permutations.push(strAlt);
+
+        // recursively backtrack/create permutations for rest of string
+        backtrack(str, nextIndex);
+        backtrack(strAlt, nextIndex);
+    }
+
+    backtrack(s, 0);
+
+    return permutations;
 };
 
 // given string `s`, you can transform every letter individually to be lowercase or uppercase to create another string
