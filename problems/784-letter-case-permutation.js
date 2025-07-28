@@ -6,11 +6,13 @@
  * @return {string[]}
  */
 var letterCasePermutation = function(s) {
-    const permutations = new Set();
+    const permutations = [];
 
     function backtrack(str, index) {
         // end of string has been reached, no further characters
         if (index === str.length) {
+            // end of backtracking branch, push permutation
+            permutations.push(str);
             return;
         }
 
@@ -19,8 +21,6 @@ var letterCasePermutation = function(s) {
 
         // current character is a digit
         if (char >= 0 && char <= 9) {
-            // push current permutation
-            permutations.add(str);
             // no other permutations to create, so continue through string
             return backtrack(str, nextIndex);
         }
@@ -39,9 +39,6 @@ var letterCasePermutation = function(s) {
         // TODO: is there a more efficient way to do this?
         const strAlt = str.substring(0, index) + charAlt + str.substring(index+1);
 
-        permutations.add(str);
-        permutations.add(strAlt);
-
         // recursively backtrack/create permutations for rest of string
         backtrack(str, nextIndex);
         backtrack(strAlt, nextIndex);
@@ -49,13 +46,24 @@ var letterCasePermutation = function(s) {
 
     backtrack(s, 0);
 
-    return [...permutations];
+    return permutations;
 
-    // 7 ms / beats 55.28%
+    // 7 ms / beats 55.28% (hacky Set / too much pushing)
+    // 3 ms / beats 90.88% (after removing Set / unnecessary pushes)
+
+    // O(2^l * n) time complexity:
+        // for every letter can branch into 2 recursive calls
+        // each of these calls substring() which is an O(n) operation
+        // l = length of input string
+    // O(2^l * n) space complexity - array of permutations
+
     // pretty happy with the overall approach/algorithm
-    // but the use of the Set feels a bit hacky
-        // seems like there's some optimisations to prevent unnecessary branching
-            // or maybe just unnecessary pushing ?
+
+        // but the use of the Set feels a bit hacky
+            // seems like there's some optimisations to prevent unnecessary branching
+                // or maybe just unnecessary pushing ?
+
+    // above use of Set has now been resolved by only pushing at the END of each branch
 };
 
 // given string `s`, you can transform every letter individually to be lowercase or uppercase to create another string
