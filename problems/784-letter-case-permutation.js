@@ -1,11 +1,58 @@
 // https://leetcode.com/problems/letter-case-permutation/
-// tags: medium, string, array, backtracking
+// tags: medium, string, array, depth-first search, backtracking
 
 /**
  * @param {string} s
  * @return {string[]}
  */
 var letterCasePermutation = function(s) {
+    const permutations = [];
+
+    function backtrack(chars, index) {
+        // end of string has been reached, no further characters
+        if (index === chars.length) {
+            // end of backtracking branch, push permutation (as string)
+            permutations.push(chars.join(''));
+            return;
+        }
+
+        const char = chars[index];
+        const nextIndex = index + 1;
+
+        // current character is a digit
+        if (char >= '0' && char <= '9') {
+            // no other permutations to create, so continue through string
+            return backtrack(chars, nextIndex);
+        }
+
+        // recursively backtrack/create permutations for rest of string
+
+        // generate lowercase character permutation
+        chars[index] = char.toLowerCase();
+        backtrack(chars, nextIndex);
+
+        // generate uppercase character permutation
+        chars[index] = char.toUpperCase();
+        backtrack(chars, nextIndex);
+    }
+
+    // split string into array of characters *once* to prevent need for O(n) string operations (i.e. substring())
+    // on *every* recursive call, instead we perform an O(n) array join() only for the "leaf nodes" (final permutation)
+    backtrack(s.split(''), 0);
+
+    return permutations;
+
+    // 5 ms / beats 72.63% (first run)
+    // 3 ms / beats 90.88% (second run)
+
+    // O(2^l * n) time complexity - slightly less in real-world as we're only calling join() at end of branching
+    // O(2^l * n) space complexity
+
+    // at least in JS, it doesn't look like using array operations over string operations makes measurable difference
+    // run to run variance is also pretty high though
+};
+
+var letterCasePermutationStringOps = function(s) {
     const permutations = [];
 
     function backtrack(str, index) {
@@ -20,7 +67,7 @@ var letterCasePermutation = function(s) {
         const nextIndex = index + 1;
 
         // current character is a digit
-        if (char >= 0 && char <= 9) {
+        if (char >= '0' && char <= '9') {
             // no other permutations to create, so continue through string
             return backtrack(str, nextIndex);
         }
