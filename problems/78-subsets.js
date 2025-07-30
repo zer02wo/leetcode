@@ -6,7 +6,39 @@
  * @return {number[][]}
  */
 var subsets = function(nums) {
+    const powerSet = [];
 
+    function backtrack(subset, index) {
+        // branch has reached end (progressed through input array)
+        if (index === nums.length) {
+            // push subset to output
+            powerSet.push(subset);
+            return;
+        }
+
+        const nextIndex = index + 1;
+
+        // TODO: prevent needing to clone arrays
+        // continue branching without adding current element to subset
+        backtrack([...subset], nextIndex);
+        // add current element to subset and continue branching
+        subset.push(nums[index]);
+        backtrack([...subset], nextIndex);
+    }
+
+    // begin recursive branching/backtracking with empty subset at index 0
+    backtrack([], 0);
+
+    // return the "power set", i.e. all possible subsets
+    return powerSet;
+
+    // 0 ms / beats 100%
+
+    // O(2^n * n) time complexity
+    // O(2^n * n) space complexity
+
+    // reached a worked solution very quickly given previous backtracking questions
+    // still some improvements to be made in terms of memory management
 };
 
 // given integer array `nums` of *unique* elements
