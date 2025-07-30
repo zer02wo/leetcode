@@ -8,22 +8,25 @@
 var subsets = function(nums) {
     const powerSet = [];
 
+    // TODO: subset could be declared outside the helper function scope instead?
     function backtrack(subset, index) {
         // branch has reached end (progressed through input array)
         if (index === nums.length) {
-            // push subset to output
-            powerSet.push(subset);
+            // push subset to output (must be cloned to prevent emptying on backtracking)
+            powerSet.push([...subset]);
             return;
         }
 
         const nextIndex = index + 1;
 
-        // TODO: prevent needing to clone arrays
         // continue branching without adding current element to subset
-        backtrack([...subset], nextIndex);
+        backtrack(subset, nextIndex);
+
         // add current element to subset and continue branching
         subset.push(nums[index]);
-        backtrack([...subset], nextIndex);
+        backtrack(subset, nextIndex);
+        // branch has finished/is returning, remove element from subset array
+        subset.pop();
     }
 
     // begin recursive branching/backtracking with empty subset at index 0
@@ -38,7 +41,10 @@ var subsets = function(nums) {
     // O(2^n * n) space complexity
 
     // reached a worked solution very quickly given previous backtracking questions
-    // still some improvements to be made in terms of memory management
+        // pretty nice pattern now that I know how it works
+        // may want to look at how to do this pattern iteratively as well
+    // made some improvements to be made in terms of memory management
+        // similar improvements to what I've done before
 };
 
 // given integer array `nums` of *unique* elements
