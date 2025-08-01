@@ -6,7 +6,11 @@
  * @return {number[][]}
  */
 var subsetsWithDup = function(nums) {
-    const powerSet = []
+    const powerSet = [];
+
+    // sort the input array so we can check duplicates
+        // O(n log n) sorting insignificant compared to backtracking running in exponential time
+    nums.sort((a,b) => a - b);
 
     function backtrack(subset, index) {
         // end of recursive branch - subset has been created from all of input array
@@ -16,7 +20,7 @@ var subsetsWithDup = function(nums) {
             return;
         }
 
-        // recursive branch/subset where nums[index] *is* added
+        // 1. recursive branch/subset where nums[index] *is* added
 
         // create recursive branch with current number
         subset.push(nums[index]);
@@ -24,7 +28,7 @@ var subsetsWithDup = function(nums) {
         // backtracking - remove current element from subset
         subset.pop();
 
-        // recursive branch/subset where nums[index] not added
+        // 2. recursive branch/subset where nums[index] not added
 
         // we're choosing to skip nums[index], so skip all duplicate values of nums[index] as well
             // e.g. for [1,2,2] if we skip the first `2`, we would still get a duplicate value if we included the second `2`
@@ -39,8 +43,16 @@ var subsetsWithDup = function(nums) {
 
     return powerSet;
 
-    // TODO: fails for following test case: nums = [4,4,4,1,4]
-        // nums needs to be sorted
+    // 0 ms / beats 100%
+    // O(2^n * n) time complexity
+    // O(2^n * n) space complexity
+
+    // getting the general skeleton was easy from previous questions
+    // but removing duplicates was not intuitive at all
+    // it makes sense in hindsight, but I should probably have a pen/paper with me to draw out diagrams
+        // decision tree from video I linked below was very useful
+    // having to change the order of the branches also wasn't intuitive to me
+        // although I suppose if you defined a separate index it wouldn't *technically* be necessary
 };
 
 // given integer array `nums` that *may contain duplicates*
