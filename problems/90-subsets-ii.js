@@ -6,33 +6,41 @@
  * @return {number[][]}
  */
 var subsetsWithDup = function(nums) {
-    const powerSet = new Set();
+    const powerSet = []
 
     function backtrack(subset, index) {
         // end of recursive branch - subset has been created from all of input array
         if (index === nums.length) {
             // push subset to output - need to clone to prevent modification during backtrack
-            powerSet.add([...subset]);
+            powerSet.push([...subset]);
             return;
         }
 
-        // recursive branch/subset where current element not added
-        backtrack(subset, index + 1);
+        // recursive branch/subset where nums[index] *is* added
 
-        // recursive branch/subset where current element *is* added
+        // create recursive branch with current number
         subset.push(nums[index]);
         backtrack(subset, index + 1);
-
         // backtracking - remove current element from subset
         subset.pop();
+
+        // recursive branch/subset where nums[index] not added
+
+        // we're choosing to skip nums[index], so skip all duplicate values of nums[index] as well
+            // e.g. for [1,2,2] if we skip the first `2`, we would still get a duplicate value if we included the second `2`
+        while (index + 1 < nums.length && nums[index] === nums[index + 1]) {
+            index++;
+        }
+
+        backtrack(subset, index + 1);
     }
 
     backtrack([], 0);
 
-    return [...powerSet];
+    return powerSet;
 
-    // TODO: fails due to duplicate elements
-        // e.g. [2] appears twice, [1,2] appears twice, etc.
+    // TODO: fails for following test case: nums = [4,4,4,1,4]
+        // nums needs to be sorted
 };
 
 // given integer array `nums` that *may contain duplicates*
@@ -60,3 +68,5 @@ var subsetsWithDup = function(nums) {
     // we *could* remove the duplicates after the fact, but that's a very expensive (exponential) operation
     // removing the duplicates *during* the recursion would also mean less branches for greater overall efficiency (in comparison)
     // TODO: need to figure out the condition to ignore a duplicate number within a branch
+// decision tree from explanation in this video was very helpful:
+    // https://www.youtube.com/watch?v=Vn2v6ajA7U0
