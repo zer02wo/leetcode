@@ -8,9 +8,9 @@
 var permute = function(nums) {
     const output = [];
 
-    function backtrack(permutation, seen, index) {
+    function backtrack(permutation, seen) {
         // reached the end of the branch
-        if (index === nums.length) {
+        if (permutation.length === nums.length) {
             // push permutation to output - must be cloned to prevent modifying reference
             output.push([...permutation]);
             return;
@@ -28,7 +28,7 @@ var permute = function(nums) {
             seen.add(num);
 
             // recursively create permutation branches
-            backtrack(permutation, seen, index+1);
+            backtrack(permutation, seen);
 
             // backtracking - remove element from data structures
             permutation.pop();
@@ -37,7 +37,7 @@ var permute = function(nums) {
     }
 
     // begin recursive backtracking
-    backtrack([], new Set(), 0);
+    backtrack([], new Set());
 
     return output;
 
