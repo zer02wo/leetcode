@@ -44,7 +44,18 @@ var permute = function(nums) {
     // 2 ms / beats 64.36% (first run)
     // 0 ms / beats 100% (second run)
 
-    // TODO: what is the time/space complexity?
+    // O(n! * n) time complexity
+        // O(n!) as we're generating permutations
+            // at the first step in the decision tree there are n options
+            // at the second step in the decision tree there are n-1 options
+            // at the third step in the decision tree there are n-2 options
+            // etc.
+            // meaning we have n * n-1 * n-2 ... * 1, which is equivalent to n!
+        // O(n) as we clone the array
+            // (though in practice this is less because it happens for leaf nodes of branching only)
+    // O(n! * n) space complexity
+        // there are n! arrays with n length in the output
+        // we can ignore the additional seen set/permutation array which are both O(n)
 
     // got this pretty much first try (other than some bugs with variable names)
     // doing the other similar questions/knowing the pattern helped massively of course
