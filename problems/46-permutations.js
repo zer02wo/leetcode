@@ -1,12 +1,54 @@
 // https://leetcode.com/problems/permutations/
-// tags: medium, array
+// tags: medium, array, recursion, backtracking
 
 /**
  * @param {number[]} nums
  * @return {number[][]}
  */
 var permute = function(nums) {
+    const output = [];
 
+    function backtrack(permutation, seen, index) {
+        // reached the end of the branch
+        if (index === nums.length) {
+            // push permutation to output - must be cloned to prevent modifying reference
+            output.push([...permutation]);
+            return;
+        }
+
+        for (const num of nums) {
+            // skip over/prevent outputting duplicate numbers
+            if (seen.has(num)) {
+                continue;
+            }
+
+
+            // add number to permutation / seen elements
+            permutation.push(num);
+            seen.add(num);
+
+            // recursively create permutation branches
+            backtrack(permutation, seen, index+1);
+
+            // backtracking - remove element from data structures
+            permutation.pop();
+            seen.delete(num);
+        }
+    }
+
+    // begin recursive backtracking
+    backtrack([], new Set(), 0);
+
+    return output;
+
+    // 2 ms / beats 64.36% (first run)
+    // 0 ms / beats 100% (second run)
+
+    // TODO: what is the time/space complexity?
+
+    // got this pretty much first try (other than some bugs with variable names)
+    // doing the other similar questions/knowing the pattern helped massively of course
+        // but this is fairly different with the decreasing number of decisions
 };
 
 // given array of distinct integers `nums`
