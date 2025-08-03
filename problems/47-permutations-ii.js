@@ -8,7 +8,10 @@
 var permuteUnique = function(nums) {
     const output = [];
 
-    // recurse backtracking helper function
+    // sort input array to more easily handle duplicates
+    nums.sort((a, b) => (a - b));
+
+    // recursive backtracking helper function
     function backtrack(permutation, seenIndexes) {
         // end of branch reached
         if (permutation.length === nums.length) {
@@ -17,6 +20,12 @@ var permuteUnique = function(nums) {
         }
 
         for (let i = 0; i < nums.length; i++) {
+            // don't use a duplicate of a number we've already skipped previously
+            if (nums[i] === nums[i-1] && !seenIndexes.has(i-1)) {
+                continue;
+            }
+
+            // if we have already used this index, don't use it again
             if (seenIndexes.has(i)) {
                 continue;
             }
@@ -39,9 +48,17 @@ var permuteUnique = function(nums) {
 
     return output;
 
-    // TODO: fails due to duplicates in output array, e.g. nums = [1,1,2]
-    // EXPECTED: [[1,1,2],[1,2,1],[2,1,1]]
-    // ACTUAL: [[1,1,2],[1,2,1],[1,1,2],[1,2,1],[2,1,1],[2,1,1]]
+    // 5 ms / beats 47.05% (first run)
+    // 3 ms / beats 68.36% (second run)
+
+    // O(n! * n) time complexity
+        // in actuality, likely a bit less than n!, as we're removing duplicates
+        // we could define this as a separate value, e.g. O(k * n) but feels like this undersells the complexity
+    // O(n! * n) space complexity
+
+    // definitely a tricky one, even with doing Subsets II
+    // although solution was similar in the end, the condition is not the most intuitive
+        // at least not without a diagram/end output to work from
 };
 
 // given collection of (potentially duplicate) numbers `nums`
@@ -73,3 +90,4 @@ var permuteUnique = function(nums) {
 
 // PROBLEM: this results in duplicates in the output array
     // TODO: we need to apply the same sorting & consecutive/duplicate element check as Subsets II (leetcode #90)
+        // nums[i] === nums[i-1] && !seenIndexes.has(i-1)
