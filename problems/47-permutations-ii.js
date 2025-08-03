@@ -91,3 +91,14 @@ var permuteUnique = function(nums) {
 // PROBLEM: this results in duplicates in the output array
     // TODO: we need to apply the same sorting & consecutive/duplicate element check as Subsets II (leetcode #90)
         // nums[i] === nums[i-1] && !seenIndexes.has(i-1)
+// EXAMPLE: input = [a1,a2,b1]
+// if we were to generate all permutations:
+// [a1, a2, b1]
+// [a1, b1, a2]
+// [a2, a1, b1] <- duplicate
+// [a2, b1, a1] <- duplicate
+// [b1, a1, a2]
+// [b1, a2, a1] <- duplicate
+
+// in all the instances above, if we use the 2nd instance of an element before the first, it creates a duplicate
+// therefore do not use 'a2' (i.e. 1 at 1st index) before we use 'a1' (i.e. 1 at 0th index)
