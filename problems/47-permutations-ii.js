@@ -6,7 +6,42 @@
  * @return {number[][]}
  */
 var permuteUnique = function(nums) {
+    const output = [];
 
+    // recurse backtracking helper function
+    function backtrack(permutation, seenIndexes) {
+        // end of branch reached
+        if (permutation.length === nums.length) {
+            // push clone of permutation to output array (prevents modifying by reference)
+            output.push([...permutation]);
+        }
+
+        for (let i = 0; i < nums.length; i++) {
+            if (seenIndexes.has(i)) {
+                continue;
+            }
+
+            // add current index as seen for permutation
+            seenIndexes.add(i);
+            // add current element to permutation
+            permutation.push(nums[i]);
+            // recursively add other elements to permutation
+            backtrack(permutation, seenIndexes);
+
+            // backtracking - returning from branch, update data structures
+            seenIndexes.delete(i);
+            permutation.pop();
+        }
+    }
+
+    // initialise recursive backtracking
+    backtrack([], new Set());
+
+    return output;
+
+    // TODO: fails due to duplicates in output array, e.g. nums = [1,1,2]
+    // EXPECTED: [[1,1,2],[1,2,1],[2,1,1]]
+    // ACTUAL: [[1,1,2],[1,2,1],[1,1,2],[1,2,1],[2,1,1],[2,1,1]]
 };
 
 // given collection of (potentially duplicate) numbers `nums`
@@ -35,3 +70,6 @@ var permuteUnique = function(nums) {
         // create recursive branch for new element
 
         // update data structures when backtracking
+
+// PROBLEM: this results in duplicates in the output array
+    // TODO: we need to apply the same sorting & consecutive/duplicate element check as Subsets II (leetcode #90)
