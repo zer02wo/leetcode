@@ -7,7 +7,40 @@
  * @return {number[][]}
  */
 var combine = function(n, k) {
+    const output = [];
 
+    // recursive backtracking helper function
+    function backtrack(combination, index) {
+        // end of branch - choosing k elements to create combination
+        if (combination.length === k) {
+            // push clone of combination to output (prevent modifying by reference)
+            output.push([...combination]);
+            return;
+        }
+
+        // to prevent duplicates, begin generating the combination from 1 + the previous index used
+            // e.g. if we add [1,2] to the combination, we don't want to add [2,1]
+        // this condition ensures we only generate the combinations in *ascending* order,
+            // which in turn prevents duplicates
+        for (let i = (index + 1); i <= n; i++) {
+            // add current number to combination
+            combination.push(i);
+            // recursively generate combinations
+            backtrack(combination, i);
+            // returning/backtracking - remove current number from combination
+            combination.pop();
+        }
+    }
+
+    // begin recursive backtracking
+    backtrack([], 0);
+
+    return output;
+
+    // 65 ms / beats 48.32% (first run)
+    // 61 ms / beats 62.82% (second run)
+    // 58 ms / beats 73.47% (third run)
+        // other solutions seem pretty much identical, so not sure why there is so much variance
 };
 
 // given two integers `n` and `k`
