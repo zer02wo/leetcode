@@ -10,7 +10,7 @@ var combine = function(n, k) {
     const output = [];
 
     // recursive backtracking helper function
-    function backtrack(combination, index) {
+    function backtrack(combination, prevIndex) {
         // end of branch - choosing k elements to create combination
         if (combination.length === k) {
             // push clone of combination to output (prevent modifying by reference)
@@ -22,7 +22,7 @@ var combine = function(n, k) {
             // e.g. if we add [1,2] to the combination, we don't want to add [2,1]
         // this condition ensures we only generate the combinations in *ascending* order,
             // which in turn prevents duplicates
-        for (let i = (index + 1); i <= n; i++) {
+        for (let i = (prevIndex + 1); i <= n; i++) {
             // add current number to combination
             combination.push(i);
             // recursively generate combinations
