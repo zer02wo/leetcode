@@ -41,6 +41,21 @@ var combine = function(n, k) {
     // 61 ms / beats 62.82% (second run)
     // 58 ms / beats 73.47% (third run)
         // other solutions seem pretty much identical, so not sure why there is so much variance
+
+    // O(n choose k) time complexity
+        // in actual terms this is some form of factorial
+            // (I don't remember the formula)
+        // i.e. there are initially n numbers to choose, then n-1, etc.
+        // we do this for size k
+    // O(n choose k * k) space complexity
+        // we are generating n choose k combinations
+        // which each have a length of k
+
+    // I know this is very similar to previous backtracking leetcodes
+        // but I'm proud of how quickly I got this one
+    // the conditions for these are always deceptively easy,
+        // but are always more tricky to actually figure out
+    // once again writing out the possible reasons and examining the output makes it easier
 };
 
 // given two integers `n` and `k`
