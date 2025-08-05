@@ -9,6 +9,9 @@
 var combinationSum = function(candidates, target) {
     const output = [];
 
+    // sort candidates to make it easier to prevent duplicates
+    candidates.sort((a, b) => a - b);
+
     // recursive backtracking helper function
     function backtrack(combination, curTarget) {
         // a valid sum of candidates has been created
@@ -42,8 +45,13 @@ var combinationSum = function(candidates, target) {
 
     return output;
 
-    // TODO: fails for test case: candidates = [8,7,4,3], target = 11
-        // just seems like a faulty assumption on my behalf that input array would be sorted?
+    // 1 ms / beats 97.50%
+    // not even going to attempt to calculate the time/space complexity here...
+
+    // pretty happy with this solution, although looking at another solution it does look like I have overcomplicated it
+        // performance is already near optimal for this, but may not have been for a larger input size
+        // recency bias of completing Permutations II (leetcode #47) made me think of sorting
+        // but I should've done something more similar to Combinations (leetcode #77)
 };
 
 // given array of distinct integers `candidates` and an integer `target`
