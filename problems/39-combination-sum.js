@@ -6,6 +6,60 @@
  * @param {number} target
  * @return {number[][]}
  */
+var combinationSumNoLoop = function(candidates, target) {
+    // solution from here: https://leetcode.com/problems/combination-sum/solutions/6146998/simple-solution/
+    const output = [];
+
+    // CHANGE: do not need to sort input array
+
+    // CHANGE: additional `index` argument for
+    function backtrack(combination, curTarget, index) {
+        // a valid sum of candidates has been created
+        if (curTarget === 0) {
+            // push candidate sum to output - cloned to prevent modifying by reference
+            output.push([...combination]);
+            return;
+        }
+
+        // CHANGE: no loop
+        // combination is not valid sum if we've already passed target
+        // candidate is not valid if exceeds array bounds
+        if (curTarget < 0 || index >= candidates.length) {
+            return;
+        }
+
+        const num = candidates[index];
+
+        // create recursive branch with current candidate and remaining target
+        combination.push(num);
+        // IMPORTANT: don't increment the index so we can re-use the same number multiple times
+        backtrack(combination, curTarget - num, index);
+
+        // backtracking - returning from branch
+        // remove candidate from combination
+        combination.pop();
+        // create recursive branch *without* current candidate, after incrementing index
+        backtrack(combination, curTarget, index + 1);
+    }
+
+    backtrack([], target, 0);
+
+    return output;
+
+    // 5 ms / beats 36.63% (first run)
+    // 4 ms / beats 49.15% (second run)
+
+    // upon further inspection, I actually think I prefer *my* solution,
+    // reviewing the candidates in a loop seems more efficient than creating a recursive branch to check the condition
+        // we're guaranteeing 2 recursive calls at each step
+        // whereas in *my* solution we only explore (potentially) valid candidates
+            // e.g. with the early exit when num > curTarget
+    // potentially more readable? and at least doesn't need to sort input array?
+
+    // this also appears to perform worse in the real world according to leetcode results above
+        // could be variance?
+};
+
 var combinationSum = function(candidates, target) {
     const output = [];
 
@@ -45,7 +99,10 @@ var combinationSum = function(candidates, target) {
 
     return output;
 
-    // 1 ms / beats 97.50%
+    // 1 ms / beats 97.50% (first run)
+    // 3 ms / beats 67.75% (second run)
+    // 1 ms / beats 97.50% (third run)
+
     // not even going to attempt to calculate the time/space complexity here...
 
     // pretty happy with this solution, although looking at another solution it does look like I have overcomplicated it
