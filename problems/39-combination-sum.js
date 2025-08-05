@@ -7,7 +7,43 @@
  * @return {number[][]}
  */
 var combinationSum = function(candidates, target) {
+    const output = [];
 
+    // recursive backtracking helper function
+    function backtrack(combination, curTarget) {
+        // a valid sum of candidates has been created
+        if (curTarget === 0) {
+            // push candidate sum to output - cloned to prevent modifying by reference
+            output.push([...combination]);
+            return;
+        }
+
+        for (const num of candidates) {
+            // no remaining candidates can reach sum, backtrack from this branch
+            if (num > curTarget) {
+                return;
+            }
+
+            // only allow adding candidates in ascending order to prevent duplicates
+            if (combination.at(-1) > num) {
+                continue;
+            }
+
+            // create recursive branch with current candidate and remaining target
+            combination.push(num);
+            backtrack(combination, curTarget - num);
+            // backtracking - returning from branch, remove candidate
+            combination.pop();
+        }
+    }
+
+    // initialise recursive backtracking
+    backtrack([], target);
+
+    return output;
+
+    // TODO: fails for test case: candidates = [8,7,4,3], target = 11
+        // just seems like a faulty assumption on my behalf that input array would be sorted?
 };
 
 // given array of distinct integers `candidates` and an integer `target`
@@ -56,7 +92,12 @@ var combinationSum = function(candidates, target) {
     // remaining target = 5
 // [2,2] (first number in candidates <= target)
     // remaining target = 3
+// [2,2,2] (first number in candidates <= target)
+    // remaining target = 1
+// [2,2] (backtrack)
+    // remaining target = 3 (again)
 // [2,2,3]
+    // remaining target = 0
     // push to output
 // [2,2] (backtrack)
     // remaining target = 5 (again)
