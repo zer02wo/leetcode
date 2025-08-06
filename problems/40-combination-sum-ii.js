@@ -7,7 +7,60 @@
  * @return {number[][]}
  */
 var combinationSum2 = function(candidates, target) {
+    const output = [];
 
+    // sort input array to more easily check for duplicates
+    candidates.sort((a, b) => a - b);
+
+    // recursive backtracking helper function
+    // TODO: "index" might be a bit of a confusing variable name startIndex
+    function backtrack(combination, index, curTarget) {
+        // a valid sum of candidates has been created
+        if (curTarget === 0) {
+            // push candidate sum to output - cloned to prevent modifying by reference
+            output.push([...combination]);
+            return;
+        }
+
+        // candidates exhausted if index exceeds bounds (invalid combination)
+        // combination cannot be valid if already surpassed target (only dealing with positive integers)
+        if (index >= candidates.length || curTarget < 0) {
+            return;
+        }
+
+        for (let i = index; i < candidates.length; i++) {
+            // current (and subsequent numbers) are invalid combinations
+            if (candidates[i] > curTarget) {
+                return;
+            }
+
+            // number is a duplicate AND was not previously selected (current index greater than supplied index)
+                // i.e. only consider the first occurrence of each candidate
+            if (candidates[i-1] === candidates[i] && i > index) {
+                // continue until next non-duplicate value
+                continue;
+            }
+
+            // create recursive branch with current candidate and remaining target
+            combination.push(candidates[i]);
+            backtrack(combination, i + 1, curTarget - candidates[i]);
+            // backtracking - returning from branch, remove candidate
+            combination.pop();
+        }
+    }
+
+    // initialise recursive backtracking
+    backtrack([], 0, target);
+
+    return output;
+
+    // 1 ms / beats 97.29%
+
+    // (time/space complexity is a mess to figure out again, ignoring)
+
+    // easier than it might have otherwise been given the solution I looked at yesterday was a similar pattern
+    // but these backtracking problems are all pretty similar in general
+        // makes it tricky to know what condition and/or if sorting is required though
 };
 
 // given collection of candidate numbers and a target number
