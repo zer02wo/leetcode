@@ -25,6 +25,12 @@ var combinationSum3 = function(k, n) {
             return;
         }
 
+        // combination has already exceeded target, it is invalid
+            // i.e. there are no negative numbers as we are constrained by 1 to 9 as our elements
+        if (curTarget < 0) {
+            return;
+        }
+
         for (let i = (prevIndex + 1); i <= 9; i++) {
             // combination sum exceeds target, return from branch as it is invalid
             if (i > curTarget) {
@@ -45,6 +51,7 @@ var combinationSum3 = function(k, n) {
     return output;
 
     // 1 ms / beats 46.63%
+    // 0 ms / beats 100% (after adding curTarget < 0 early return optimisation)
 
     // O(9 choose k) time complexity
     // O(9 choose k * k) space complexity
