@@ -7,7 +7,49 @@
  * @return {number[][]}
  */
 var combinationSum3 = function(k, n) {
+    const output = [];
 
+    // recursive backtracking helper function
+    // TODO: technically we can get prevIndex from combination::[-1]
+        // but is it just more efficient to pass this as an argument instead of looking it up?
+    function backtrack(combination, prevIndex, curTarget) {
+        // generated combination of k elements
+        if (combination.length === k) {
+            // combination is valid for target
+            if (curTarget === 0) {
+                // push to output array - clone to prevent modifying by reference
+                output.push([...combination]);
+            }
+
+            // branch is finished (whether combination is valid or invalid)
+            return;
+        }
+
+        for (let i = (prevIndex + 1); i < n; i++) {
+            // combination sum exceeds target, return from branch as it is invalid
+            if (i > curTarget) {
+                return;
+            }
+
+            // recursively branch to generate combination sum
+            combination.push(i);
+            backtrack(combination, i, curTarget - i);
+            // backtracking - remove element from combination
+            combination.pop();
+        }
+    }
+
+    // initialise recursive backtracking
+    backtrack([], 0, n);
+
+    return output;
+
+    // TODO: fails for following test case: k = 2, n = 18
+        // EXPECTED: []
+        // ACTUAL: [[1,17],[2,16],[3,15],[4,14],[5,13],[6,12],[7,11],[8,10]]
+            // probably just because I incorrectly constrained this
+            // needs to only use numbers 1 to 9
+                // not 1 to `n`, like I currently have it (as n can be <= 60)
 };
 
 // find all valid combinations of `k` numbers that sum up to `n` such that:
