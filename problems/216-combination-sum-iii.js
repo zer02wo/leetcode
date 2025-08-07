@@ -25,7 +25,7 @@ var combinationSum3 = function(k, n) {
             return;
         }
 
-        for (let i = (prevIndex + 1); i < n; i++) {
+        for (let i = (prevIndex + 1); i <= 9; i++) {
             // combination sum exceeds target, return from branch as it is invalid
             if (i > curTarget) {
                 return;
@@ -44,12 +44,16 @@ var combinationSum3 = function(k, n) {
 
     return output;
 
-    // TODO: fails for following test case: k = 2, n = 18
-        // EXPECTED: []
-        // ACTUAL: [[1,17],[2,16],[3,15],[4,14],[5,13],[6,12],[7,11],[8,10]]
-            // probably just because I incorrectly constrained this
-            // needs to only use numbers 1 to 9
-                // not 1 to `n`, like I currently have it (as n can be <= 60)
+    // 1 ms / beats 46.63%
+
+    // O(9 choose k) time complexity
+    // O(9 choose k * k) space complexity
+        // still don't know if I'm calculating these right, gets a bit abstract/mathematical for me
+
+    // very similar to leetcode #77 and leetcode #39
+        // so I'm not surprised I found this pretty easy
+    // although once I'm out of the flow of backtracking problems it may be harder to think of as an initial solution
+        // given the high time complexity / cost of recursion
 };
 
 // find all valid combinations of `k` numbers that sum up to `n` such that:
