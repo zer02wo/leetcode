@@ -6,7 +6,54 @@
  * @return {string[]}
  */
 var generateParenthesis = function(n) {
+    var output = [];
 
+    // recursive backtracking helper function
+    function backtrack(parantheses, numOpen, numClosed) {
+        // n well-formed parantheses have been generated
+        if (numOpen === numClosed && numClosed === n) {
+            // push string of valid parantheses to output
+            output.push(parantheses.join(''));
+            return;
+        }
+
+        // we have not opened all (n) parantheses pairs yet
+        if (numOpen < n) {
+            // open a new parantheses pair
+            parantheses.push('(');
+            // create recursive branch to open/close pairs
+            backtrack(parantheses, numOpen + 1, numClosed);
+            // backtracking - remove open parantheses
+            parantheses.pop();
+        }
+
+        // we have not closed all (n) parantheses pairs yet
+        if (numClosed < numOpen) {
+            // close an existing parantheses pair
+            parantheses.push(')');
+            // create recursive branch to open/close pairs - one less open, one more complete
+            backtrack(parantheses, numOpen, numClosed + 1);
+            // backtracking - remove closed parantheses
+            parantheses.pop();
+        }
+    }
+
+    // initialise recursive backtracking
+    // starting with an open parantheses as this is the only valid option to begin
+    // using array instead of string for more efficient "concatenation"
+    backtrack(['('], 1, 0);
+
+    return output;
+
+    // 2 ms / beats 42.80%
+
+    // completely lost on time/space complexity again...
+
+    // the general skeleton of recursion/backtracking is easy now
+    // but getting the right conditions is still tricky
+        // even though I knew the two branch decision tree
+        // I still got caught up a couple times until I revisited the decision tree to define them more clearly
+            // AKA don't jump into the code *too* quickly before fully understanding
 };
 
 // given `n` pairs of parentheses, write a function to generate *all combinations* of "well-formed parentheses"
