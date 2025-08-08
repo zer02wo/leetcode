@@ -27,3 +27,27 @@ var generateParenthesis = function(n) {
     // close an existing parantheses ")"
         // assuming one is already open, we cannot start with ")"
         // so it may make sense to start the string with "(", given that n >= 1
+
+// EXAMPLE DECISION TREE: n = 3
+    // left branch = prioritise open, right branch = prioritise close
+//                  (
+//        ((                 ()
+//     (((   (()             ()(
+//    ((()   (()(        ()((  ()()
+//   ((())   (()()      ()(()   ()()(
+//  ((()))   (()())    ()(())   ()()()
+
+// we could use a counter to determine the number of open parantheses
+    // increment/decrement based on decision for each branch
+    // use this as a condition to ensure it is valid
+// conditions:
+    // we can add another '(' when there are currently less than `n`
+        // e.g. for n = 3, '(((' is a valid start
+    // we can add another ')' when there are less than the number currently open
+        // e.g. for n = 3:
+            // '()' there are one open/one closed, so we can't close another
+            // '((' there are two open/zero closed, so we can close two
+            // '(()' there are two open, one closed, so we can close one
+            // '()()' there are two open, two closed, so we can't close another
+            // '(((' there are three open, zero closed, so we can close three
+            // etc.
