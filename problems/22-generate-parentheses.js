@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/generate-parentheses/
-// tags: medium, string
+// tags: medium, string, recursion, backtracking
 
 /**
  * @param {number} n
@@ -54,6 +54,7 @@ var generateParenthesis = function(n) {
         // even though I knew the two branch decision tree
         // I still got caught up a couple times until I revisited the decision tree to define them more clearly
             // AKA don't jump into the code *too* quickly before fully understanding
+    // I also had to pivot from my original intuition of a single counter for numOpen to also have a numClosed counter
 };
 
 // given `n` pairs of parentheses, write a function to generate *all combinations* of "well-formed parentheses"
