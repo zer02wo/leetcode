@@ -48,3 +48,20 @@ var findTargetSumWays = function(nums, target) {
     // expression (string or array)
     // index for input array
     // remaining target / cumulative total
+
+// EXAMPLE DECISION TREE: nums = [2,1,3], target = 4
+    // left branch prioritise add, right branch prioritise subtract
+//              +2                              -2
+//     +2+1            +2-1            -2+1            -2-1
+// +2+1+3 +2+1-3   +2-1+3 +2-1-3   -2+1+3 -2+1-3   -2-1+3 -2-1-3
+
+// +2+1+3 = 6
+// +2+1-3 = 0
+// +2-1+3 = 4 !!
+// +2-1-3 =-2
+// -2+1+3 = 2
+// -2+1-3 =-4
+// -2-1+3 = 0
+// -2-1-3 =-6
+
+// OUTPUT = ['+2-1+3']
