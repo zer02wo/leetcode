@@ -11,10 +11,19 @@ var findTargetSumWaysMemoization = function(nums, target) {
     // allows O(1) lookups of previous results
     const memo = new Map();
 
+    // TODO: is there a better way to do implement a 2D map rather than building a string key?
+    // ANS: yes, a pre-defined 2D array of [nums.length][2 * abs(sum(nums)) + 1]
+        // +1 as we're counting from -totalSum -> totalSum, so need to include 0
+    // const rows = nums.length;
+    // const totalSum = nums.reduce((a, b) => a + b, 0);
+    // const cols = 2 * totalSum + 1;
+    // const memo = Array.from({ length: n + 1 }, () => Array(cols).fill(undefined));
+    // ... but as you can see, this isn't particularly intuitive unless written out long-form (i.e. for loops/etc)
+    // would then be referenced as memo[i][sum]
+
     // recursive backtracking helper function
     function backtrack(index, sum) {
-        // define 2D map key via string
-            // TODO: is there a better way to do implement a 2D map rather than building a string key?
+        // define 2D map key via string - we don't have tuples like Python e.g. memo[(i,sum)]
         const memoKey = `${index},${sum}`;
 
         // if key exists, this has been calculated already
@@ -48,9 +57,20 @@ var findTargetSumWaysMemoization = function(nums, target) {
 
     // 97 ms / beats 65.09%
 
+    // O(n * sum(nums)) time complexity
+        // memoization means we are no longer performing repeated work in exponential time
+        // we now only compute for unique [i][sum] keys
+            // i = 0 -> n                               === O(n)
+            // sum = -abs(sum(nums)) -> abs(sum(nums))  === 2 * sum(nums) + 1
+            //                                          === O(sum(nums))
+    // O (n * sum(nums)) space complexity
+        // same as reasoning above, as we are storing a Map of [i][sum] key -> value pairs
+        // we also have a recursion stack depth of n (nums.length)
+
     // much better performance for not a lot more effort
         // although this was pretty unintuitive, hopefully becomes easier with more exposure to concept
-    // TODO: feel like there's probably way to define the 2D map
+
+    // TODO: there is a faster solution than backtracking + memoization, review implementing this
 };
 
 var findTargetSumWaysBruteForce = function(nums, target) {
