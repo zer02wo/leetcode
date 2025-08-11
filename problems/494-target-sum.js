@@ -6,6 +6,35 @@
  * @param {number} target
  * @return {number}
  */
+var findTargetSumWaysBottomUp = function(nums, target) {
+    // mapping currentSum -> countOfWaysToReachSum
+    let prevCounts = new Map();
+    // base case - 1 way to sum to zero, using 0 elements
+    prevCounts.set(0, 1);
+
+    // for each integer in nums array
+    for (const num of nums) {
+        let newCounts = new Map();
+
+        // for each existing sum in prevCounts Map
+        for (const [sum, count] of prevCounts) {
+            // we have two options: + current number, or - current number
+            // update the new map to record the count of ways to reach each sum value
+            newCounts.set(sum + num, (newCounts.get(sum + num) || 0) + count);
+            newCounts.set(sum - num, (newCounts.get(sum - num) || 0) + count);
+        }
+
+        // update previous pointer to newly created pointer for next iteration
+        prevCounts = newCounts;
+    }
+
+    // return the count of ways to sum to target (using all of nums)
+    return prevCounts.get(target);
+
+    // TODO: fails for test case: nums = [1], target = 2
+        // i.e. when the target cannot be reached
+};
+
 var findTargetSumWaysMemoization = function(nums, target) {
     // memoization mapping [index][sum] -> numWaysToSumToTarget
     // allows O(1) lookups of previous results
