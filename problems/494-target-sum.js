@@ -20,7 +20,10 @@ var findTargetSumWaysBottomUp = function(nums, target) {
         for (const [sum, count] of prevCounts) {
             // we have two options: + current number, or - current number
             // update the new map to record the count of ways to reach each sum value
+
+            // newCounts[sum+num] += count
             newCounts.set(sum + num, (newCounts.get(sum + num) || 0) + count);
+            // newCounts[sum-num] += count
             newCounts.set(sum - num, (newCounts.get(sum - num) || 0) + count);
         }
 
@@ -29,10 +32,18 @@ var findTargetSumWaysBottomUp = function(nums, target) {
     }
 
     // return the count of ways to sum to target (using all of nums)
-    return prevCounts.get(target);
+        // return 0 as default value when target sum cannot be reached with given nums
+    return prevCounts.get(target) || 0;
 
-    // TODO: fails for test case: nums = [1], target = 2
-        // i.e. when the target cannot be reached
+    // 36 ms / beats 76.01%
+
+    // O(n * t) time complexity
+        // t = total number of elements within the prevCounts map
+    // O(t) time complexity
+
+    // this is a really smart solution, but I would not have though of it intuitively
+    // even looking at it now it doesn't really feel like it's particularly readable
+        // only saving the previous iteration in memory really makes it simpler which feels counter-intuitive
 };
 
 var findTargetSumWaysMemoization = function(nums, target) {
