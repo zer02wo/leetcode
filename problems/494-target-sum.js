@@ -42,7 +42,7 @@ var findTargetSumWaysMemoization = function(nums, target) {
             }
         }
 
-        // recursively branch after *adding or subtracint* current element to expression
+        // recursively branch after *adding or subtracting* current element to expression
         // result is the different number of ways to sum to target
         const result = backtrack(index + 1, sum + nums[index]) + backtrack(index + 1, sum - nums[index]);
 
@@ -205,3 +205,34 @@ var findTargetSumWaysBruteForce = function(nums, target) {
     // there is one possible solution
 // i.e. this has prevented us from needing to re-calculate this sub-problem for the other 3 possibilities
     // which would each have 2 branches, in this example instance alone reduces 6 recursive calls (due to always creating 2 sub-branches)
+
+
+
+// OPTIMISATION: bottom-up approach - https://youtu.be/dwMOrl85Xes?si=BAH1GEhyKO02Nokk&t=507
+// the real problem we're trying to solve is find the count of ways to sum to a target number
+// once again lets use the example of nums = [1,1,1,1,1], target = 3
+// if we start at the very beginning, there is exactly 1 way to sum to 0 (i.e. the default sum using 0 elements)
+    // 0 -> 1
+// from 0, we have two choices +nums[0] or -nums[0]
+    // 1 -> 1
+    // -1 -> 1
+    // i.e. there is 1 way to sum to (positive) 1 and one way to sum to -1
+// from each of these values, we again make the same two choices of +nums[1] and -nums[1] (i incremented from 0 to 1)
+    // 2 -> 1
+        // i.e. +1+1
+    // 0 -> 2
+        // NOTE: there are two ways to make 0 (+1-1 AND -1+1), so the count is 2
+    //-2 -> 1
+        // i.e. -1-1
+// NOTE: we continue using the count from the previous iteration to determine the next counts
+    // 3 -> 1
+        // i.e. from 2 (+1+1) +1
+    // 1 -> 3
+        // i.e. from 2 (+1+1) -1
+        // i.e. from 0 (+1-1 AND -1+1) +1
+    // -1 -> 3
+        // i.e. from 0 (+1-1 AND -1+1) -1
+        // i.e. from -2 (-1-1) + 1
+    // -3 -> 1
+        // i.e. from -2 (-1-1) -1
+// etc.
