@@ -17,7 +17,7 @@ var partition = function(s) {
         // continue until pointers cross/overlap
         while (start < end) {
             // letters do not match, not a palindrome
-            if (s[start] !== s[end]) {
+            if (substring[start] !== substring[end]) {
                 return false;
             }
 
@@ -31,6 +31,8 @@ var partition = function(s) {
     }
 
     // recursive backtracking helper function
+    // TODO: is it more efficient to pass lastSubstring or to look it up from the end of the array?
+        // i.e. partition.at(-1) or partition[partition.length - 1]
     function createPartitions(partition, lastSubstring, index) {
         // check if the last substring added to the partition is a palindrome
         const isLastSubstringPalindrome = isPalindrome(lastSubstring);
@@ -55,6 +57,7 @@ var partition = function(s) {
         }
 
         // create a recursive branch by adding the current character to the last substring
+        // TODO: feels like there should be a nicer way to assign this without extra memory/string operations...
         const newSubstring = lastSubstring + s[index];
         partition[partition.length - 1] = newSubstring;
         createPartitions(partition, newSubstring, index + 1);
@@ -67,9 +70,19 @@ var partition = function(s) {
 
     return output;
 
-    // TODO: failing for multiple test cases:
-        // s = 'aab'
-        // s = 'abbab'
+    // 11 ms / beats 96.56%
+
+    // O(2^n * n) time complexity
+        // we can create (up to) 2 branches with each recursive call
+        // and have to clone the array which is an O(n) operation
+    // O(n) space complexity
+        // recursion stack depth == n
+        // we're also creating an array where size is (mostly) proportional to string length
+        // string operations may not be O(n) ?
+
+    // having to define two helper functions wasn't particularly nice
+    // writing out the decision tree the way I did was also pretty tricky, would've been nicer to draw it as a picture
+        // might be worth doing that moving forwards to save time/improve readability
 };
 
 // given string `s`: partition it such that every substring of the partition is a palindrome
