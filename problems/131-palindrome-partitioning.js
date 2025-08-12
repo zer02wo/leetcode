@@ -120,8 +120,10 @@ var partition = function(s) {
 //                                                                  a
 //                                            a,b                                                         ab
 //                      a,b,b                                              a,bb                    *              abb
-//        a,b,b,a                a,b,ba                         a,bb,a            a,bba                                   abba
-// [a,b,b,a,b]   a,b,b,ab       *    [a,b,bab]        [a,bb,a,b]   a,bb,ab      *       a,bbab                      [abba,b]   abbab
+//        a,b,b,a                a,b,ba                         a,bb,a            a,bba                       *         abba
+// [a,b,b,a,b]   a,b,b,ab       *    [a,b,bab]        [a,bb,a,b]   a,bb,ab      *       a,bbab                     [abba,b]   abbab
+
+// drawn diagram for reference: ../visual-explanations/131-decision-tree.png
 
 // we can return if one of the substrings isn't a palindrome (after we start the next substring)
     // we can't return before starting the next substring otherwise we potentially miss some palindromes
