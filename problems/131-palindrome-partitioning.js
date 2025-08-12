@@ -6,7 +6,70 @@
  * @return {string[][]}
  */
 var partition = function(s) {
+    const output = [];
 
+    // palindrome helper function
+    function isPalindrome(substring) {
+        // two pointers approach
+        let start = 0;
+        let end = substring.length - 1;
+
+        // continue until pointers cross/overlap
+        while (start < end) {
+            // letters do not match, not a palindrome
+            if (s[start] !== s[end]) {
+                return false;
+            }
+
+            // move pointers towards middle
+            start++;
+            end--;
+        }
+
+        // all letters matched, is a palindrome
+        return true;
+    }
+
+    // recursive backtracking helper function
+    function createPartitions(partition, lastSubstring, index) {
+        // check if the last substring added to the partition is a palindrome
+        const isLastSubstringPalindrome = isPalindrome(lastSubstring);
+
+        if (index === s.length) {
+            // validate output before returning
+            if (isLastSubstringPalindrome) {
+                // push partition to output - cloned to prevent modifying by reference
+                output.push([...partition]);
+            }
+
+            return;
+        }
+
+        // last substring is a valid palindrome
+        if (isLastSubstringPalindrome) {
+            // we can create a recursive branch where we create a new substring in the partition using the current character
+            partition.push(s[index]);
+            createPartitions(partition, s[index], index + 1);
+            // backtracking - remove newly added substring
+            partition.pop();
+        }
+
+        // create a recursive branch by adding the current character to the last substring
+        const newSubstring = lastSubstring + s[index];
+        partition[partition.length - 1] = newSubstring;
+        createPartitions(partition, newSubstring, index + 1);
+        // backtracking - remove last character from previous substring
+        partition[partition.length - 1] = lastSubstring;
+    }
+
+    // initialise recursive backtracking
+    createPartitions([s[0]], s[0], 1);
+
+    return output;
+
+    // TODO: failing for multiple test cases:
+        // s = 'aab'
+        // s = 'abbab'
 };
 
 // given string `s`: partition it such that every substring of the partition is a palindrome
@@ -39,13 +102,16 @@ var partition = function(s) {
 
 // EXAMPLE WALKTHROUGH DECISION TREE: s = 'abbab'
     // left branch = keep current, right branch = concatenate to current
+    // * = cannot continue as previous substring is not a palindrome
     // we can always start with s[0]
 //                                                                  a
-//                                            a,b                                                                  ab
-//                      a,b,b                                                a,bb                       ab,b                abb
-//        a,b,b,a                a,b,ba                         a,bb,a               a,bba                        abb,a           abba
-// [a,b,b,a,b]   a,b,b,ab   a,b,ba,b   [a,b,bab]        [a,bb,a,b]   a,bb,ab   a,bba,b   a,bbab                            [abba,b]   abbab
+//                                            a,b                                                         ab
+//                      a,b,b                                              a,bb                    *              abb
+//        a,b,b,a                a,b,ba                         a,bb,a            a,bba                                   abba
+// [a,b,b,a,b]   a,b,b,ab       *    [a,b,bab]        [a,bb,a,b]   a,bb,ab      *       a,bbab                      [abba,b]   abbab
 
 // we can return if one of the substrings isn't a palindrome (after we start the next substring)
     // we can't return before starting the next substring otherwise we potentially miss some palindromes
     // e.g. 'abb' is not a palindrome, but 'abba' is
+// this means we need to check if the *previous* substring in the partition is a palindrome
+    // if it is not, we cannot create a new substring and must add to the existing substring
