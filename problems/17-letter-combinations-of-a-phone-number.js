@@ -6,18 +6,24 @@
  * @return {string[]}
  */
 var letterCombinations = function(digits) {
+    // return empty array when no digits entered
+    if (!digits) {
+        return [];
+    }
+
     const output = [];
 
     // map digit to possible characters on T9 keyboard
-    const charMap = new Map();
-    charMap.set('2', 'abc');
-    charMap.set('3', 'def');
-    charMap.set('4', 'ghi');
-    charMap.set('5', 'jkl');
-    charMap.set('6', 'mno');
-    charMap.set('7', 'pqrs');
-    charMap.set('8', 'tuv');
-    charMap.set('9', 'wxyz');
+    const charMap = new Map([
+        ['2', 'abc'],
+        ['3', 'def'],
+        ['4', 'ghi'],
+        ['5', 'jkl'],
+        ['6', 'mno'],
+        ['7', 'pqrs'],
+        ['8', 'tuv'],
+        ['9', 'wxyz']
+    ]);
 
     // recursive backtracking helper function
     function combineLetters(combination, index) {
@@ -47,8 +53,21 @@ var letterCombinations = function(digits) {
 
     return output;
 
-    // TODO: fails for test case digits = ''
-    // do I just need to add an edge case for this?
+    // 0 ms / beats 100%
+
+    // O(n * 4^n) time complexity
+        // worst case scenario we have to branch 4 times
+        // most digits only branch 3 times
+        // we also need to perform an O(n) operation to convert the combination into a string
+            // (in actuality, only happens on leaf nodes)
+    // O(n) space complexity
+        // recursion stack depth
+        // output array size is also proportional to n
+        // the digit -> letter map is O(1), as we're always creating the same key, value mappings
+
+    // much easier than the last few days, this is a nicer backtracking problem for sure
+    // if I hadn't intuited to create the map, maybe it would be more difficult
+        // although I can't really think of a way to do it without the map
 };
 
 // given string containing digits 2-9 (inclusive):
