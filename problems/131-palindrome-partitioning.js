@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/palindrome-partitioning/
-// tags: medium, string
+// tags: medium, string, recursion, backtracking
 
 /**
  * @param {string} s
@@ -83,6 +83,9 @@ var partition = function(s) {
     // having to define two helper functions wasn't particularly nice
     // writing out the decision tree the way I did was also pretty tricky, would've been nicer to draw it as a picture
         // might be worth doing that moving forwards to save time/improve readability
+
+    // TODO: seems like no dynamic programming was needed here?
+        // is there a DP solution?
 };
 
 // given string `s`: partition it such that every substring of the partition is a palindrome
