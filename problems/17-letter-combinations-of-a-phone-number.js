@@ -57,3 +57,14 @@ var letterCombinations = function(digits) {
     // return combination when we've used all digits
 
     // return all combinations when we've traversed all branches/combinations
+
+// EXAMPLE WALKTHROUGH/DECISION TREE: digits = 23
+    // leftmost branch = first index, rightmost branch = last index
+    // e.g. 'ad' is the first character of 2/3
+    // e.g. 'cf' is the last character of 2/3
+
+//          ''
+//   a       b       c
+// d e f   d e f   d e f
+
+// drawn diagram for reference: ../visual-explanations/17-decision-tree.png
