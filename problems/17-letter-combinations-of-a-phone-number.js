@@ -6,7 +6,49 @@
  * @return {string[]}
  */
 var letterCombinations = function(digits) {
+    const output = [];
 
+    // map digit to possible characters on T9 keyboard
+    const charMap = new Map();
+    charMap.set('2', 'abc');
+    charMap.set('3', 'def');
+    charMap.set('4', 'ghi');
+    charMap.set('5', 'jkl');
+    charMap.set('6', 'mno');
+    charMap.set('7', 'pqrs');
+    charMap.set('8', 'tuv');
+    charMap.set('9', 'wxyz');
+
+    // recursive backtracking helper function
+    function combineLetters(combination, index) {
+        // letters combined for each digit
+        if (index === digits.length) {
+            // push letter combination to output as string
+            output.push(combination.join(''));
+
+            return;
+        }
+
+        // get letters mapping to current digit
+        const letters = charMap.get(digits[index]);
+
+        // for each letter
+        for (const letter of letters) {
+            // recursively branch to create letter combination
+            combination.push(letter);
+            combineLetters(combination, index + 1);
+            // backtracking - remove letter from current combination
+            combination.pop();
+        }
+    }
+
+    // initialise recursive backtracking
+    combineLetters([], 0);
+
+    return output;
+
+    // TODO: fails for test case digits = ''
+    // do I just need to add an edge case for this?
 };
 
 // given string containing digits 2-9 (inclusive):
