@@ -4,6 +4,30 @@
  * @param {number[]} nums
  * @return {number}
  */
+var robConstantSpace = function(nums) {
+    let maxPrev = 0, maxCur = 0;
+
+    for (let i = 0; i < nums.length; i++) {
+        // all the money made by robbing up to 2 houses ago AND the current house
+        const robCur = maxPrev + nums[i];
+
+        // dp[i-2], dp[i-1] = dp[i-1], MAX(dp[i-2] + nums[i], dp[i-1])
+        [maxPrev, maxCur] = [maxCur, Math.max(robCur, maxCur)];
+    }
+
+    return maxCur;
+
+    // 0 ms / beats 100%
+
+    // O(n) time complexity
+    // O(1) space complexity
+        // only defining the equivalent to dp[i-2] and dp[i-1] from previous solution
+
+    // much less readable than the previous solution, but even smaller footprint
+
+    // TODO: what would a recursive solution look like? even if it is less performant?
+};
+
 var rob = function(nums) {
     // maximum money that can be robbed at each house
     const loot = new Array(nums.length);
@@ -11,7 +35,7 @@ var rob = function(nums) {
     for (let i = 0; i < nums.length; i++) {
         // all the money made by robbing up to/(potentially) including the previous house
         const maxPrev = loot[i-1] ?? 0;
-        // all the money made by robbing up to 2 houses again AND the current house
+        // all the money made by robbing up to 2 houses ago AND the current house
         const maxCurrent = (loot[i-2] ?? 0) + nums[i];
 
         // maximum money that can be made up to (and potentially including) this house on the street
