@@ -1,11 +1,44 @@
 // https://leetcode.com/problems/house-robber/
-// tags: medium, array
+// tags: medium, array, dynamic programming, tabulation
 /**
  * @param {number[]} nums
  * @return {number}
  */
 var rob = function(nums) {
+    // maximum money that can be robbed at each house
+    const loot = new Array(nums.length);
 
+    for (let i = 0; i < nums.length; i++) {
+        // all the money made by robbing up to/(potentially) including the previous house
+        const maxPrev = loot[i-1] ?? 0;
+        // all the money made by robbing up to 2 houses again AND the current house
+        const maxCurrent = (loot[i-2] ?? 0) + nums[i];
+
+        // maximum money that can be made up to (and potentially including) this house on the street
+        loot[i] = Math.max(maxPrev, maxCurrent);
+    }
+
+    // return the maximum amount of money that can be robbed
+    // referencing the last house on the street
+    return loot[loot.length - 1];
+
+    // 0 ms / beats 100%
+
+    // O(n) time complexity
+        // each element is visited once and performs O(1) lookups
+    // O(n) space complexity
+        // DP array is the same size as the input array
+        // TODO: this could be reduced to O(1) space complexity as we only need loot[i-1] and loot[i-2]
+
+    // the code is ridiculously simple
+        // could easily be reduced to just a few lines (I've added more for clarity/comments)
+    // but the pattern was really hard to figure out
+        // explanation video below made it more easy to understand
+        // but I'm not sure I would've found this pattern
+        // I probably would've ended up doing recursion/backtracking or some other brute force method
+    // need to get better about identifying the sub-problems
+
+    // this dynamic programming method is TABULATION (bottom-up)
 };
 
 // given integer array `nums` representing the money at each house on a street
