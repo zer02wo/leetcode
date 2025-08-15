@@ -1,5 +1,6 @@
 // https://leetcode.com/problems/house-robber/
-// tags: medium, array, dynamic programming, tabulation
+// tags: medium, array, dynamic programming, tabulation, memoization
+
 /**
  * @param {number[]} nums
  * @return {number}
