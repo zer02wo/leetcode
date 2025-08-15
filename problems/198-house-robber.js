@@ -8,28 +8,39 @@ var robRecursive = function(nums) {
     // this is not an optimal solution just wanted to see how:
     // top-down/recursive solution compares to bottom-up/iterative
 
+    // OPTIMISATION: memoization
+    const memo = new Array(nums.length);
+
+    // base cases - no previous houses to check
+    memo[0] = nums[0];
+    memo[1] = Math.max(nums[0], nums[1]);
+
     // equivalent to: loot[i] = max(loot[i-1], (loot[i-2] + nums[i]))
     function maxAtHouse(i) {
-        // base cases - no previous houses to check
-        if (i === 0) {
-            return nums[0];
+        // calculate value if it does not exist in memoization cache
+        if (memo[i] === undefined) {
+            // general case - choose the maximum of:
+                // all the money made by robbing up to 2 houses ago AND the current house
+                //  all the money made by robbing up to/(potentially) including the previous house
+            memo[i] = Math.max(maxAtHouse(i-1), maxAtHouse(i-2) + nums[i]);
         }
 
-        if (i === 1) {
-            return Math.max(nums[0], nums[1]);
-        }
-
-        // general case - choose the maximum of:
-            // all the money made by robbing up to 2 houses ago AND the current house
-            //  all the money made by robbing up to/(potentially) including the previous house
-        return Math.max(maxAtHouse(i-1), maxAtHouse(i-2) + nums[i]);
+        return memo[i];
     }
 
     // maximum at last house on street == total possible maximum
     return maxAtHouse(nums.length - 1);
 
-    // TODO: TLE on test case 55/70
-    // TODO: implement memoization
+    // TLE (before memoization)
+    // 0 ms / beats 100% (with memoization)
+
+    // O(n) time complexity
+        // due to memoization cache we only need to calculate each index once
+        // without memoization, this is O(2^n)
+    // O(n) space complexity
+        // recursive call stack depth
+
+    // I probably could've figured this solution out first, but my mind is so stuck on backtracking pattern
 };
 
 var robConstantSpace = function(nums) {
