@@ -6,7 +6,29 @@
  * @return {number}
  */
 var maxSubArray = function(nums) {
+    // initialise max sum to -Infinity, as the maximum sum could be negative
+    let maxSum = -Infinity;
+    const n = nums.length;
 
+    // brute force solution - calculate all possible sums from [i] to [n]
+    for (let i = 0; i < n; i++) {
+        let localSum = 0
+
+        for (let j = i; j < n; j++) {
+            localSum += nums[j];
+            maxSum = Math.max(maxSum, localSum);
+        }
+    }
+
+    return maxSum;
+
+    // TLE
+
+    // O(n^2) time complexity
+    // O(1) space complexity
+
+    // as expected this passes test cases but runs too slowly,
+        // but usually a good idea to implement this and figure out how to optimise
 };
 
 // given integer array `nums`, find the subarray with the largest sum
@@ -34,4 +56,5 @@ var maxSubArray = function(nums) {
         // check if it is greater than the current maximum
 
 // TODO: seems like we could probably optimise with a sliding window?
+// TODO: seems like a prefix sum solution could also work?
 // lets review the outcome of the brute force solution
