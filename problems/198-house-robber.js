@@ -4,6 +4,34 @@
  * @param {number[]} nums
  * @return {number}
  */
+var robRecursive = function(nums) {
+    // this is not an optimal solution just wanted to see how:
+    // top-down/recursive solution compares to bottom-up/iterative
+
+    // equivalent to: loot[i] = max(loot[i-1], (loot[i-2] + nums[i]))
+    function maxAtHouse(i) {
+        // base cases - no previous houses to check
+        if (i === 0) {
+            return nums[0];
+        }
+
+        if (i === 1) {
+            return Math.max(nums[0], nums[1]);
+        }
+
+        // general case - choose the maximum of:
+            // all the money made by robbing up to 2 houses ago AND the current house
+            //  all the money made by robbing up to/(potentially) including the previous house
+        return Math.max(maxAtHouse(i-1), maxAtHouse(i-2) + nums[i]);
+    }
+
+    // maximum at last house on street == total possible maximum
+    return maxAtHouse(nums.length - 1);
+
+    // TODO: TLE on test case 55/70
+    // TODO: implement memoization
+};
+
 var robConstantSpace = function(nums) {
     let maxPrev = 0, maxCur = 0;
 
@@ -26,6 +54,7 @@ var robConstantSpace = function(nums) {
     // much less readable than the previous solution, but even smaller footprint
 
     // TODO: what would a recursive solution look like? even if it is less performant?
+    // TODO: CONTINUE FROM HERE TOMORROW !
 };
 
 var rob = function(nums) {
