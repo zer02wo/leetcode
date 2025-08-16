@@ -9,7 +9,7 @@ var maxSubArray = function(nums) {
     // "Prefix Sum" approach
     let curSum = 0;
     let minPrefix = 0;
-    let maxSum = 0;
+    let maxSum = nums[0];
 
     for (const num of nums) {
         // calculate the "prefix sum" (i.e. cumulative sum)
@@ -27,9 +27,19 @@ var maxSubArray = function(nums) {
         // https://leetcode.com/problems/maximum-subarray/solutions/799981/say-goodbye-to-kadane-hello-to-intuitive-o-n-prefix-sum-solution-java/
     return maxSum;
 
-    // TODO: fails for following test case:
-        // nums = [-1]
-        // likely just because we are initialising maxSum to 0
+    // 4 ms / beats 23.94% (first run)
+    // 3 ms / beats 44.86% (second run)
+
+    // O(n) time complexity
+        // visits each element in nums once
+    // O(1) space complexity
+        // only defines 3 variables in memory
+
+    // the code is relatively simple but this problem was so hard for me to wrap my head around
+        // I'm not sure that I still fully understand it now, even after the hint
+        // this might have been one where coding the solution made more sense, as I might have thought of initialising to 0
+            // rather than beginning with nums[0] like in my walkthroughs
+    // TODO: people in comments are mentioning "Kadane's algorithim", let's see what that looks like
 };
 
 var maxSubArrayBruteForceTLE = function(nums) {
