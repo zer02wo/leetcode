@@ -1,11 +1,46 @@
 // https://leetcode.com/problems/maximum-subarray/
-// tags: medium, array, prefix sum
+// tags: medium, array, prefix sum, sliding window, Kadane's algorithm
 
 /**
  * @param {number[]} nums
  * @return {number}
  */
-var maxSubArray = function(nums) {
+var maxSubArrayKadane = function(nums) {
+    // video explanation: https://www.youtube.com/watch?v=5WZl3MMT0Eg
+    // essentially this is a sliding window, but we "reset" the window whenever we see a negative value
+
+    let curSum = 0;
+    let maxSum = nums[0];
+
+    for (const num of nums) {
+        // reset "sliding window" to 0 when we go negative
+        if (curSum < 0) {
+            curSum = 0;
+        }
+
+        // add next element to the "sliding window"
+        curSum += num;
+
+        // keep reference the maximum sum value seen
+        maxSum = Math.max(maxSum, curSum);
+    }
+
+    return maxSum;
+
+    // 4 ms / beats 23.94%
+
+    // O(n) time complexity
+    // O(1) space complexity
+
+    // again, ridiculously simple code but it was just not intuitive to me at all
+        // maybe I should've tried to pursue a sliding window solution instead of prefix sum
+            // but the condition of "reset when negative" wasn't obvious
+        // I suppose the mathematical proof is "if a subarray ever goes negative", it will always make sense to exclude that value moving forwards
+        // e.g. [5,4,-10,20,1]
+            // even though the "20" offsets the negative, there is no scenario in which we would want to include -10
+};
+
+var maxSubArrayPrefixSumIsh = function(nums) {
     // "Prefix Sum" approach
     let curSum = 0;
     let minPrefix = 0;
@@ -37,6 +72,7 @@ var maxSubArray = function(nums) {
 
     // the code is relatively simple but this problem was so hard for me to wrap my head around
         // I'm not sure that I still fully understand it now, even after the hint
+        // not sure if it really counts as Prefix Sum either, as we're just using it as a cumulative sum
         // this might have been one where coding the solution made more sense, as I might have thought of initialising to 0
             // rather than beginning with nums[0] like in my walkthroughs
     // TODO: people in comments are mentioning "Kadane's algorithim", let's see what that looks like
@@ -106,6 +142,8 @@ var maxSubArrayBruteForceTLE = function(nums) {
     // left pointer (start of window) & right pointer (end of window)
     // increment right pointer until **a condition**
         // TODO: but what should this condition be?
+            // EDIT AFTER: Kadane's algorithm
+                // reset sliding window when cumulative sum goes negative (curSum < 0)
         // if we did current < previous we could get stuck
 
 // APPROACH: prefix sum
