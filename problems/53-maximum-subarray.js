@@ -1,11 +1,38 @@
 // https://leetcode.com/problems/maximum-subarray/
-// tags: medium, array
+// tags: medium, array, prefix sum
 
 /**
  * @param {number[]} nums
  * @return {number}
  */
 var maxSubArray = function(nums) {
+    // "Prefix Sum" approach
+    let curSum = 0;
+    let minPrefix = 0;
+    let maxSum = 0;
+
+    for (const num of nums) {
+        // calculate the "prefix sum" (i.e. cumulative sum)
+        curSum += num;
+
+        // calculate new "maximum sum" = prefixSum - minPrefix
+        maxSum = Math.max(maxSum, curSum - minPrefix);
+
+        // calculate the "minimum prefix" (i.e. smallest prefix sum value seen so far)
+        minPrefix = Math.min(minPrefix, curSum);
+    }
+
+    // see:
+        // https://leetcode.com/problems/maximum-subarray/solutions/7070741/prefix-sums-is-more-intuitive-best-time-to-buy-and-sell-stock/
+        // https://leetcode.com/problems/maximum-subarray/solutions/799981/say-goodbye-to-kadane-hello-to-intuitive-o-n-prefix-sum-solution-java/
+    return maxSum;
+
+    // TODO: fails for following test case:
+        // nums = [-1]
+        // likely just because we are initialising maxSum to 0
+};
+
+var maxSubArrayBruteForceTLE = function(nums) {
     // initialise max sum to -Infinity, as the maximum sum could be negative
     let maxSum = -Infinity;
     const n = nums.length;
@@ -103,3 +130,24 @@ var maxSubArray = function(nums) {
 // the maximum subarray = nums[0,4] BREAKS MY PATTERN
 
 // SO HOW CAN WE USE THE PREFIX SUM INSTEAD?
+// hint from solution here: https://leetcode.com/problems/maximum-subarray/solutions/7070741/prefix-sums-is-more-intuitive-best-time-to-buy-and-sell-stock/
+
+// I was incredibly close, we just need to consider a starting "minimum" value of 0
+    // i.e. imagine there is an imaginary [0] element prefixing all arrays
+// e.g. nums = [10,-4, 6, 8,-20,12]
+// PrefixSum = [10, 6,12,20,  0,12]
+// MinPrefix = [ 0, 0, 0, 0,  0, 0]
+//                        ^ 20 - 0 = 20 (the maximum)
+
+// e.g. nums = [-2, 1,-3, 4,-1, 2, 1,-5, 4]
+// PrefixSum = [-2,-1,-4, 0,-1, 1, 2,-3, 1]
+// MinPrefix = [ 0,-2,-2,-4,-4,-4,-4,-4,-4]
+//                                 ^ 2 - (-4) = 6 (the maximum)
+    // we start with a minimum of 0 (i.e. nothing before the start of the array = minimum of 0)
+    // we then set the new minimum to -2, as this is < 0
+    // we then set the new minimum to -4, as again this is < -2
+
+// e.g. nums = [-3, 4, 5,-1, 2,-4,-5, 3]
+// PrefixSum = [-3, 1, 6, 5, 7, 3,-2, 1]
+// MinPrefix = [ 0,-3,-3,-3,-3,-3,-3,-3]
+//                           ^ 7 - (-3) = 10 (the maximum)
