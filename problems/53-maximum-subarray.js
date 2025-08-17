@@ -38,6 +38,11 @@ var maxSubArrayKadane = function(nums) {
         // I suppose the mathematical proof is "if a subarray ever goes negative", it will always make sense to exclude that value moving forwards
         // e.g. [5,4,-10,20,1]
             // even though the "20" offsets the negative, there is no scenario in which we would want to include -10
+
+    // I don't really understand the "recurrence relation" for this DP problem
+
+    // TODO: need to look at "Divide and Conquer" solution as well
+    // https://www.geeksforgeeks.org/dsa/maximum-subarray-sum-using-divide-and-conquer-algorithm/
 };
 
 var maxSubArrayPrefixSumIsh = function(nums) {
