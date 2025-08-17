@@ -8,6 +8,15 @@
 var rob = function(nums) {
     const n = nums.length;
 
+    // base cases - handled separately for simplicity
+    if (n === 1) {
+        return nums[0];
+    }
+
+    if (n === 2) {
+        return Math.max(nums[0], nums[1]);
+    }
+
     // pointer for robbing houses: [0,n-2] (don't consider last house)
         // prevents robbing first / last house together
     const lootExcludingLast = new Array(n - 1);
@@ -42,7 +51,16 @@ var rob = function(nums) {
     // return maximum available loot with either house exclusions
     return Math.max(lootExcludingFirst[n - 2], lootExcludingLast[n - 2]);
 
-    // TODO: fails for test case: nums = [0]
+    // 0 ms / beats 100%
+
+    // O(n) time complexity
+        // O(2n) technically, as we're doing two loops
+    // O(n) space complexity
+        // O(2(n-1)) technically, as we have two arrays equal to length n-1
+
+    // surprised that this is the optimal technique/approach, at least in terms of runtime
+    // I thought there would be a more elegant solution
+    // still want to improve this to be a single loop, but maybe in a separate function to better show progression of optimisation
 };
 
 // professional robber planning to rob houses along a street, which is **arranged in a circle**
