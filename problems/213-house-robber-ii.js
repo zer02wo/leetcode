@@ -1,11 +1,63 @@
 // https://leetcode.com/problems/house-robber-ii/description/
-// tags: medium, array, dynamic programming
+// tags: medium, array, dynamic programming, tabulation
 
 /**
  * @param {number[]} nums
  * @return {number}
  */
-var rob = function(nums) {
+var robOneLoop = function(nums) {
+    const n = nums.length;
+
+    // base cases - handled separately for simplicity
+    if (n === 1) {
+        return nums[0];
+    }
+
+    if (n === 2) {
+        return Math.max(nums[0], nums[1]);
+    }
+
+    // pointers for robbing houses: [0,n-2] (don't consider last house)
+        // prevents robbing first / last house together
+    let prevExclLast = 0, curExclLast = 0;
+    // pointers for robbing houses: [1,n-1] (don't consider first house)
+        // allows us to check for a solution using last house
+    let prevExclFirst = 0, curExclFirst = 0;
+    // OPTIMISATION ^ using constant space, instead of array
+
+    // recurrence relation maxLoot = Max(prev + nums[i], current)
+
+    // OPTIMISATION: handle both scenarios in a single loop
+    for (let i = 0; i < n - 1; i++) {
+        // 0 -> n - 2
+        const newCurExclLast = Math.max(curExclLast, prevExclLast + nums[i]);
+        // swap: oldPrev, oldCur => oldCur, newCur
+        [prevExclLast, curExclLast] = [curExclLast, newCurExclLast];
+
+        // 1 -> n - 1 (hence +1 when referencing index)
+        const newCurExclFirst = Math.max(curExclFirst, prevExclFirst + nums[i+1]);
+        // swap: oldPrev, oldCur => oldCur, newCur
+        [prevExclFirst, curExclFirst] = [curExclFirst, newCurExclFirst];
+    }
+
+    // return maximum available loot with either house exclusions
+    return Math.max(curExclFirst, curExclLast);
+
+    // 0 ms / beats 100%
+
+    // O(n) time complexity
+        // single for loop through nums
+    // O(1) space complexity
+        // removed arrays from previous solution
+
+    // reducing this to constant space made it a bit simpler/more readable
+        // although I'm still not particularly happy with readability, variable names are difficult for two things so similar
+        // prev1 and cur1 / prev2 and cur2 might've been better...
+    // would likely be more readable with a helper function, but then we're missing out on the performance improvements of a single loop
+        // unless we could memoize it?
+};
+
+var robTwoLoops = function(nums) {
     const n = nums.length;
 
     // base cases - handled separately for simplicity
@@ -61,6 +113,7 @@ var rob = function(nums) {
     // surprised that this is the optimal technique/approach, at least in terms of runtime
     // I thought there would be a more elegant solution
     // still want to improve this to be a single loop, but maybe in a separate function to better show progression of optimisation
+        // as we're doing a lot of repeated work (so this could also be solved via memoization?)
 };
 
 // professional robber planning to rob houses along a street, which is **arranged in a circle**
