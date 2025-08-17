@@ -6,7 +6,23 @@
  * @return {number}
  */
 var rob = function(nums) {
+    // House Robber I implementation
+    const n = nums.length;
 
+    // recurrence relation loot[i] = Max(loot[i-2] + nums[i], loot[i-1])
+    const loot = new Array(n);
+
+    for (let i = 0; i < n; i++) {
+        // rob previous house, leave current house
+        const maxPrev = loot[i-1] ?? 0;
+        // rob current house (and anything before the previous neighbour)
+        const maxCurrent = (loot[i-2] ?? 0) + nums[i];
+
+        loot[i] = Math.max(maxPrev, maxCurrent);
+    }
+
+    // return maximum available loot at last house
+    return loot[n - 1];
 };
 
 // professional robber planning to rob houses along a street, which is **arranged in a circle**
