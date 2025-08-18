@@ -9,6 +9,11 @@
 var coinChange = function(coins, amount) {
     // recursive helper function
     function minCoinsForTarget(target) {
+        // base case: 0 coins to make 0 amount
+        if (target === 0) {
+            return 0;
+        }
+
         // start at infinity so any valid (minimum) solution is better
         let minCoins = Infinity;
 
@@ -20,8 +25,13 @@ var coinChange = function(coins, amount) {
 
             // recursively search for a way to make the new target
             const newTarget = target - coin;
-            // +1 to account for current coin in loop
-            minCoins = Math.min(minCoins,  minCoinsForTarget(newTarget) + 1);
+            const result = minCoinsForTarget(newTarget);
+
+            // -1 means an invalid result, only consider valid combinations
+            if (result >= 0) {
+                // +1 to account for current coin in loop
+                minCoins = Math.min(minCoins, result + 1);
+            }
         }
 
         // no valid solution was found
@@ -36,8 +46,8 @@ var coinChange = function(coins, amount) {
     // initialise recursive solution
     return minCoinsForTarget(amount);
 
-    // TODO: this is failing for multiple test cases because we are getting -1 from the recursive result
-        // need to change the check for assigning Math.min result
+    // TODO: TLE for test case: coins = [1,2,5], amount = 100
+    // TODO: implement memoization
 };
 
 // given an integer array `coins` representing different denominations of coins, and an integer `amount` representing a total amount of money
