@@ -7,7 +7,37 @@
  * @return {number}
  */
 var coinChange = function(coins, amount) {
+    // recursive helper function
+    function minCoinsForTarget(target) {
+        // start at infinity so any valid (minimum) solution is better
+        let minCoins = Infinity;
 
+        for (const coin of coins) {
+            // coin is larger than target, cannot be used
+            if (coin > target) {
+                break;
+            }
+
+            // recursively search for a way to make the new target
+            const newTarget = target - coin;
+            // +1 to account for current coin in loop
+            minCoins = Math.min(minCoins,  minCoinsForTarget(newTarget) + 1);
+        }
+
+        // no valid solution was found
+        if (minCoins === Infinity) {
+            return -1;
+        }
+
+        // return minimum number of coins required to make solution
+        return minCoins;
+    }
+
+    // initialise recursive solution
+    return minCoinsForTarget(amount);
+
+    // TODO: this is failing for multiple test cases because we are getting -1 from the recursive result
+        // need to change the check for assigning Math.min result
 };
 
 // given an integer array `coins` representing different denominations of coins, and an integer `amount` representing a total amount of money
@@ -40,3 +70,4 @@ var coinChange = function(coins, amount) {
         // newAmount = amount - coins[i]
     // the problem then becomes the most efficient way to reach newAmount
     // so we could implement a recursive top-down approach, but how would we memoize this?
+        // mapping targetAmount => minNumCoins
