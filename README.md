@@ -11,3 +11,5 @@ Leetle-specific problems that could not be linked to a Leetcode problem have bee
 
 Each solution includes a link to the problem (or date/archive in the case of Leetle) for easy identification.
 I have included "tags" for problem types at the top of files which may assist in searching for something specific.
+
+Any (poorly drawn) diagrams (made in Kolourpaint with a mouse) can be found in the [/visual-explanations](/visual-explanations) directory.
