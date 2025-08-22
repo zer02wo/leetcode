@@ -6,6 +6,50 @@
  * @return {number}
  */
 var maxProduct = function(nums) {
+    // referenced solution: https://leetcode.com/problems/maximum-product-subarray/solutions/4142979/kadane-maximum-product-algorithm/
+
+    // keep reference to (local) maximum and minimum products
+    // these can be swapped depending on the number of negative numbers in input array
+    let maxProduct = nums[0];
+    let minProduct = nums[0];
+    // keep reference to global maximum product, i.e. final output
+    let globalMaxProduct = nums[0];
+
+    for (let i = 1; i < nums.length; i++) {
+        const num = nums[i];
+
+        // modified Kadane's algorithm(?)
+        if (num < 0) {
+            // swap maximum/minimum pointers on sign change (handles odd/even number of negative numbers)
+            // e.g. +max * neg = min, -min * neg = max
+            [maxProduct, minProduct] = [minProduct, maxProduct];
+        }
+
+        // reset max product if current number is greater (e.g. stuck at 0)
+        maxProduct = Math.max(num, maxProduct * num);
+        // reset min product if current number is lesser (e.g. stuck at 0)
+        minProduct = Math.min(num, minProduct * num);
+
+        globalMaxProduct = Math.max(globalMaxProduct, maxProduct);
+    }
+
+    // maximum product found via either condition/pointer methods
+    return globalMaxProduct;
+
+    // 5 ms / beats 37.44%
+    // (I see same solution recorded at 2ms not sure why mine is worse)
+
+    // O(n) time complexity
+        // single loop through nums
+    // O(1) space complexity
+        // no dynamically sized data structures
+        // only requires 3 integer variables
+
+    // it would be hard to recognise this as Kadane's algorithm, even if it is similar layout
+    // I was working along the right lines with my solution but I don't know if I would've gotten to this solution without a hint
+};
+
+var maxProductKadaneModifiedBad = function(nums) {
     let curProduct = 1;
     let curProductNoNeg = 1;
     let maxProduct = nums[0];
