@@ -6,7 +6,28 @@
  * @return {number}
  */
 var maxProduct = function(nums) {
+    let curProduct = 1;
+    let maxProduct = nums[0];
 
+    for (const num of nums) {
+        // modified Kadane's algorithm
+        // reset "sliding window" when current product === 0 (because anything * 0 = 0)
+        if (curProduct === 0) {
+            curProduct = 1;
+        }
+
+        // add current number to "sliding window" (subarray)
+        curProduct *= num;
+        // keep reference to maximum product seen
+        maxProduct = Math.max(maxProduct, curProduct);
+    }
+
+    return maxProduct;
+
+    // TODO: fails for test case nums = [3,-1,4]
+        // as stated in my intuition this modified Kadane's algorithm wasn't able to handle an odd number of negatives
+    // could we add a second pointer that *doesn't* allow any negatives for this scenario?
+        // e.g. when this second pointer <= 0, reset to 1
 };
 
 // given an integer array nums, find a subarray that has the largest product and return that largest product
