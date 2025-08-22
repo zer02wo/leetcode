@@ -5,6 +5,67 @@
  * @param {number[]} nums
  * @return {number}
  */
+var maxProductFrontBack = function(nums) {
+    // referenced solution: https://leetcode.com/problems/maximum-product-subarray/solutions/1608800/c-discussion-in-detail-easy-to-understand/
+
+    const n = nums.length;
+    let curProduct = 1;
+    let maxProduct = nums[0];
+
+    // 1. perform Kadane's algorithm forwards (0 -> n-1)
+    for (const num of nums) {
+        // reset when product === 0 (as anything * 0 === 0)
+        if (curProduct === 0) {
+            curProduct = 1;
+        }
+
+        // add current number to "sliding window" (subarray)
+        curProduct *= num;
+        // keep reference to maximum product seen
+        maxProduct = Math.max(maxProduct, curProduct);
+    }
+
+    // 2. perform Kadane's algorithm bakwards (n-1 -> 0)
+    // reset currentProduct for backwards iteration
+    curProduct = 1;
+
+    for (let i = n-1; i >= 0; i--) {
+        // reset when product === 0 (as anything * 0 === 0)
+        if (curProduct === 0) {
+            curProduct = 1;
+        }
+
+        const num = nums[i];
+        // add current number to "sliding window" (subarray)
+        curProduct *= num;
+        // keep reference to maximum product seen
+        maxProduct = Math.max(maxProduct, curProduct);
+    }
+
+    return maxProduct;
+
+    // 4 ms / beats 50.48%
+
+    // O(n) time complexity
+        // O(2n) as we iterate through nums twice
+    // O(1) space complexity
+        // no dynamically sized data structures
+        // only requires 3 integer variables
+
+    // this is such an insanely clever trick,
+        // again I would not have thought of this without seeing the answer
+    // the problem hinges on handling 0's
+        // (using the modified Kadane's algorithm condition)
+    // AND by appropriately handling an even/odd number of negative numbers
+        // by performing Kadane's algorithm in both directions we guarantee that we see all scenarios with an odd or even amount of negative numbers
+            // i.e. by going from 0 -> n-1 we can skip/ignore the LAST negative number
+            // i.e. by going from n-1 -> 0 we can skip/ignore the FIRST negative number
+        // if we ignored any of the "middle" negative numbers this would not be "maximum" product
+    // inclusions of 0's in the array essentially just change the bounds of the array, as we need to reset the product to 1
+        // but the principle is the same, e.g. [-1,-2,3,0,-3,2,-1]
+        // we essentially have two arrays to search nums[0->2] and nums [4->6] as we are reset at nums[3]
+};
+
 var maxProduct = function(nums) {
     // referenced solution: https://leetcode.com/problems/maximum-product-subarray/solutions/4142979/kadane-maximum-product-algorithm/
 
