@@ -7,7 +7,9 @@
  */
 var maxProduct = function(nums) {
     let curProduct = 1;
+    let curProductNoNeg = 1;
     let maxProduct = nums[0];
+    let maxProductNoNeg = nums[0];
 
     for (const num of nums) {
         // modified Kadane's algorithm
@@ -16,18 +18,29 @@ var maxProduct = function(nums) {
             curProduct = 1;
         }
 
+        // modified Kadane's algorithm, second pointer
+        // reset "sliding window" when current product <= 0 (to handle an odd number of negative numbers in nums)
+            // e.g. handles test case [3,-1,4], as it will reset after -1 to return [4]
+        if (curProductNoNeg <= 0) {
+            curProductNoNeg = 1;
+        }
+
         // add current number to "sliding window" (subarray)
         curProduct *= num;
+        curProductNoNeg *= num;
         // keep reference to maximum product seen
         maxProduct = Math.max(maxProduct, curProduct);
+        maxProductNoNeg = Math.max(maxProductNoNeg, curProductNoNeg);
     }
 
-    return maxProduct;
+    // maximum product found via either condition/pointer methods
+    return Math.max(maxProduct, maxProductNoNeg);
 
-    // TODO: fails for test case nums = [3,-1,4]
-        // as stated in my intuition this modified Kadane's algorithm wasn't able to handle an odd number of negatives
-    // could we add a second pointer that *doesn't* allow any negatives for this scenario?
-        // e.g. when this second pointer <= 0, reset to 1
+    // TODO: fails for test case nums = [2,-5,-2,-4,3]
+        // OUTPUT: 20 [2,-5,-2]
+        // EXPECTED: 24 [-2,-4,3]
+    // the second pointer I've added is too simple to handle these cases
+        // what about if we kept reference to a *minimum* product in the hopes of finding an additional negative value to turn this positive again?
 };
 
 // given an integer array nums, find a subarray that has the largest product and return that largest product
@@ -66,3 +79,8 @@ var maxProduct = function(nums) {
         // but 600 [-10 * 10 * 2 * 3] is the actual answer
     // so instead we could see if a modified condition of (current === 0) works,
         // but this likely won't work for an odd number of negative numbers
+// ... after first approach/attempt we found it failed for test case: nums = [3,-1,4]
+    // as stated above this modified Kadane's algorithm wasn't able to handle an odd number of negatives
+    // attempted to resolve by adding a second pointer that *doesn't* allow any negatives for this scenario
+        // e.g. when this second pointer <= 0, reset to 1
+    // but this still fails for more complex test cases e.g. nums = [2,-5,-2,-4,3]
