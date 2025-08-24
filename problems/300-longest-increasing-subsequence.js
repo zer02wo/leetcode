@@ -72,39 +72,43 @@ var lengthOfLIS = function(nums) {
  * @return {number}
  */
 var lengthOfLISBruteForce = function(nums) {
-    const n = nums.length;
-    let output = 0;
+    let longestSeqLen = 0;
 
-    // brute force - create LIS from each element
-    for (let i = 0; i < n; i++) {
-        // optimisation - early return when a longer sequence cannot be made from current element
-        if (n - i <= output) {
-            // return length of LIS found so far
-            return output;
+    // DFS recursive helper function
+    function createSubsequence(prev, index, seqLen) {
+        // not increasing, continue to next index
+        while (nums[index] <= prev && index < nums.length) {
+            index++;
         }
 
-        // create increasing subsequence from i
-        let prev = nums[i];
-        let seqLen = 1;
-
-        for (let j = i + 1; j < n; j++) {
-            const cur = nums[j];
-
-            if (cur > prev) {
-                prev = cur;
-                seqLen++;
-            }
+        // end of input array reached, return length of sequence in this branch
+        if (index >= nums.length) {
+            longestSeqLen = Math.max(longestSeqLen, seqLen);
+            return;
         }
 
-        // keep reference to the longest remaining sequence
-        output = Math.max(output, seqLen);
+        // number is increasing, make branches from choice:
+        // 1. take the current number
+        createSubsequence(nums[index], index + 1, seqLen + 1);
+        // 2. skip the current number
+        createSubsequence(prev, index + 1, seqLen);
     }
 
-    // return length of LIS
-    return output;
+    // initialise recursive helper function
+    createSubsequence(-Infinity, 0, 0);
 
-    // TODO: fails for test case [0,1,0,3,2,3]
-    // too greedy and takes the [3] before the [2]
+    return longestSeqLen;
+
+    // TLE: Time Limit Exceeded for testcase 22/55 (array of 2500 elements)
+
+    // O(2^n) time complexity (each recursive branch makes 2 more branches)
+    // O(n) space complexity (recursive call stack depth)
 };
 
 // BRUTE FORCE: create a subsequence from each element by keeping reference to previous subsequence value
+    // EDIT: fails for test case [0,1,0,3,2,3] as this would create [0,1,3] greedily instead of [0,1,2,3] because we never "skip" any elements
+// brute force is actually more complicated than this, as we would need to generate *every* possible subsequence
+    // that would mean at each (increasing) element we have two choices:
+        // 1. take the current element
+        // 2. leaving the current element
+// i.e. in this situation, brute force === DFS of (2^n)
