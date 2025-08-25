@@ -77,29 +77,36 @@ var lengthOfLISMemoization = function(nums) {
     const memo = new Map();
 
     // DFS recursive helper function
-    function createSubsequence(prev, index, seqLen) {
-        const key = `${prev}-${index}`;
+    function createSubsequence(prevIdx, curIdx, seqLen) {
+        // end of input array reached, return length of sequence in this branch
+        if (curIdx >= nums.length) {
+            return seqLen;
+        }
+
+        const key = `${prevIdx}-${curIdx}-${seqLen}`;
 
         // if exists in memoization cache, retrieve instead of recalculate
         if (memo.has(key)) {
             return memo.get(key);
         }
 
+        const prev = nums[prevIdx] === -1 ? -Infinity : nums[prevIdx];
+
         // not increasing, continue to next index
-        while (nums[index] <= prev && index < nums.length) {
-            index++;
+        while (curIdx < nums.length && nums[curIdx] <= prev) {
+            curIdx++;
         }
 
         // end of input array reached, return length of sequence in this branch
-        if (index >= nums.length) {
+        if (curIdx >= nums.length) {
             return seqLen;
         }
 
         // number is increasing, make branches from choice:
         // 1. take the current number
-        const longestTake = createSubsequence(nums[index], index + 1, seqLen + 1);
+        const longestTake = createSubsequence(curIdx, curIdx + 1, seqLen + 1);
         // 2. skip the current number
-        const longestSkip = createSubsequence(prev, index + 1, seqLen);
+        const longestSkip = createSubsequence(prevIdx, curIdx + 1, seqLen);
 
         // cache longest subsequence found when starting at index
         memo.set(key, Math.max(longestTake, longestSkip));
@@ -108,13 +115,10 @@ var lengthOfLISMemoization = function(nums) {
     }
 
     // initialise recursive helper function
-    return createSubsequence(-Infinity, 0, 0);
+    return createSubsequence(-1, 0, 0);
 
-    // TODO: fails for test case: nums = [3,5,6,2,5,4,19,5,6,7,12]
-        // EXPECTED: 6 [2,4,5,6,7,12]
-        // ACTUAL: 5
-    // this might just be the key not being specific enough? (i.e. as we have duplicate `5` elements)
-        // reference previous *index* instead of previous *element*? (i.e. no duplicates)
+    // TODO: using previous index also fails
+    // adding sequence length to the key once again returns to TLE, as the cache isn't effective enough
 };
 
 // BRUTE FORCE: create a subsequence from each element by keeping reference to previous subsequence value
