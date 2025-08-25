@@ -71,11 +71,20 @@ var lengthOfLIS = function(nums) {
  * @param {number[]} nums
  * @return {number}
  */
-var lengthOfLISBruteForce = function(nums) {
-    let longestSeqLen = 0;
+var lengthOfLISMemoization = function(nums) {
+    // OPTIMISATION - memoization
+    // cache longest increasing subsequence when starting at given index
+    const memo = new Map();
 
     // DFS recursive helper function
     function createSubsequence(prev, index, seqLen) {
+        const key = `${prev}-${index}`;
+
+        // if exists in memoization cache, retrieve instead of recalculate
+        if (memo.has(key)) {
+            return memo.get(key);
+        }
+
         // not increasing, continue to next index
         while (nums[index] <= prev && index < nums.length) {
             index++;
@@ -83,26 +92,29 @@ var lengthOfLISBruteForce = function(nums) {
 
         // end of input array reached, return length of sequence in this branch
         if (index >= nums.length) {
-            longestSeqLen = Math.max(longestSeqLen, seqLen);
-            return;
+            return seqLen;
         }
 
         // number is increasing, make branches from choice:
         // 1. take the current number
-        createSubsequence(nums[index], index + 1, seqLen + 1);
+        const longestTake = createSubsequence(nums[index], index + 1, seqLen + 1);
         // 2. skip the current number
-        createSubsequence(prev, index + 1, seqLen);
+        const longestSkip = createSubsequence(prev, index + 1, seqLen);
+
+        // cache longest subsequence found when starting at index
+        memo.set(key, Math.max(longestTake, longestSkip));
+
+        return memo.get(key);
     }
 
     // initialise recursive helper function
-    createSubsequence(-Infinity, 0, 0);
+    return createSubsequence(-Infinity, 0, 0);
 
-    return longestSeqLen;
-
-    // TLE: Time Limit Exceeded for testcase 22/55 (array of 2500 elements)
-
-    // O(2^n) time complexity (each recursive branch makes 2 more branches)
-    // O(n) space complexity (recursive call stack depth)
+    // TODO: fails for test case: nums = [3,5,6,2,5,4,19,5,6,7,12]
+        // EXPECTED: 6 [2,4,5,6,7,12]
+        // ACTUAL: 5
+    // this might just be the key not being specific enough? (i.e. as we have duplicate `5` elements)
+        // reference previous *index* instead of previous *element*? (i.e. no duplicates)
 };
 
 // BRUTE FORCE: create a subsequence from each element by keeping reference to previous subsequence value
