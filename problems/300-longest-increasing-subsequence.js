@@ -1,6 +1,53 @@
 // https://leetcode.com/problems/longest-increasing-subsequence/
-// tags: medium, leetle, arrays, dynamic programming
+// tags: medium, leetle, arrays, dynamic programming, memoization
 
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var lengthOfLIS = function(nums) {
+    const n = nums.length;
+
+    // create memoization cache for LIS possible when starting at each element
+    // default to 1 (i.e. a subsequence of only the element itself)
+    const lis = new Array(n).fill(1);
+
+    // iterate backwards through the list BOTTOM-UP approach
+        // easiest to compute LIS[n], as this is always 1
+        // with the memo cache, this prevents repeated work
+    for (let i = n; i >= 0; i--) {
+        // check every index that comes after i
+        for (let j = i + 1; j < nums.length; j++) {
+            // ensurevalue is increasing for a valid subsequence
+            if (nums[i] >= nums[j]) {
+                continue;
+            }
+
+            // reccurence relation:
+            // LIS[i] = MAX(LIS[i], 1 + LIS[i+1], 1 + LIS[i+2], ..., 1 + LIS[n-1], 1 + LIS[n])
+            lis[i] = Math.max(lis[i], 1 + lis[j]);
+        }
+    }
+
+    // return the maximum increasing subsequence length stored in the cache
+    return Math.max(...lis);
+
+    // 84 ms / beats 51.87%
+
+    // O(n^2) time complexity
+        // two nested loops
+        // at each element, reviews (up to) every other element
+    // O(n) space complexity
+        // cache array of the size n
+
+    // this question did completely stump me in my own attempts,
+        // but it's so simple now after seeing the solution
+    // dynamic programming always looks so easy but figuring out to iterate backwards
+        // (and then forwards from there...) is just really tough
+
+    // TODO: there is also a binary search solution for O(nlogn) but I have had enough of this question
+};
 
 // following video solution: https://www.youtube.com/watch?v=cjWnW0hdF1Y
 // BRUTE FORCE: generate every subsequence
@@ -40,6 +87,9 @@
             // LIS[0] = MAX(1, 1 + LIS[1], 1 + LIS[2], 1 + LIS[3])
                 // the max scenario: 1 + LIS[1] = 3
             // LIS[0] = 3
+        // RECURRENCE RELATION: LIS[i] = MAX(LIS[i], 1 + LIS[i+1], 1 + LIS[i+2], ..., 1 + LIS[n-1], 1 + LIS[n])
+            // i.e. a subsequence of itself (LIS[i] === 1 by default),
+            // or the longest subsequence of itself PLUS any subsequence that can be generated from elements that come after
     // O(n^2) - at every element, check every element that comes after it
         // i.e. when reviewing LIS[0] you need to review 0 -> n
         // this happens at every element (n), giving us n * n elements checked (worst case)
