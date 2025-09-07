@@ -1,6 +1,29 @@
 // https://leetcode.com/problems/longest-increasing-subsequence/
 // tags: medium, leetle, arrays, dynamic programming
 
+
+// following video solution: https://www.youtube.com/watch?v=cjWnW0hdF1Y
+// BRUTE FORCE: generate every subsequence
+    // each element has two choices: 1. include in subsequence, 2. don't include in subsequence
+    // 2^n subsequences
+// DFS WITH CACHE: generate subsequence starting at each element
+    // e.g. [1,2,4,3]
+        // if we start at index 3, we get subsequence: [3]
+            // this tells us that LIS[3] = 1
+        // if we start at index 2, we get subsequence: [4,3]
+            // except 3 < 4, so the LIS = [4]
+            // this tells us that LIS[2] = 1
+        // if we start at index 1, we get subsequence: [2,4] OR [2,3]
+            // because we already know LIS[2] and LIS[3] === 1
+            // we know that LIS[1] = nums[1] + LIS[2|3] === 2
+        // if we start at index 0, we get subsequence: [1,2,4] OR [1,2,3]
+            // because we already know LIS[1] = 2
+            // we know that LIS[0] = nums[0] + LIS[1] === 3
+    // from this we can learn the pattern is to start at last index and work UP towards beginning
+
+
+// === FAILED ATTEMPTS BELOW THIS LINE ===
+
 /**
  * @param {number[]} nums
  * @return {number}
