@@ -20,7 +20,29 @@
             // because we already know LIS[1] = 2
             // we know that LIS[0] = nums[0] + LIS[1] === 3
     // from this we can learn the pattern is to start at last index and work UP towards beginning
-
+// DYNAMIC PROGRAMMING: bottom-up solution
+    // e.g. [1,2,4,3]
+        // LIS[3] (i.e. last element/LIS[n]) is our base case
+            // we can either exclude or include from subsequence, but it will always be longer to include
+            // LIS[3] = 1
+        // LIS[2] is the next step to review
+            // the length is then determined by whether or not we can include it (i.e. if the subsequence would be increasing in value)
+            // LIS[2] = MAX(1, 1 + LIS[3])
+                // in this scenario 4 > 3, so we cannot perform this check
+            // LIS[2] = 1
+        // LIS[1] is next to review as we continue moving backwards/upwards
+            // in this case there are multiple valid subsequences that could be generated, giving us:
+            // LIS[1] = MAX(1, 1 + LIS[2], 1 + LIS[3])
+                // in both scenarios 1 + LIS[2|3] = 2
+            // LIS[1] = 2
+        // LIS[0] is the final step to review (i.e. the first element)
+            // again there are multiple valid subsequences that could be generated:
+            // LIS[0] = MAX(1, 1 + LIS[1], 1 + LIS[2], 1 + LIS[3])
+                // the max scenario: 1 + LIS[1] = 3
+            // LIS[0] = 3
+    // O(n^2) - at every element, check every element that comes after it
+        // i.e. when reviewing LIS[0] you need to review 0 -> n
+        // this happens at every element (n), giving us n * n elements checked (worst case)
 
 // === FAILED ATTEMPTS BELOW THIS LINE ===
 
